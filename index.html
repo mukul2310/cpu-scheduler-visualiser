@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>CPU Scheduling Algorithm</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <!-- <link rel='stylesheet' type='text/css' media='screen' href='main.css'> -->
+    <link rel="icon" type="image/png" href="images/image3.png">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+</head>
+<body style="background-color:rgb(165, 165, 165);">
+    <div class="row">
+        <div class="col s12 m6">
+          <div class="card grey darken-1" style="width: 203%;">
+            <div class="card-content white-text">
+              <span class="card-title" style="font-style: italic;">Processes</span>
+              <table class ="highlight" id="table">
+                <!-- <thead>
+                  <tr>
+                      <th>Process Id</th>
+                      <th>Burst time</th>
+                      <th>Arrival Time</th>
+                      <th>Priority</th>
+                  </tr>
+                </thead>
+        
+                <tbody id="process_table">
+                  <tr>
+                    <td id="row">P1</td>
+                    <td>80</td>
+                    <td>NAN</td>
+                    <td>1</td>
+                    <td><a class="btn-floating btn-large waves-effect waves-light red" onclick="deleteRow()"><i class="material-icons">remove</i></a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>P2</td>
+                    <td>60</td>
+                    <td>NAN</td>
+                    <td>2</td>
+                    <td><a class="btn-floating btn-large waves-effect waves-light red" onclick="deleteRow()"><i class="material-icons">remove</i></a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>P3</td>
+                    <td>65</td>
+                    <td>NAN</td>
+                    <td>3</td>
+                    <td><a class="btn-floating btn-large waves-effect waves-light red" onclick="deleteRow()"><i class="material-icons">remove</i></a>
+                    </td>
+                  </tr>
+                </tbody> -->
+              </table>
+            </div>
+            <div class="card-action">
+              <a class="btn-floating btn-large waves-effect waves-light yellow" onclick="insertRow()"><i class="material-icons">add</i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script>
+        // $(document).ready(()=>
+        // {
+        //   crateTable();
+        // });
+        document.addEventListener("DOMContentLoaded", function(event) 
+        {
+          createTable();
+        });
+        var process_table=document.getElementById('table');
+        var cells=process_table.getElementsByTagName('td');
+        for(var i=0;i<cells.length;i++)
+        {
+          cells[i].onclick=editTable();
+        }
+    </script>
+    <script src="main.js" type="text/javascript"></script>
+  
+</body>
+</html>
