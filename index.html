@@ -1,24 +1,28 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>CPU Scheduling Algorithm</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <!-- <link rel='stylesheet' type='text/css' media='screen' href='main.css'> -->
-    <link rel="icon" type="image/png" href="images/image3.png">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>CPU Scheduling Algorithm</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <!-- <link rel='stylesheet' type='text/css' media='screen' href='main.css'> -->
+  <link rel="icon" type="image/png" href="images/image3.png">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+
 </head>
+
 <body style="background-color:rgb(165, 165, 165);">
-    <div class="row">
-        <div class="col s12 m6">
-          <div class="card grey darken-1" style="width: 203%;">
-            <div class="card-content white-text">
-              <span class="card-title" style="font-style: italic;">Processes</span>
-              <table class ="highlight" id="table">
-                <!-- <thead>
+  <div class="row">
+    <div class="col s12 m6">
+      <div class="card grey darken-1" style="width: 203%;">
+        <div class="card-content white-text">
+          <span class="card-title" style="font-style: italic;">Processes</span>
+          <table class="highlight" id="table">
+            <!-- <thead>
                   <tr>
                       <th>Process Id</th>
                       <th>Burst time</th>
@@ -53,31 +57,52 @@
                     </td>
                   </tr>
                 </tbody> -->
-              </table>
-            </div>
-            <div class="card-action">
-              <a class="btn-floating btn-large waves-effect waves-light yellow" onclick="insertRow()"><i class="material-icons">add</i></a>
-            </div>
-          </div>
+          </table>
+        </div>
+        <div class="card-action">
+          <a class="btn-floating btn-large waves-effect waves-light yellow" onclick="addProcess()"><i
+              class="material-icons">add</i></a>
         </div>
       </div>
-      <script>
-        // $(document).ready(()=>
+    </div>
+  </div>
+  <script src="js/jquery-3.5.1.min.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    $(document).ready(() => {
+      createTable();
+    });
+// same as
+        // document.addEventListener("DOMContentLoaded", function(event) 
         // {
-        //   crateTable();
+        //   createTable();
         // });
-        document.addEventListener("DOMContentLoaded", function(event) 
-        {
-          createTable();
-        });
-        var process_table=document.getElementById('table');
-        var cells=process_table.getElementsByTagName('td');
-        for(var i=0;i<cells.length;i++)
-        {
-          cells[i].onclick=editTable();
-        }
-    </script>
-    <script src="main.js" type="text/javascript"></script>
-  
+
+
+
+        // var xhttp=new XMLHttpRequest();
+        // xhttp.open("GET","process.json",true);
+        // xhttp.onreadystatechange=reportStatus;
+        // function reportStatus() 
+        // {
+        //   if(xhttp.readyState==4)
+        //   {
+        //     convertToTable(this.responseText);
+        //   }
+        // }
+        // xhttp.send();
+
+
+
+        // var process_table=document.getElementById('table');
+        // process_table.onclick=editTable();
+        // var cells=process_table.getElementsByTagName('td');
+        // for(var i=0;i<cells.length;i++)
+        // {
+        //   cells[i].onclick=editTable(this);
+        // }
+                
+  </script>
 </body>
+
 </html>
