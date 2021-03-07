@@ -1,6 +1,6 @@
 let btnGet = document.querySelector('button');
 let myTable = document.querySelector('#table');
- 
+var table,processCount;
 let processes=
 [
     {
@@ -71,7 +71,7 @@ var count=10;
 // btnGet.addEventListener('click', createTable());
     function createTable()
     {
-        let table = document.createElement('table');
+        table = document.createElement('table');
         let headerRow = document.createElement('tr');
     
         headers.forEach(headerText => {
@@ -95,6 +95,12 @@ var count=10;
             table.appendChild(row);
         });
     
+        
+    }
+    function displayTable()
+    {
+        createTable();
+        myTable.removeChild(myTable.lastChild);
         myTable.appendChild(table);
     }
     function editTable(e)
@@ -152,26 +158,14 @@ var count=10;
     function addProcess()
     {
         let table = document.getElementById('table');
-        var i=11;
-        obj={id:i, burst_time:90, arrival_time:54, priority:4};
+        processCount=processes.length+1;
+        obj={id:processCount, burst_time:90, arrival_time:54, priority:4};
         processes.push(obj);
-        let row = document.createElement('tr');
-    
-            Object.values(obj).forEach(text => 
-            {
-                let cell = document.createElement('td');
-                let textNode = document.createTextNode(text);
-                cell.appendChild(textNode);
-                row.appendChild(cell);
-            });
-            table.appendChild(row);
-        
-        // myTable.appendChild(table);
-        // createTable();
+        displayTable();
     }
 
-    $('table').on("mouseenter",function () {
-            console.log('you hoverd on: ', this);
-             $('#id').hide();
-             $('.class').hide();
-        });
+    // $('table').on("mouseenter",function () {
+    //         console.log('you hoverd on: ', this);
+    //          $('#id').hide();
+    //          $('.class').hide();
+    //     });
