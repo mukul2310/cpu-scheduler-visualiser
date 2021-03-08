@@ -164,6 +164,20 @@ var count=10;
         displayTable();
     }
 
+    function removeProcess()
+    {
+        id = $('#select').val();
+        processes.splice(processes.findIndex(item => item.id === id), 1);
+        populateTable();
+    }
+    function editProcess()
+    {
+
+    }
+    function start()
+    {
+        alert("Starting the visualization");
+    }
     // $('table').on("mouseenter",function () {
     //         console.log('you hoverd on: ', this);
     //          $('#id').hide();
