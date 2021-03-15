@@ -103,76 +103,130 @@ var count=10;
         myTable.removeChild(myTable.lastChild);
         myTable.appendChild(table);
     }
-    function editTable(e)
-    {
-        console.log('hi');
-        if(e.hasAttribute('data-clicked'))
-        {
-          return;
-        }
-        var input= document.createElement('input');
-        input.setAttribute('type','number');
-        input.value=e.innerHTML;
-        // input.style.width=this.offsetWidth-(this.clientLeft*3) +"px";
-        // input.style.height=this.offsetHeight-(this.clientTop*2) +"px";
+    // function editTable(e)
+    // {
+    //     console.log('hi');
+    //     if(e.hasAttribute('data-clicked'))
+    //     {
+    //       return;
+    //     }
+    //     var input= document.createElement('input');
+    //     input.setAttribute('type','number');
+    //     input.value=e.innerHTML;
+    //     // input.style.width=this.offsetWidth-(this.clientLeft*3) +"px";
+    //     // input.style.height=this.offsetHeight-(this.clientTop*2) +"px";
         
-        input.style.width="75px";
-        input.style.height="35px";
+    //     input.style.width="75px";
+    //     input.style.height="35px";
 
-        input.style.border="0px"
-        input.style.fontFamily="inherit"
-        input.style.fontSize="inherit"
-        input.style.textAlign="inherit"
-        input.style.backgroundColor="#FFFAF0"
+    //     input.style.border="0px"
+    //     input.style.fontFamily="inherit"
+    //     input.style.fontSize="inherit"
+    //     input.style.textAlign="inherit"
+    //     input.style.backgroundColor="#FFFAF0"
         
-        input.onblur=function()
-        {
-          var td= input.parentElement;
-          var orig_text= input.parentElement.getAttribute('data-text');
-          var current_text=e.value;
+    //     input.onblur=function()
+    //     {
+    //       var td= input.parentElement;
+    //       var orig_text= input.parentElement.getAttribute('data-text');
+    //       var current_text=e.value;
 
-          if(orig_text!=current_text)
-          {
-            td.removeAttribute('data-text');
-            td.removeAttribute('data-clicked');
-            td.innerHTML=current_text;
-          }
-          else
-          {
-            td.removeAttribute('data-text');
-            td.removeAttribute('data-clicked');
-            td.innerHTML=orig_text;
-          }
-        }
-        input.onkeypress=function()
-        {
-          if(event.keyCode==13)
-          {
-            e.blur();
-          }
-        }
-        e.innerHTML='';
-        e.append(input);
-        e.firstElementChild.select();
-    }
+    //       if(orig_text!=current_text)
+    //       {
+    //         td.removeAttribute('data-text');
+    //         td.removeAttribute('data-clicked');
+    //         td.innerHTML=current_text;
+    //       }
+    //       else
+    //       {
+    //         td.removeAttribute('data-text');
+    //         td.removeAttribute('data-clicked');
+    //         td.innerHTML=orig_text;
+    //       }
+    //     }
+    //     input.onkeypress=function()
+    //     {
+    //       if(event.keyCode==13)
+    //       {
+    //         e.blur();
+    //       }
+    //     }
+    //     e.innerHTML='';
+    //     e.append(input);
+    //     e.firstElementChild.select();
+    // }
+    
     function addProcess()
     {
-        let table = document.getElementById('table');
-        processCount=processes.length+1;
-        obj={id:processCount, burst_time:90, arrival_time:54, priority:4};
+        // let table = document.getElementById('table');
+        let input_burst=$('#modal_burst_time').val();
+        let input_arrival=$('#modal_arrival_time').val();
+        let input_priority=$('#modal_priority').val();
+        obj={id:processes.length+1, burst_time:input_burst, arrival_time:input_arrival, priority:input_priority};
+
         processes.push(obj);
         displayTable();
     }
+    function openRemoveModal()
+    {
+        $('#modal_remove').modal();
+        $('select').formSelect();
+        var $dropdown= $('#modal_remove_select');
 
+        for(i=0;i<processes.length;i++)
+        {
+            $dropdown.append($("<option />").val(processes[i].id).text("Process "+processes[i].id));
+            // $dropdown.append(new Option("Process "+processes[i].id, processes[i].id))
+        }
+    }
     function removeProcess()
     {
-        id = $('#select').val();
-        processes.splice(processes.findIndex(item => item.id === id), 1);
-        populateTable();
+        // $('#modal_remove').modal();
+        // $('select').formSelect();
+        // var $dropdown= $('#modal_remove_select');
+        // console.log($dropdown);
+        // for(i=0;i<processes.length;i++)
+        // {
+        //     console.log("hi");
+        //     $dropdown.append($("<option />").val(processes[i].id).text("Process "+processes[i].id));
+        //     // $dropdown.append(new Option("Process "+processes[i].id, processes[i].id))
+        // }
+
+        let removing_array = $('#modal_remove_select').val();
+        console.log(removing_array);
+        for(i=0;i<removing_array.length;i++)
+        {
+            processes.forEach(function(p)
+            {
+                if(removing_array[i]==p.id)
+                {
+                    
+                }
+            });
+        }
+        // for (var i = 0; i < result.length; i++) {
+        //     options += '<option value="' + result[i].ImageFolderID + '">' + result[i].Name + '</option>';
+        // }
+        // id = $('#select').val();
+        // processes.splice(processes.findIndex(item => item.id === id), 1);
+        // displayTable();
+    }
+    function openEditModal()
+    {
+        $('select').formSelect();
+        // $('#modal_add').modal();
+        $('#modal_edit').modal();
+        var $dropdown= $('#modal_edit_select');
+
+        for(i=0;i<processes.length;i++)
+        {
+            $dropdown.append($("<option />").val(processes[i].id).text("Process "+processes[i].id));
+            // $dropdown.append(new Option("Process "+processes[i].id, processes[i].id))
+        }
     }
     function editProcess()
     {
-
+        
     }
     function start()
     {
