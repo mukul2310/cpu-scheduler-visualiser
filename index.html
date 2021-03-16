@@ -62,8 +62,8 @@
         <div class="card-action">
           <a class="btn-floating btn-large waves-effect waves-light modal-trigger" style="background-color: #ecc85b;" href="#modal_add"><i
               class="material-icons">add</i></a>
-              <a class="waves-effect waves-light btn-large btn modal-trigger" style="margin-left: 70px; background-color: rgb(218, 152, 66); border-radius: 8%;" href="#modal_edit" onclick="openEditModal()">Edit Process</a>
-              <a class="waves-effect waves-light btn-large btn modal-trigger" style="margin-left: 70px; background-color: #EC7063 ; border-radius: 8%;" href="#modal_remove" onclick="openRemoveModal()">Remove Process</a>
+              <a class="waves-effect waves-light btn-large btn modal-trigger" style="margin-left: 70px; background-color: rgb(218, 152, 66); border-radius: 8%;" href="#modal_edit">Edit Process</a>
+              <a class="waves-effect waves-light btn-large btn modal-trigger" style="margin-left: 70px; background-color: #EC7063 ; border-radius: 8%;" href="#modal_remove">Remove Process</a>
               <a class="waves-effect waves-light btn-large btn" style="margin-left: 70px; background-color: #58D68D; border-radius: 8%;" onclick="start()">Start</a>
         </div>
       </div>
@@ -88,11 +88,11 @@
             </div>
             <div class="input-field col s12">
               <input id="modal_arrival_time" type="number" min="0" class="validate" required>
-              <label for="burst_time">Arrival Time</label>
+              <label for="arrival_time">Arrival Time</label>
             </div>
             <div class="input-field col s12">
               <input id="modal_priority" type="number" min="0" class="validate" required>
-              <label for="riority">Priority</label>
+              <label for="priority">Priority</label>
             </div>
           </div>
     
@@ -100,7 +100,7 @@
       </div>
     </div>
     <div class="modal-footer">
-      <a href="#!" class="modal-close waves-effect waves-green btn-flat" style="background-color: #58D68D; border-radius: 8%; color: aliceblue;" onclick="addProcess();" >ADD</a>
+      <a href="javascript:void(0)" class="modal-close waves-effect waves-green btn-flat" style="background-color: #58D68D; border-radius: 8%; color: aliceblue;" onclick="addProcess();" >ADD</a>
     </div>
   </div>
 
@@ -116,13 +116,25 @@
         </select>
         <!-- <label>Edit Process</label> -->
       </div>
+      <div class="input-field col s12">
+        <input id="modal_edit_burst_time" type="number" min="0" class="validate" required>
+        <label for="burst_time">New Burst Time</label>
+      </div>
+      <div class="input-field col s12">
+        <input id="modal_edit_arrival_time" type="number" min="0" class="validate" required>
+        <label for="burst_time">New Arrival Time</label>
+      </div>
+      <div class="input-field col s12">
+        <input id="modal_edit_priority" type="number" min="0" class="validate" required>
+        <label for="riority">New Priority</label>
+      </div>
     </div>
     <div class="modal-footer">
-      <a href="#" class="waves-effect waves-green btn-flat" style="background-color: rgb(226, 161, 75); border-radius: 8%; color: aliceblue;" onclick="editProcess()" >Proceed</a>
+      <a href="javascript:void(0)" class="modal-close waves-effect waves-green btn-flat" style="background-color: rgb(226, 161, 75); border-radius: 8%; color: aliceblue;" onclick="editProcess()">Proceed</a>
     </div>
   </div>
 
-  <div id="modal_remove" class="modal" style="height: 200%;">
+  <div id="modal_remove" class="modal">
     <div class="modal-content">
       <h4>Remove Multiple Processes</h4>
       <div class="input-field col s12">
@@ -136,7 +148,7 @@
       </div>
     </div>
     <div class="modal-footer">
-      <a href="#" class="modal-close waves-effect waves-green btn-flat" style="background-color: #EC7063 ; border-radius: 8%; color: aliceblue;" onclick="removeProcess()">Remove</a>
+      <a href="javascript:void(0)" class="modal-close waves-effect waves-green btn-flat" style="background-color: #EC7063 ; border-radius: 8%; color: aliceblue;" onclick="removeProcess()">Remove</a>
     </div>
   </div>
   
@@ -153,8 +165,28 @@
       $('#modal_process_id').value=processes.length;
       $("#modal_process_id").attr("placeholder", processes.length+1);
       
+
+      // $('select').formSelect();
+        // $('#modal_add').modal();
+      $('#modal_edit').modal();
+      var $dropdown_edit= $('#modal_edit_select');
+
+      for(i=0;i<processes.length;i++)
+      {
+          $dropdown_edit.append($("<option />").val(processes[i].id).text("Process "+processes[i].id));
+          // $dropdown.append(new Option("Process "+processes[i].id, processes[i].id))
+      }
+
      
-      
+      $('select').formSelect();
+      $('#modal_remove').modal();
+      var $dropdown_remove= $('#modal_remove_select');
+
+      for(i=0;i<processes.length;i++)
+      {
+          $dropdown_remove.append($("<option />").val(processes[i].id).text("Process "+processes[i].id));
+          // $dropdown.append(new Option("Process "+processes[i].id, processes[i].id))
+      }
       
   });
 
