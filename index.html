@@ -10,72 +10,41 @@
   <!-- <link rel='stylesheet' type='text/css' media='screen' href='main.css'> -->
   <link rel="icon" type="image/png" href="images/image3.png">
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-
-
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"> -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 
-<body style="background-color:rgb(165, 165, 165);">
+<body style="background-color:rgb(255, 255, 255);">
   <div class="row">
-    <div class="col s12 m6">
-      <div class="card grey darken-1" style="width: 203%;">
-        <div class="card-content white-text">
-          <span class="card-title" style="font-style: italic;">Processes</span>
-          <table class="highlight" id="table">
-            <!-- <thead>
-                  <tr>
-                      <th>Process Id</th>
-                      <th>Burst time</th>
-                      <th>Arrival Time</th>
-                      <th>Priority</th>
-                  </tr>
-                </thead>
-        
-                <tbody id="process_table">
-                  <tr>
-                    <td id="row">P1</td>
-                    <td>80</td>
-                    <td>NAN</td>
-                    <td>1</td>
-                    <td><a class="btn-floating btn-large waves-effect waves-light red" onclick="deleteRow()"><i class="material-icons">remove</i></a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>P2</td>
-                    <td>60</td>
-                    <td>NAN</td>
-                    <td>2</td>
-                    <td><a class="btn-floating btn-large waves-effect waves-light red" onclick="deleteRow()"><i class="material-icons">remove</i></a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>P3</td>
-                    <td>65</td>
-                    <td>NAN</td>
-                    <td>3</td>
-                    <td><a class="btn-floating btn-large waves-effect waves-light red" onclick="deleteRow()"><i class="material-icons">remove</i></a>
-                    </td>
-                  </tr>
-                </tbody> -->
-          </table>
+    <div class="col-sm-12">
+        <div class="card">
+          <div class="card-block">            
+              <h4 class="card-title">Processes</h4>
+              <div class="flex-center table-responsive m-t-40">
+                  <table class="table stylish-table" id="table">
+                  </table>
+              </div>
+              <div class="row text-center">
+                <button class="btn-info btn-lg" style="background-color: #ecc85b;" data-toggle="modal" data-target="#modal_add"><i class="material-icons">add</i></button>
+                <button class="btn-info btn-lg" style="margin-left: 70px; background-color: rgb(218, 152, 66); border-radius: 8%;" data-toggle="modal" data-target="#modal_edit">Edit Process</button>
+                <button class="btn-info btn-lg" style="margin-left: 70px; background-color: #EC7063 ; border-radius: 8%;" data-toggle="modal" data-target="#modal_remove">Remove Process</button>
+                <button class="btn-info btn-lg" style="margin-left: 70px; background-color: #58D68D; border-radius: 8%;" onclick="start()">Start</button>
         </div>
-        <div class="card-action">
-          <a class="btn-floating btn-large waves-effect waves-light modal-trigger" style="background-color: #ecc85b;" href="#modal_add"><i
-              class="material-icons">add</i></a>
-              <a class="waves-effect waves-light btn-large btn modal-trigger" style="margin-left: 70px; background-color: rgb(218, 152, 66); border-radius: 8%;" href="#modal_edit">Edit Process</a>
-              <a class="waves-effect waves-light btn-large btn modal-trigger" style="margin-left: 70px; background-color: #EC7063 ; border-radius: 8%;" href="#modal_remove">Remove Process</a>
-              <a class="waves-effect waves-light btn-large btn" style="margin-left: 70px; background-color: #58D68D; border-radius: 8%;" onclick="start()">Start</a>
+        </div>
         </div>
       </div>
     </div>
-  </div>
  
 
   <!-- Modal Structure -->
-  <div id="modal_add" class="modal">
+  <div id="modal_add" class="modal fade">
     <div class="modal-content">
-      <h4>Add a process</h4>
-      <div class="row">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add a process</h4>
+      <div class="modal-body">
         <form class="col s12">
           <div class="row">
             <div class="input-field col s12">
@@ -100,21 +69,26 @@
       </div>
     </div>
     <div class="modal-footer">
-      <a href="javascript:void(0)" class="modal-close waves-effect waves-green btn-flat" style="background-color: #58D68D; border-radius: 8%; color: aliceblue;" onclick="addProcess();" >ADD</a>
+      <a href="javascript:void(0)" class="modal-close waves-effect waves-green btn-flat" data-dismiss="modal" style="background-color: #58D68D; border-radius: 8%; color: aliceblue;" onclick="addProcess();" >ADD</a>
     </div>
   </div>
+  </div>
+  
 
-  <div id="modal_edit" class="modal">
-    <div class="modal-content">
-      <h4>Edit Process</h4>
+  
+  
+<div id="modal_edit" class="modal fade">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <h4 class="modal-title">Edit Process</h4>
+    </div>
+    <div class="modal-body">
       <div class="input-field col s12">
-        <select id="modal_edit_select">
-          <option value="" disabled selected>Choose Process Id</option>
-          <!-- <option value="1">Option 1</option>
-          <option value="2">Option 2</option>
-          <option value="3">Option 3</option> -->
+        <select id="modal_edit_select" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+        <option value="" disabled selected>Choose Process Id</option>
+        
         </select>
-        <!-- <label>Edit Process</label> -->
       </div>
       <div class="input-field col s12">
         <input id="modal_edit_burst_time" type="number" min="0" class="validate" required>
@@ -129,22 +103,23 @@
         <label for="riority">New Priority</label>
       </div>
     </div>
-    <div class="modal-footer">
-      <a href="javascript:void(0)" class="modal-close waves-effect waves-green btn-flat" style="background-color: rgb(226, 161, 75); border-radius: 8%; color: aliceblue;" onclick="editProcess()">Proceed</a>
-    </div>
+  <div class="modal-footer">
+    <a href="javascript:void(0)" class="modal-close waves-effect waves-green btn-flat" style="background-color: rgb(226, 161, 75); border-radius: 8%; color: aliceblue;" onclick="editProcess()">Proceed</a>
   </div>
+</div>
+</div>
 
-  <div id="modal_remove" class="modal">
+  <div id="modal_remove" class="modal fade">
     <div class="modal-content">
-      <h4>Remove Multiple Processes</h4>
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Remove Multiple Processes</h4>
+      </div>
+    <div class="modal-body">
       <div class="input-field col s12">
-        <select multiple id="modal_remove_select">
-          <option value="" disabled selected>Choose Process Id</option>
-          <!-- <option value="1">Option 1</option>
-          <option value="2">Option 2</option>
-          <option value="3">Option 3</option> -->
+        <select multiple id="modal_remove_select" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+          <option value="" disabled>Select Process Id</option>
         </select>
-        <!-- <label>Remove Multiple Processes</label> -->
       </div>
     </div>
     <div class="modal-footer">
@@ -152,41 +127,23 @@
     </div>
   </div>
   
-
-  <script src="js/jquery-3.5.1.min.js"></script> 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+ 
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script> -->
   <script src="js/main.js"></script>
   <script src="js/algorithm.js"></script>
   <script>
     $(document).ready(function(){
       displayTable();
-      $('#modal_add').modal();
-      M.updateTextFields();
+      // $('#modal_add').modal();
+      // M.updateTextFields();
       $('#modal_process_id').value=processes.length;
       $("#modal_process_id").attr("placeholder", processes.length+1);
       
 
+      // $('#modal_edit').modal();
+      
+      // $('#modal_remove').modal();
       // $('select').formSelect();
-        // $('#modal_add').modal();
-      $('#modal_edit').modal();
-      var $dropdown_edit= $('#modal_edit_select');
-
-      for(i=0;i<processes.length;i++)
-      {
-          $dropdown_edit.append($("<option />").val(processes[i].id).text("Process "+processes[i].id));
-          // $dropdown.append(new Option("Process "+processes[i].id, processes[i].id))
-      }
-
-     
-      $('select').formSelect();
-      $('#modal_remove').modal();
-      var $dropdown_remove= $('#modal_remove_select');
-
-      for(i=0;i<processes.length;i++)
-      {
-          $dropdown_remove.append($("<option />").val(processes[i].id).text("Process "+processes[i].id));
-          // $dropdown.append(new Option("Process "+processes[i].id, processes[i].id))
-      }
       
   });
 

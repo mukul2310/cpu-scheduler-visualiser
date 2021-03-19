@@ -169,15 +169,18 @@ var count=10;
     }
     function openRemoveModal()
     {
-        $('#modal_remove').modal();
-        $('select').formSelect();
-        var $dropdown= $('#modal_remove_select');
-
-        for(i=0;i<processes.length;i++)
-        {
-            $dropdown.append($("<option />").val(processes[i].id).text("Process "+processes[i].id));
-            // $dropdown.append(new Option("Process "+processes[i].id, processes[i].id))
-        }
+        // $('#modal_remove').modal();
+        // $('select').formSelect();
+    //   $("#modal_remove_select").formSelect();
+        let options= processes.map(process=>`<option value =${process.id}>"Process "${process.id}</option>`).join('\n');
+        // let $dropdown_remove= $('#modal_remove_select');
+        // $dropdown_remove.empty();
+        // for(i=0;i<processes.length;i++)
+        // {
+        //     $dropdown_remove.append($("<option />").val(processes[i].id).text("Process "+processes[i].id));
+        //     // $dropdown.append(new Option("Process "+processes[i].id, processes[i].id))
+        // }
+        $('#modal_remove_select').html(options);
     }
     function removeProcess()
     {
@@ -213,16 +216,24 @@ var count=10;
     }
     function openEditModal()
     {
-        $('select').formSelect();
+        // $('select').formSelect();
         // $('#modal_add').modal();
-        $('#modal_edit').modal();
-        var $dropdown= $('#modal_edit_select');
+        $("#modal_edit_select").formSelect();
+        
+        console.log(processes.length);
+        // $('#modal_edit').modal();
+        let $dropdown_edit= $('#modal_edit_select');
+        console.log('before: ', $dropdown_edit)
 
+        $dropdown_edit.empty();
+        console.log('after: ', $dropdown_edit.length)
         for(i=0;i<processes.length;i++)
         {
-            $dropdown.append($("<option />").val(processes[i].id).text("Process "+processes[i].id));
+            $dropdown_edit.append($("<option />").val(processes[i].id).text("Process "+processes[i].id));
             // $dropdown.append(new Option("Process "+processes[i].id, processes[i].id))
         }
+        console.log('after#2: ', $dropdown_edit.length)
+
     }
     function editProcess()
     {
