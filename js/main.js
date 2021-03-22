@@ -103,68 +103,83 @@ var count=10;
         myTable.removeChild(myTable.lastChild);
         myTable.appendChild(table);
     }
-    // function editTable(e)
-    // {
-    //     console.log('hi');
-    //     if(e.hasAttribute('data-clicked'))
-    //     {
-    //       return;
-    //     }
-    //     var input= document.createElement('input');
-    //     input.setAttribute('type','number');
-    //     input.value=e.innerHTML;
-    //     // input.style.width=this.offsetWidth-(this.clientLeft*3) +"px";
-    //     // input.style.height=this.offsetHeight-(this.clientTop*2) +"px";
-        
-    //     input.style.width="75px";
-    //     input.style.height="35px";
-
-    //     input.style.border="0px"
-    //     input.style.fontFamily="inherit"
-    //     input.style.fontSize="inherit"
-    //     input.style.textAlign="inherit"
-    //     input.style.backgroundColor="#FFFAF0"
-        
-    //     input.onblur=function()
-    //     {
-    //       var td= input.parentElement;
-    //       var orig_text= input.parentElement.getAttribute('data-text');
-    //       var current_text=e.value;
-
-    //       if(orig_text!=current_text)
-    //       {
-    //         td.removeAttribute('data-text');
-    //         td.removeAttribute('data-clicked');
-    //         td.innerHTML=current_text;
-    //       }
-    //       else
-    //       {
-    //         td.removeAttribute('data-text');
-    //         td.removeAttribute('data-clicked');
-    //         td.innerHTML=orig_text;
-    //       }
-    //     }
-    //     input.onkeypress=function()
-    //     {
-    //       if(event.keyCode==13)
-    //       {
-    //         e.blur();
-    //       }
-    //     }
-    //     e.innerHTML='';
-    //     e.append(input);
-    //     e.firstElementChild.select();
-    // }
-    
+    function orderProcess()
+    {
+        let i=0;
+        processes.forEach(function(p)
+        {
+            p.id=i+1;
+            i++;
+        });
+    }
+    function openAddModal()
+    {
+        $('#modal_process_id').value=processes.length;
+        $("#modal_process_id").attr("placeholder", processes.length+1);
+    }
     function addProcess()
     {
         // let table = document.getElementById('table');
-        let input_burst=$('#modal_burst_time').val();
-        let input_arrival=$('#modal_arrival_time').val();
-        let input_priority=$('#modal_priority').val();
+        
+        let input_burst=Math.max($('#modal_burst_time').val(),0);
+        let input_arrival=Math.max($('#modal_arrival_time').val(),0);
+        let input_priority=Math.max($('#modal_priority').val(),0);
+       
         obj={id:processes.length+1, burst_time:input_burst, arrival_time:input_arrival, priority:input_priority};
 
         processes.push(obj);
+        displayTable();
+    }
+    
+    function openEditModal()
+    {
+        let $dropdown_edit= $('#modal_edit_select');
+        // console.log('before: ', $dropdown_edit)
+
+        $dropdown_edit.empty();
+        
+        for(i=0;i<processes.length;i++)
+        {
+            $dropdown_edit.append($("<option />").val(processes[i].id).text("Process "+processes[i].id));
+            // $dropdown.append(new Option("Process "+processes[i].id, processes[i].id))
+        }
+        // console.log('after#2: ', $dropdown_edit.length)
+        $("#modal_edit_burst_time").attr("placeholder", processes[0].burst_time);
+        $("#modal_edit_arrival_time").attr("placeholder", processes[0].arrival_time);
+        $("#modal_edit_priority").attr("placeholder", processes[0].priority);
+
+        $dropdown_edit.on('change',function()
+        {
+            let process_edit_selected=$("#modal_edit_select").val();
+            $("#modal_edit_burst_time").attr("placeholder", processes[process_edit_selected-1].burst_time);
+            $("#modal_edit_arrival_time").attr("placeholder", processes[process_edit_selected-1].arrival_time);
+            $("#modal_edit_priority").attr("placeholder", processes[process_edit_selected-1].priority);
+        });
+        
+        
+
+    }
+    function editProcess()
+    {
+        let process_id=$("#modal_edit_select").val();
+        let new_burst_time=$("#modal_edit_burst_time").val();
+        let new_arrival_time=$("#modal_edit_arrival_time").val();
+        let new_priority=$("#modal_edit_priority").val();
+        if(new_burst_time=="")
+        new_burst_time=processes[process_id].burst_time;
+        if(new_arrival_time=="")
+        new_burst_time=processes[process_id].arrival_time;
+        if(new_priority=="")
+        new_burst_time=processes[process_id].priority;
+        processes.forEach(function(p)
+        {
+            if(p.id==process_id)
+            {
+                p.burst_time=new_burst_time;
+                p.arrival_time=new_arrival_time;
+                p.priority=new_priority;
+            }
+        });
         displayTable();
     }
     function openRemoveModal()
@@ -172,41 +187,35 @@ var count=10;
         // $('#modal_remove').modal();
         // $('select').formSelect();
     //   $("#modal_remove_select").formSelect();
-        let options= processes.map(process=>`<option value =${process.id}>"Process "${process.id}</option>`).join('\n');
-        // let $dropdown_remove= $('#modal_remove_select');
-        // $dropdown_remove.empty();
-        // for(i=0;i<processes.length;i++)
-        // {
-        //     $dropdown_remove.append($("<option />").val(processes[i].id).text("Process "+processes[i].id));
+        // let options= processes.map(process=>`<option value =${process.id}>"Process "${process.id}</option>`).join('\n');
+        let $dropdown_remove= $('#modal_remove_select');
+        $dropdown_remove.empty();
+        for(i=0;i<processes.length;i++)
+        {
+            $dropdown_remove.append($("<option />").val(processes[i].id).text("Process "+processes[i].id));
         //     // $dropdown.append(new Option("Process "+processes[i].id, processes[i].id))
-        // }
-        $('#modal_remove_select').html(options);
+        }
+        // $('#modal_remove_select').html(options);
     }
     function removeProcess()
     {
-        // $('#modal_remove').modal();
-        // $('select').formSelect();
-        // var $dropdown= $('#modal_remove_select');
-        // console.log($dropdown);
-        // for(i=0;i<processes.length;i++)
-        // {
-        //     console.log("hi");
-        //     $dropdown.append($("<option />").val(processes[i].id).text("Process "+processes[i].id));
-        //     // $dropdown.append(new Option("Process "+processes[i].id, processes[i].id))
-        // }
 
         let removing_array = $('#modal_remove_select').val();
-        console.log(removing_array);
+        let i=0;
         for(i=0;i<removing_array.length;i++)
         {
+            let j=0;
             processes.forEach(function(p)
             {
                 if(removing_array[i]==p.id)
                 {
-                    
+                    processes.splice(j,1);
+                    orderProcess();
                 }
+                j++;
             });
         }
+        displayTable();
         // for (var i = 0; i < result.length; i++) {
         //     options += '<option value="' + result[i].ImageFolderID + '">' + result[i].Name + '</option>';
         // }
@@ -214,37 +223,7 @@ var count=10;
         // processes.splice(processes.findIndex(item => item.id === id), 1);
         // displayTable();
     }
-    function openEditModal()
-    {
-        // $('select').formSelect();
-        // $('#modal_add').modal();
-        $("#modal_edit_select").formSelect();
-        
-        console.log(processes.length);
-        // $('#modal_edit').modal();
-        let $dropdown_edit= $('#modal_edit_select');
-        console.log('before: ', $dropdown_edit)
-
-        $dropdown_edit.empty();
-        console.log('after: ', $dropdown_edit.length)
-        for(i=0;i<processes.length;i++)
-        {
-            $dropdown_edit.append($("<option />").val(processes[i].id).text("Process "+processes[i].id));
-            // $dropdown.append(new Option("Process "+processes[i].id, processes[i].id))
-        }
-        console.log('after#2: ', $dropdown_edit.length)
-
-    }
-    function editProcess()
-    {
-        
-    }
     function start()
     {
         alert("Starting the visualization");
     }
-    // $('table').on("mouseenter",function () {
-    //         console.log('you hoverd on: ', this);
-    //          $('#id').hide();
-    //          $('.class').hide();
-    //     });

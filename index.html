@@ -27,9 +27,9 @@
                   </table>
               </div>
               <div class="row text-center">
-                <button class="btn-info btn-lg" style="background-color: #ecc85b;" data-toggle="modal" data-target="#modal_add"><i class="material-icons">add</i></button>
-                <button class="btn-info btn-lg" style="margin-left: 70px; background-color: rgb(218, 152, 66); border-radius: 8%;" data-toggle="modal" data-target="#modal_edit">Edit Process</button>
-                <button class="btn-info btn-lg" style="margin-left: 70px; background-color: #EC7063 ; border-radius: 8%;" data-toggle="modal" data-target="#modal_remove">Remove Process</button>
+                <button class="btn-info btn-lg" style="background-color: #ecc85b;" data-toggle="modal" data-target="#modal_add" onclick="openAddModal()"><i class="material-icons">add</i></button>
+                <button class="btn-info btn-lg" style="margin-left: 70px; background-color: rgb(218, 152, 66); border-radius: 8%;" data-toggle="modal" data-target="#modal_edit" onclick="openEditModal()">Edit Process</button>
+                <button class="btn-info btn-lg" style="margin-left: 70px; background-color: #EC7063 ; border-radius: 8%;" data-toggle="modal" data-target="#modal_remove" onclick="openRemoveModal()">Remove Process</button>
                 <button class="btn-info btn-lg" style="margin-left: 70px; background-color: #58D68D; border-radius: 8%;" onclick="start()">Start</button>
         </div>
         </div>
@@ -40,6 +40,7 @@
 
   <!-- Modal Structure -->
   <div id="modal_add" class="modal fade">
+    <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -52,15 +53,15 @@
               <label for="id">Id</label>
             </div>
             <div class="input-field col s12">
-              <input id="modal_burst_time" type="number" min="0" class="validate" required>
+              <input id="modal_burst_time" type="number" min="0" class="validate" required placeholder="0">
               <label for="burst_time">Burst Time</label>
             </div>
             <div class="input-field col s12">
-              <input id="modal_arrival_time" type="number" min="0" class="validate" required>
+              <input id="modal_arrival_time" type="number" min="0" class="validate" required placeholder="0">
               <label for="arrival_time">Arrival Time</label>
             </div>
             <div class="input-field col s12">
-              <input id="modal_priority" type="number" min="0" class="validate" required>
+              <input id="modal_priority" type="number" min="0" class="validate" required placeholder="0">
               <label for="priority">Priority</label>
             </div>
           </div>
@@ -73,17 +74,18 @@
     </div>
   </div>
   </div>
-  
-
+</div>
   
   
 <div id="modal_edit" class="modal fade">
+<div class="modal-dialog">
   <div class="modal-content">
     <div class="modal-header">
       <button type="button" class="close" data-dismiss="modal">&times;</button>
       <h4 class="modal-title">Edit Process</h4>
     </div>
-    <div class="modal-body">
+    <div class="modal-body"
+    >
       <div class="input-field col s12">
         <select id="modal_edit_select" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
         <option value="" disabled selected>Choose Process Id</option>
@@ -104,29 +106,32 @@
       </div>
     </div>
   <div class="modal-footer">
-    <a href="javascript:void(0)" class="modal-close waves-effect waves-green btn-flat" style="background-color: rgb(226, 161, 75); border-radius: 8%; color: aliceblue;" onclick="editProcess()">Proceed</a>
+    <a href="javascript:void(0)" class="modal-close waves-effect waves-green btn-flat" data-dismiss="modal" style="background-color: rgb(226, 161, 75); border-radius: 8%; color: aliceblue;" onclick="editProcess()">Proceed</a>
   </div>
+</div>
 </div>
 </div>
 
-  <div id="modal_remove" class="modal fade">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Remove Multiple Processes</h4>
-      </div>
-    <div class="modal-body">
-      <div class="input-field col s12">
-        <select multiple id="modal_remove_select" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-          <option value="" disabled>Select Process Id</option>
-        </select>
-      </div>
+<div id="modal_remove" class="modal fade">
+  <div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <h4 class="modal-title">Remove Multiple Processes</h4>
     </div>
-    <div class="modal-footer">
-      <a href="javascript:void(0)" class="modal-close waves-effect waves-green btn-flat" style="background-color: #EC7063 ; border-radius: 8%; color: aliceblue;" onclick="removeProcess()">Remove</a>
+  <div class="modal-body">
+    <div class="input-field col s12">
+      <h3>Select one or more processes to remove</h3>
+      <select multiple id="modal_remove_select" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+        <option value="" disabled>Select Process Id</option>
+      </select>
     </div>
   </div>
-  
+  <div class="modal-footer">
+    <a href="javascript:void(0)" class="modal-close waves-effect waves-green btn-flat" data-dismiss="modal" style="background-color: #EC7063 ; border-radius: 8%; color: aliceblue;" onclick="removeProcess()">Remove</a>
+  </div>
+</div>
+</div>
  
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script> -->
   <script src="js/main.js"></script>
@@ -136,10 +141,10 @@
       displayTable();
       // $('#modal_add').modal();
       // M.updateTextFields();
-      $('#modal_process_id').value=processes.length;
-      $("#modal_process_id").attr("placeholder", processes.length+1);
+      // $('#modal_process_id').value=processes.length;
+      // console.log(processes.length);
+      // $("#modal_process_id").attr("placeholder", processes.length+1);
       
-
       // $('#modal_edit').modal();
       
       // $('#modal_remove').modal();
