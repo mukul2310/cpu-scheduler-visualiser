@@ -205,11 +205,11 @@ var count=10;
                 if(removing_array[i]==p.id)
                 {
                     processes.splice(j,1);
-                    orderProcess();
                 }
                 j++;
             });
         }
+        orderProcess();
         displayTable();
         // for (var i = 0; i < result.length; i++) {
         //     options += '<option value="' + result[i].ImageFolderID + '">' + result[i].Name + '</option>';
