@@ -165,21 +165,16 @@ var count=10;
         let new_burst_time=$("#modal_edit_burst_time").val();
         let new_arrival_time=$("#modal_edit_arrival_time").val();
         let new_priority=$("#modal_edit_priority").val();
-        if(new_burst_time=="")
-        new_burst_time=processes[process_id].burst_time;
-        if(new_arrival_time=="")
-        new_burst_time=processes[process_id].arrival_time;
-        if(new_priority=="")
-        new_burst_time=processes[process_id].priority;
-        processes.forEach(function(p)
-        {
-            if(p.id==process_id)
-            {
-                p.burst_time=new_burst_time;
-                p.arrival_time=new_arrival_time;
-                p.priority=new_priority;
-            }
-        });
+        if(new_burst_time==""){
+        new_burst_time=processes[process_id-1].burst_time;}
+        if(new_arrival_time==""){
+        new_arrival_time=processes[process_id-1].arrival_time;}
+        if(new_priority==""){
+        new_priority=processes[process_id-1].priority;}
+        
+        processes[process_id-1].burst_time=new_burst_time;
+        processes[process_id-1].arrival_time=new_arrival_time;
+        processes[process_id-1].priority=new_priority;
         displayTable();
     }
     function openRemoveModal()
