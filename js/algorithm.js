@@ -1,115 +1,101 @@
-class process
-{
-    // var id;
-    // float burstTime;
-    // int priority;
-    // int burstTimePriority;
-    // int arrivalTime;
-    // float f;
-    // int fRank;
-    constructor( id, burstTime, priority, arrivalTime)
-    {
-        this.burstTime=burstTime;
-        this.id=id;
-        this.priority=priority;
-        this.arrivalTime=arrivalTime;
-    }
-}
+// class process
+// {
+//     // var id;
+//     // float burstTime;
+//     // int priority;
+//     // int burstTimePriority;
+//     // int arrivalTime;
+//     // float f;
+//     // int fRank;
+//     constructor( id, burstTime, priority, arrivalTime)
+//     {
+//         this.burstTime=burstTime;
+//         this.id=id;
+//         this.priority=priority;
+//         this.arrivalTime=arrivalTime;
+//     }
+// }
 
-var processes1=[];
+
+// var processes1=[];
 var duplicate=[];
 var completionTime=[];
 var readyQueue=[];
 var arrangedReadyQueue=[];
-//formula1
-function timeQuanta()
+var timeQuanta;
+function readyQueueInit()
 {
-    var sum=0,quanta,temp;
-    if(!readyQueue.isEmpty())
+    readyQueue=processes;
+}
+//formula1
+function calculateTimeQuanta()
+{
+    let sum,quanta,temp;
+    if(readyQueue.length!=0)
     {
-        var max=readyQueue.peek().burstTime;
-        for (i= 0; i < readyQueue.length; i++)
+        let max=-1;
+        sum=0;
+        for (let i= 0; i < readyQueue.length; i++)
         {
-            temp=readyQueue[i].burstTime;
+            temp=readyQueue[i].burst_time;
             sum+=temp;
             if(temp>max)
                 max=temp;
         }
-        quanta= Math.sqrt(1.0*sum/readyQueue.size()*max);
-        return quanta;
+        timeQuanta= Math.sqrt(1.0*sum/readyQueue.length*max);
     }
-    return 0;
+    else
+    {
+        timeQuanta=0;
+    }
 }
+
+function calculateBurstTimePriority()
+    {
+        let i=0,n= readyQueue.length, j,k,count=0;
+        let duplicate=[];
+        let flag=[];
+        for (i = 0; i < readyQueue.length; i++)
+        {
+            duplicate[count] = readyQueue[i].burst_time;
+            count++;
+        }
+
+        duplicate.sort(function(a, b) {
+            return a - b;
+          });
+        
+        for (i = 0; i < readyQueue.length; i++)
+        {
+            // let p1= readyQueue[i];
+            for(j=0;j<n;j++)
+            {
+                if(readyQueue[i].burst_time==duplicate[j]&&!flag[j])
+                {
+                    readyQueue[i].burstTimePriority = j+1;
+                    flag[j]=true;
+                    break;
+                }
+            }
+        }
+
+    }
 
 //formula2
 function calculateF()
 {
     for (i = 0; i < readyQueue.length; i++)
     {
-        var p= readyQueue[i];
-        p.f=(float) (1.0*(3*p.priority+p.burstTimePriority)/4);
+        readyQueue[i].f= (1.0*(3*readyQueue[i].priority+readyQueue[i].burstTimePriority)/4);
     }
-//        for(int i=0;i< readyQueue.size();i++)
-//        {
-//            process[i].f= (float) (1.0*(3*process[i].priority+process[i].burstTimePriority)/4);
-//        }
 }
-function calculateBurstTimePriority()
-    {
-        var i=0,n= readyQueue.size(), j,k,count=0;
-        var duplicate=[];
-        var flag=[];
-//        int b[]=new int[n];
-        for (i = 0; i < readyQueue.length; i++)
-        {
-            duplicate[count] = readyQueue[i].burstTime;
-//            index[count]=count+1;
-            count++;
-        }
-//        for(i=0;i<n;i++)
-//        {
-//            System.out.println(duplicate[i]+" "+index[i]);
-//        }
-//        for(i=0;i<n-1;i++)
-//        {
-//            min=duplicate[i];
-//            k=i;
-//            for(j=i+1;j<n;j++)
-//            {
-//                if(duplicate[j]<min)
-//                {
-//                    min = duplicate[j];
-//                    k = j;
-//                }
-//            }
-//            float temp=duplicate[k];
-//            duplicate[k]=duplicate[i];
-//            duplicate[i]=temp;
-//            int temp1=index[i];
-//            index[i]=index[k];
-//            index[k]=temp1;
-//        }
-        duplicate.sort();
-        for (i = 0; i < readyQueue.length; i++)
-        {
-            var p1= readyQueue[i];
-            for(j=0;j<n;j++)
-            {
-                if(p1.burstTime==duplicate[j]&&!flag[j])
-                {
-                    p1.burstTimePriority = j+1;
-                    flag[j]=true;
-                    break;
-                }
-            }
-        }
-    }
+
     function calculateFRank()
     {
-        var i=0,n= readyQueue.size(), j,k,count=0;
-        var p;
-        var min;
-        var flag=[];
+        let i=0,n= readyQueue.length, j,k,count=0;
+        let p;
+        let min;
+        let flag=[];
 //        int b[]=new int[n];
         for (i = 0; i < readyQueue.length; i++)
         {
@@ -117,104 +103,47 @@ function calculateBurstTimePriority()
 //            index[count]=count+1;
             count++;
         }
-        duplicate.sort();
+        duplicate.sort(function(a, b) {
+            return a - b;
+          });
         for (i = 0; i < readyQueue.length; i++)
         {
-            p1= readyQueue[i];
             for(j=0;j<n;j++)
             {
-                if(p1.f==duplicate[j]&&!flag[j])
+                if(readyQueue[i].f==duplicate[j]&&!flag[j])
                 {
-                    p1.fRank = j+1;
+                    readyQueue[i].fRank = j+1;
                     flag[j]=true;
                     break;
                 }
             }
         }
     }
-//     function input( n )
-//     {
-//         System.out.println("Enter the processes");
-//         for(i=0;i<n;i++)
-//         {
-// //            System.out.println("Enter process id"+);
-// //            int id=sc.nextInt();
-//             System.out.println("Enter burst time for process "+ (i+1));
-// //            float burstTime=sc.nextFloat();
-//             System.out.println("Enter priority");
-// //            int priority=sc.nextInt();
-// //            process[i] = new Process(i,burstTime,priority);
-//             System.out.println("Enter arrival time");
-
-//         }
-// //        burstTime=new int[n];
-// //        burstTimePriority=new int[n];
-// //        priority=new int[n];
-// //        index=new int[n];
-//         int temp[]= new int[]{80, 60, 65, 120, 30, 90, 25, 40, 90, 75};
-//         int arrivalTime[]= new int[]{80, 60, 65, 120, 30, 90, 25, 40, 90, 75};
-//         for(int i=0;i<n;i++)
-//         {
-//             process[i] = new Process(i, temp[i], i+1, arrivalTime[i]);
-//             readyQueue.add(process[i]);
-//         }
-//     }
-//     public static void display()
-//     {
-//         System.out.println();
-//         System.out.println();
-//         System.out.println("Process\t Burst Time\t Priority\t Burst Rank\t\t\t f\t\t\t\t fRank\t");
-//         for (Process p : readyQueue)
-//         {
-//             //            System.out.println(process[i].id +"\t\t " + process[i].burstTime +"\t\t\t" +process[i].priority+"\t\t\t\t"+ process[i].burstTimePriority +"\t\t\t\t"+ f[i]);
-//             System.out.println(p.id + "\t\t " + p.burstTime + "\t\t\t" + p.priority + "\t\t\t\t" + p.burstTimePriority + "\t\t\t\t" + p.f + "\t\t\t\t" + p.fRank);
-//         }
-// //        for(Process i:readyQueue)
-
-//     }
     function sortByFRank()
     {
-        var i,j,minRank,processId=0;
-        var process;
-//        boolean flag=false;
-//        while (!readyQueue.isEmpty())
-//        {
-//            minRank=Integer.MAX_VALUE;
-//            flag=false;
-//            for (Process p : readyQueue)
-//            {
-//                if (p.arrivalTime<=currentBurstTime && p.fRank<minRank)
-//                {
-//                    minRank=p.fRank;
-//                    process=p;
-//                    flag=true;
-//                }
-//            }
-//            if(!flag)
-//                currentBurstTime++;
-//            arrangedReadyQueue.add(process);
-//            readyQueue.remove(process);
-//        }
-        while (!readyQueue.isEmpty())
+        let i,j,minRank;
+        let process;
+        while (readyQueue.length!=0)
         {
-            minRank=Integer.MAX_VALUE;
+            minRank=Number.MAX_VALUE;
             for (i = 0; i < readyQueue.length; i++)
                 if (readyQueue[i].fRank < minRank)
                 {
-                    minRank = p.fRank;
-                    process = p;
+                    minRank = readyQueue[i].fRank;
+                    process = readyQueue[i];
+                    j=i;
                 }
-            arrangedReadyQueue.add(process);
-            readyQueue.remove(process);
+            arrangedReadyQueue.push(process);
+            readyQueue.splice(j,1);
         }
     }
    function customizedRoundRobin(timeQuanta)
     {
 //        readyQueue.clear();
-        var prev=0;
-        while (!arrangedReadyQueue.isEmpty())
+        let prev=0;
+        while (arrangedReadyQueue.length!=0)
         {
-            var p=arrangedReadyQueue.poll();
+            let p=arrangedReadyQueue.shift();
             if(p.burstTime>timeQuanta)
             {
                 p.burstTime-=timeQuanta;
@@ -225,7 +154,7 @@ function calculateBurstTimePriority()
             else
             {
                 prev+=p.burstTime;
-                completionTime[p.id]=prev;
+                // completionTime[p.id]=prev;
             }
         }
 //        while(!queue.isEmpty())

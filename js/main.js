@@ -220,5 +220,11 @@ var count=10;
     }
     function start()
     {
-        alert("Starting the visualization");
+        // alert("Starting the visualization");
+        readyQueueInit();
+        calculateTimeQuanta();
+        calculateBurstTimePriority();
+        calculateF();
+        calculateFRank();
+        sortByFRank();
     }
