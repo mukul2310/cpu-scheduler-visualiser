@@ -1,7 +1,7 @@
 let btnGet = document.querySelector('button');
 let myTable = document.querySelector('#table');
 var table,processCount;
-let processes=
+var processes=
 [
     {
         id:1,
@@ -155,9 +155,6 @@ var count=10;
             $("#modal_edit_arrival_time").attr("placeholder", processes[process_edit_selected-1].arrival_time);
             $("#modal_edit_priority").attr("placeholder", processes[process_edit_selected-1].priority);
         });
-        
-        
-
     }
     function editProcess()
     {
@@ -222,9 +219,10 @@ var count=10;
     {
         // alert("Starting the visualization");
         readyQueueInit();
-        calculateTimeQuanta();
-        calculateBurstTimePriority();
-        calculateF();
-        calculateFRank();
-        sortByFRank();
+        // calculateTimeQuanta();
+        // calculateBurstTimePriority();
+        // calculateF();
+        // calculateFRank();
+        // sortByFRank();
+        customizedRoundRobin();
     }
