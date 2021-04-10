@@ -156,6 +156,7 @@ function calculateF()
     }
    function customizedRoundRobin()
     {
+        readyQueueInit();
         while(readyQueue.length!=0)
         {
             calculateTimeQuanta();
@@ -186,13 +187,13 @@ function calculateF()
         {
             turnAroundTime[i]=completionTime[i];
         }
-        var avgWaitingTimeNew=calculateAvgWaitingTime(waitingTime);
-        var avgTurnAroundTimeNew=calculateAvgTurnAroundTime(turnAroundTime);
+        var avgWaitingTimeNew=calculateAvgTime(waitingTime);
+        var avgTurnAroundTimeNew=calculateAvgTime(turnAroundTime);
         
-        console.log(avgWaitingTimeNew);
-        console.log(avgTurnAroundTimeNew);
+        console.log("New WT "+avgWaitingTimeNew);
+        console.log("New TAT "+avgTurnAroundTimeNew);
     }
-    function calculateAvgWaitingTime(waitingTime)
+    function calculateAvgTime(waitingTime)
     {
         let avg=0;
         for(i=1;i<waitingTime.length;i++)
@@ -201,15 +202,7 @@ function calculateF()
         }
         return avg/(waitingTime.length-1);
     }
-    function calculateAvgTurnAroundTime(turnAroundTime)
-    {
-        let avg=0;
-        for(i=1;i<turnAroundTime.length;i++)
-        {
-            avg+=turnAroundTime[i];
-        }
-        return avg/(turnAroundTime.length-1);
-    }
+    
 //        while(!queue.isEmpty())
 //        {
 //            int currentProcess=queue.poll();
@@ -248,68 +241,124 @@ function calculateF()
         // var arrivalTimeSorted[]=new int[process.length];
         // boolean flag[]=new boolean[process.length];
         // int burstLength=0;
-        for(i=0;i< readyQueue.length;i++)
+        let min=Number.MAX_VALUE;
+        let p;
+        let turnAroundFCFS=[];
+        let waitingFCFS=[];
+        let time=0;
+        outer:while(readyQueue.length!=0)
         {
-            let min=Number.MAX_VALUE;
-            //  pId=0;
-            for(p in processes)
+            min=Number.MAX_VALUE;
+            p=-1;
+            for(process in readyQueue)
             {
-               if(p.arrivalTime<min&&!flag[p.id])
-               {
-                   min = p.arrivalTime;
-                //    pId=p.id;
-                //    burstLength= (int) p.burstTime;
-               }
-            }
-            flag[pId]=true;
-//            for(j=k;j<burstLength;j++)
-//                ganttChart[i]=pId;
-            averageTurnaroundTime+=burstLength+currentTime-min;
-            averageWaitingTime=currentTime-min;
-            currentTime+=burstLength;
-        }
-        averageTurnaroundTime/= process.length;
-        averageWaitingTime/= process.length;
-    }
-    /*
-    public static void SJF()
-    {
-        int currentTime=0,pId=0,burstLength=0,minBurstTime=0,min=0;
-        float averageWaitingTime=0,averageTurnaroundTime=0;
-        int prevTime=0;
-        boolean flag[]=new boolean[process.length];
-        Queue<GanttChart> ganttChart=new LinkedList<>();
-        for(int i=0;i< process.length;i++)
-        {
-            for(Process p:process)
-            {
-                min=Integer.MAX_VALUE;
-                if(p.arrivalTime<=currentTime&&!flag[p.id])
+                if(readyQueue[process].arrival_time<min)
                 {
-                    if(p.burstTime<minBurstTime)
-                    {
-                        min = p.arrivalTime;
-                        minBurstTime= (int) p.burstTime;
-                        pId=p.id;
-                        burstLength= (int) p.burstTime;
-                    }
+                        min = readyQueue[process].arrival_time;
+                        p=process;
+                        //    pId=p.id;
+                    //    burstLength= (int) p.burstTime;
                 }
             }
-            if(prevTime==currentTime)
+            
+            if(readyQueue[p].arrival_time>time)
             {
-                currentTime++;
-                continue;
+                time++;
+                continue outer;
             }
-            prevTime=currentTime;
-            flag[pId]=true;
-            ganttChart.add(new GanttChart(min,pId,burstLength+currentTime));
-            averageTurnaroundTime+=burstLength+currentTime-min;
-            averageWaitingTime+=currentTime-min;
-            currentTime+=burstLength;
+            time+=readyQueue[p].burst_time;
+            turnAroundFCFS[readyQueue[p].id]=time-readyQueue[p].arrival_time;
+            waitingFCFS[readyQueue[p].id]=turnAroundFCFS[readyQueue[p].id]-readyQueue[p].burst_time;
+            readyQueue.splice(p,1);
+            avgTurnaroundTimeFCFS=calculateAvgTime(turnAroundFCFS);
+            avgWaitingTimeFCFS=calculateAvgTime(waitingFCFS);
         }
-        averageTurnaroundTime/= process.length;
-        averageWaitingTime/= process.length;
+        console.log("FCFS WT "+avgWaitingTimeFCFS);
+        console.log("FCFS TAT "+avgTurnaroundTimeFCFS);        
     }
+    function SJFNonPre()
+    {
+        var avgWaitingTimeSJFNonPre,avgTurnaroundTimeSJFNonPre;
+        readyQueueInit();
+        // int currentTime=0,pId=0,burstLength=0,minBurstTime=0,min=0;
+        // float averageWaitingTime=0,averageTurnaroundTime=0;
+        // int prevTime=0;
+        // boolean flag[]=new boolean[process.length];
+        // Queue<GanttChart> ganttChart=new LinkedList<>();
+        // for(i=0;i< process.length;i++)
+        // {
+        //     for(p in process)
+        //     {
+        //         min=Integer.MAX_VALUE;
+        //         if(p.arrivalTime<=currentTime&&!flag[p.id])
+        //         {
+        //             if(p.burstTime<minBurstTime)
+        //             {
+        //                 min = p.arrivalTime;
+        //                 minBurstTime= p.burstTime;
+        //                 pId=p.id;
+        //                 burstLength= p.burstTime;
+        //             }
+        //         }
+        //     }
+        //     if(prevTime==currentTime)
+        //     {
+        //         currentTime++;
+        //         continue;
+        //     }
+        //     prevTime=currentTime;
+        //     flag[pId]=true;
+        //     ganttChart.add(new GanttChart(min,pId,burstLength+currentTime));
+        //     averageTurnaroundTime+=burstLength+currentTime-min;
+        //     averageWaitingTime+=currentTime-min;
+        //     currentTime+=burstLength;
+        // }
+        // averageTurnaroundTime/= process.length;
+        // averageWaitingTime/= process.length;
+        let min=Number.MAX_VALUE;
+        let p;
+        let turnAroundSJFNonPre=[];
+        let waitingSJFNonPre=[];
+        let processQueue=[];
+        let time=0;
+        outer:while(readyQueue.length!=0)
+        {
+            for(process in readyQueue)
+            {
+                if(readyQueue[process].arrival_time<=time)
+                    processQueue.push(readyQueue[process]);
+            }
+            
+            if(processQueue.length==0)
+            {
+                time++;
+                continue outer;
+            }
+            min=Number.MAX_VALUE;
+            for(process in processQueue)
+            {
+                if(processQueue[process].burst_time<min)
+                {
+                    min=processQueue[process].burst_time;
+                    p=process;
+                }
+            }
+            time+=processQueue[p].burst_time;
+            turnAroundSJFNonPre[readyQueue[p].id]=time-processQueue[p].arrival_time;
+            waitingSJFNonPre[readyQueue[p].id]=turnAroundSJFNonPre[readyQueue[p].id]-readyQueue[p].burst_time;
+            readyQueue.splice(p,1);
+            avgTurnaroundTimeFCFS=calculateAvgTime(turnAroundFCFS);
+            avgWaitingTimeFCFS=calculateAvgTime(waitingFCFS);
+        }
+        console.log("SJF non pre WT "+avgWaitingTimeFCFS);
+        console.log("SJF non pre TAT "+avgTurnaroundTimeFCFS);        
+    
+    }
+    function SJFPre()
+    {
+
+    }
+    /*
     public static void priority()
     {
         int sum=0,currentTime=0,prevTime=0,min,pId=0,minPriority = 0;

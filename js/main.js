@@ -218,11 +218,13 @@ var count=10;
     function start()
     {
         // alert("Starting the visualization");
-        readyQueueInit();
+        // readyQueueInit();
         // calculateTimeQuanta();
         // calculateBurstTimePriority();
         // calculateF();
         // calculateFRank();
         // sortByFRank();
         customizedRoundRobin();
+        FCFS();
+        SJF();
     }
