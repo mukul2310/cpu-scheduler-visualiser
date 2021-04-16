@@ -136,6 +136,9 @@ function getProcess(id) {
         }
     }
 }
+var avgWaitingTimeNew = 0,
+    avgTurnAroundTimeNew = 0;
+
 
 function customizedRoundRobin() {
     readyQueueInit();
@@ -163,11 +166,8 @@ function customizedRoundRobin() {
     for (i = 0; i < completionTime.length; i++) {
         turnAroundTime[i] = completionTime[i];
     }
-    var avgWaitingTimeNew = calculateAvgTime(waitingTime);
-    var avgTurnAroundTimeNew = calculateAvgTime(turnAroundTime);
-
-    console.log("New WT " + avgWaitingTimeNew);
-    console.log("New TAT " + avgTurnAroundTimeNew);
+    avgWaitingTimeNew = calculateAvgTime(waitingTime);
+    avgTurnAroundTimeNew = calculateAvgTime(turnAroundTime);
 }
 
 function calculateAvgTime(waitingTime) {
@@ -177,9 +177,11 @@ function calculateAvgTime(waitingTime) {
     }
     return avg / (waitingTime.length - 1);
 }
+var avgWaitingTimeFCFS = 0,
+    avgTurnaroundTimeFCFS = 0;
 
 function FCFS() {
-    var avgWaitingTimeFCFS, avgTurnaroundTimeFCFS;
+
     let i, currentTime = 0;
     readyQueueInit();
     let min = Number.MAX_VALUE;
@@ -208,12 +210,11 @@ function FCFS() {
     }
     avgTurnaroundTimeFCFS = calculateAvgTime(turnAroundFCFS);
     avgWaitingTimeFCFS = calculateAvgTime(waitingFCFS);
-    console.log("FCFS WT " + avgWaitingTimeFCFS);
-    console.log("FCFS TAT " + avgTurnaroundTimeFCFS);
 }
+var avgWaitingTimeSJFNonPre = 0,
+    avgTurnaroundTimeSJFNonPre = 0;
 
 function SJFNonPre() {
-    var avgWaitingTimeSJFNonPre, avgTurnaroundTimeSJFNonPre;
     readyQueueInit();
     let min = Number.MAX_VALUE;
     let p;
@@ -246,12 +247,11 @@ function SJFNonPre() {
     }
     avgTurnaroundTimeSJFNonPre = calculateAvgTime(turnAroundSJFNonPre);
     avgWaitingTimeSJFNonPre = calculateAvgTime(waitingSJFNonPre);
-    console.log("SJF non pre WT " + avgWaitingTimeSJFNonPre);
-    console.log("SJF non pre TAT " + avgTurnaroundTimeSJFNonPre);
 }
+var avgWaitingTimeSJFPre = 0,
+    avgTurnaroundTimeSJFPre = 0;
 
 function SJFPre() {
-    var avgWaitingTimeSJFPre, avgTurnaroundTimeSJFPre;
     readyQueueInit();
     let min = Number.MAX_VALUE;
     let p;
@@ -291,14 +291,12 @@ function SJFPre() {
     }
     avgTurnaroundTimeSJFPre = calculateAvgTime(turnAroundSJFPre);
     avgWaitingTimeSJFPre = calculateAvgTime(waitingSJFPre);
-    console.log("SJF pre WT " + avgWaitingTimeSJFPre);
-    console.log("SJF pre TAT " + avgTurnaroundTimeSJFPre);
-
 }
+var avgWaitingTimePriorityNonPre = 0,
+    avgTurnaroundTimePriorityNonPre = 0;
 
 function priorityNonPre() {
     readyQueueInit();
-    var avgWaitingTimePriorityNonPre, avgTurnaroundTimePriorityNonPre;
     let min = Number.MAX_VALUE;
     let p;
     let processQueue = [];
@@ -330,12 +328,11 @@ function priorityNonPre() {
     }
     avgTurnaroundTimePriorityNonPre = calculateAvgTime(turnAroundPriorityNonPre);
     avgWaitingTimePriorityNonPre = calculateAvgTime(waitingPriorityNonPre);
-    console.log("Priority Non Pre WT " + avgWaitingTimePriorityNonPre);
-    console.log("Priority Non Pre TAT " + avgTurnaroundTimePriorityNonPre);
 }
+var avgWaitingTimePriorityPre = 0,
+    avgTurnaroundTimePriorityPre = 0;
 
 function priorityPre() {
-    var avgWaitingTimePriorityPre, avgTurnaroundTimePriorityPre;
     readyQueueInit();
     let min = Number.MAX_VALUE;
     let p;
@@ -375,9 +372,9 @@ function priorityPre() {
     }
     avgTurnaroundTimePriorityPre = calculateAvgTime(turnAroundPriorityPre);
     avgWaitingTimePriorityPre = calculateAvgTime(waitingPriorityPre);
-    console.log("Priority pre WT " + avgWaitingTimePriorityPre);
-    console.log("Priority pre TAT " + avgTurnaroundTimePriorityPre);
 }
+var avgWaitingTimeRoundRobin = 0,
+    avgTurnaroundTimeRoundRobin = 0;
 
 function roundRobin() {
     readyQueueInit();
@@ -386,7 +383,6 @@ function roundRobin() {
     let processQueue = [];
     let min, p, j, flag;
     let completionTime = [];
-    var avgWaitingTimeRoundRobin, avgTurnaroundTimeRoundRobin;
     let turnAroundRR = [];
     let waitingRR = [];
     let runningQueue = [];
@@ -474,6 +470,77 @@ function roundRobin() {
     }
     avgTurnaroundTimeRoundRobin = calculateAvgTime(turnAroundRR);
     avgWaitingTimeRoundRobin = calculateAvgTime(waitingRR);
-    console.log("Round Robin WT " + avgWaitingTimeRoundRobin);
-    console.log("Round Robin TAT " + avgTurnaroundTimeRoundRobin);
+}
+var resultTable;
+
+function createResultTable() {
+    resultTable = document.querySelector('#result_table');
+    table = document.createElement('table');
+    let headerRow = document.createElement('tr');
+    let resultHeaders = ['Scheduling Algorithm', 'Average Turnaround Time', 'Average Waiting Time'];
+    let results = [{
+            name: "FCFS",
+            avgTA: avgTurnaroundTimeFCFS,
+            avgWT: avgWaitingTimeFCFS
+        },
+        {
+            name: "SJF",
+            avgTA: avgTurnaroundTimeSJFNonPre,
+            avgWT: avgWaitingTimeSJFNonPre
+        },
+        {
+            name: "SJF(Preemptive)",
+            avgTA: avgTurnaroundTimeSJFPre,
+            avgWT: avgWaitingTimeSJFPre
+        },
+        {
+            name: "Priority",
+            avgTA: avgTurnaroundTimePriorityNonPre,
+            avgWT: avgWaitingTimePriorityNonPre
+        },
+        {
+            name: "Priority(Preemptive)",
+            avgTA: avgTurnaroundTimePriorityPre,
+            avgWT: avgWaitingTimePriorityPre
+        },
+        {
+            name: "RoundRobin",
+            avgTA: avgTurnaroundTimeRoundRobin,
+            avgWT: avgWaitingTimeRoundRobin
+        },
+        {
+            name: "Proposed",
+            avgTA: avgTurnAroundTimeNew,
+            avgWT: avgWaitingTimeNew
+        }
+    ];
+
+    resultHeaders.forEach(headerText => {
+        let header = document.createElement('th');
+        let textNode = document.createTextNode(headerText);
+        header.appendChild(textNode);
+        headerRow.appendChild(header);
+    });
+
+    table.appendChild(headerRow);
+
+    results.forEach(result => {
+        let row = document.createElement('tr');
+
+        Object.values(result).forEach(text => {
+            let cell = document.createElement('td');
+            let textNode = document.createTextNode(text);
+            cell.appendChild(textNode);
+            row.appendChild(cell);
+        })
+        table.appendChild(row);
+    });
+
+
+}
+
+function displayResultTable() {
+    createResultTable();
+    resultTable.removeChild(resultTable.lastChild);
+    resultTable.appendChild(table);
 }

@@ -1,4 +1,3 @@
-let btnGet = document.querySelector('button');
 let myTable = document.querySelector('#table');
 var table, processCount;
 var processes = [{
@@ -64,9 +63,7 @@ var processes = [{
 ];
 
 let headers = ['Process Id', 'Burst Time', 'Arrival Time', 'Priority'];
-var count = 10;
-// btnGet.addEventListener('click', () => {
-// btnGet.addEventListener('click', createTable());
+
 function createTable() {
     table = document.createElement('table');
     let headerRow = document.createElement('tr');
@@ -246,5 +243,5 @@ function start() {
     priorityNonPre();
     priorityPre();
     roundRobin();
-    // trial();
+    displayResultTable();
 }
