@@ -471,6 +471,89 @@ function roundRobin() {
     avgTurnaroundTimeRoundRobin = calculateAvgTime(turnAroundRR);
     avgWaitingTimeRoundRobin = calculateAvgTime(waitingRR);
 }
+
+var avgTurnaroundTimeLJFNonPre = 0,
+    avgWaitingTimeLJFNonPre = 0;
+
+function LJFNonPre() {
+    readyQueueInit();
+    let max = Number.MIN_VALUE;
+    let p;
+    let turnAroundLJFNonPre = [];
+    let waitingLJFNonPre = [];
+    let processQueue = [];
+    let time = 0;
+    outer: while (readyQueue.length != 0) {
+        for (process in readyQueue) {
+            if (readyQueue[process].arrival_time <= time)
+                processQueue[process] = readyQueue[process];
+        }
+
+        if (processQueue.length == 0) {
+            time++;
+            continue outer;
+        }
+        max = Number.MIN_VALUE;
+        for (process in processQueue) {
+            if (processQueue[process].burst_time > max) {
+                max = processQueue[process].burst_time;
+                p = process;
+            }
+        }
+        time += processQueue[p].burst_time;
+        turnAroundLJFNonPre[processQueue[p].id] = time - processQueue[p].arrival_time;
+        waitingLJFNonPre[processQueue[p].id] = turnAroundLJFNonPre[processQueue[p].id] - processQueue[p].burst_time;
+        readyQueue.splice(p, 1);
+        processQueue.splice(p, 1);
+    }
+    avgTurnaroundTimeLJFNonPre = calculateAvgTime(turnAroundLJFNonPre);
+    avgWaitingTimeLJFNonPre = calculateAvgTime(waitingLJFNonPre);
+}
+var avgWaitingTimeLJFPre = 0,
+    avgTurnaroundTimeLJFPre = 0;
+
+function LJFPre() {
+    readyQueueInit();
+    let max = Number.MIN_VALUE;
+    let p;
+    let turnAroundLJFPre = [];
+    let waitingLJFPre = [];
+    let processQueue = [];
+    let completionTime = [];
+    let time = 0;
+    outer: while (readyQueue.length != 0) {
+        for (process in readyQueue) {
+            if (readyQueue[process].arrival_time <= time)
+                processQueue[process] = readyQueue[process];
+        }
+
+        if (processQueue.length == 0) {
+            time++;
+            continue outer;
+        }
+        max = Number.MIN_VALUE;
+        for (process in processQueue) {
+            if (processQueue[process].burst_time > max) {
+                max = processQueue[process].burst_time;
+                p = process;
+            }
+        }
+        time++;
+        processQueue[p].burst_time--;
+        if (processQueue[p].burst_time === 0) {
+            completionTime[processQueue[p].id] = time;
+            readyQueue.splice(p, 1);
+        }
+        processQueue.splice(p, 1);
+    }
+    for (p in processes) {
+        turnAroundLJFPre[processes[p].id] = completionTime[processes[p].id] - processes[p].arrival_time;
+        waitingLJFPre[processes[p].id] = turnAroundLJFPre[processes[p].id] - processes[p].burst_time;
+    }
+    avgTurnaroundTimeLJFPre = calculateAvgTime(turnAroundLJFPre);
+    avgWaitingTimeLJFPre = calculateAvgTime(waitingLJFPre);
+}
+
 var resultTable;
 
 function createResultTable() {
@@ -492,6 +575,16 @@ function createResultTable() {
             name: "SJF(Preemptive)",
             avgTA: avgTurnaroundTimeSJFPre,
             avgWT: avgWaitingTimeSJFPre
+        },
+        {
+            name: "LJF",
+            avgTA: avgTurnaroundTimeLJFNonPre,
+            avgWT: avgWaitingTimeLJFNonPre
+        },
+        {
+            name: "LJF(Preemptive)",
+            avgTA: avgTurnaroundTimeLJFPre,
+            avgWT: avgWaitingTimeLJFPre
         },
         {
             name: "Priority",

@@ -240,6 +240,8 @@ function start() {
     FCFS();
     SJFNonPre();
     SJFPre();
+    LJFNonPre();
+    LJFPre();
     priorityNonPre();
     priorityPre();
     roundRobin();
