@@ -1,31 +1,6 @@
-// class process
-// {
-//     // var id;
-//     // float burstTime;
-//     // int priority;
-//     // int burstTimePriority;
-//     // int arrivalTime;
-//     // float f;
-//     // int fRank;
-//     constructor( id, burstTime, priority, arrivalTime)
-//     {
-//         this.burstTime=burstTime;
-//         this.id=id;
-//         this.priority=priority;
-//         this.arrivalTime=arrivalTime;
-//     }
-// }
-
-
-// var processes1=[];
-var duplicate = [];
-var completionTime = [];
 var readyQueue = [];
 var arrangedReadyQueue = [];
 var timeQuanta;
-var turnAroundTime = [];
-var waitingTime = [];
-var time = 0;
 
 function readyQueueInit() {
     for (i = 0; i < processes.length; i++) {
@@ -35,9 +10,10 @@ function readyQueueInit() {
 }
 //formula1
 function calculateTimeQuanta() {
-    let sum, quanta, temp;
-    if (readyQueue.length != 0) {
-        let max = -1;
+    let sum,temp,max;
+    if (readyQueue.length != 0) 
+    {
+        max = Number.MIN_VALUE;
         sum = 0;
         for (let i = 0; i < readyQueue.length; i++) {
             temp = readyQueue[i].burst_time;
@@ -52,61 +28,60 @@ function calculateTimeQuanta() {
 }
 
 function calculateBurstTimePriority() {
-    let i = 0,
-        n = readyQueue.length,
-        j, k, count = 0;
     let duplicate = [];
     let flag = [];
-    for (i = 0; i < readyQueue.length; i++) {
-        duplicate[count] = readyQueue[i].burst_time;
-        count++;
+    for (i in readyQueue) {
+        duplicate[i] = readyQueue[i].burst_time;
+        flag[i]=false;
     }
 
     duplicate.sort(function (a, b) {
         return a - b;
     });
 
-    for (i = 0; i < readyQueue.length; i++) {
-        // let p1= readyQueue[i];
-        for (j = 0; j < n; j++) {
-            if (readyQueue[i].burst_time == duplicate[j] && !flag[j]) {
-                readyQueue[i].burstTimePriority = j + 1;
-                flag[j] = true;
+    for(p in readyQueue)
+    {
+        for(d in duplicate)
+        {
+            if(readyQueue[p].burst_time===duplicate[d] && !flag[d])
+            {
+                readyQueue[p].burstTimePriority = Number(d) + 1;
+                flag[d] = true;
                 break;
             }
         }
     }
-
 }
 
 //formula2
 function calculateF() {
-    for (i = 0; i < readyQueue.length; i++) {
-        readyQueue[i].f = (1.0 * (3 * readyQueue[i].priority + readyQueue[i].burstTimePriority) / 4);
+    for (p in readyQueue) 
+    {
+        readyQueue[p].f = (1.0 * (3 * readyQueue[p].priority + readyQueue[p].burstTimePriority) / 4);
     }
 }
 
 function calculateFRank() {
-    let i = 0,
-        n = readyQueue.length,
-        j, k, count = 0;
-    let p;
-    let min;
+    let duplicate=[];
     let flag = [];
-    //        int b[]=new int[n];
-    for (i = 0; i < readyQueue.length; i++) {
-        duplicate[count] = readyQueue[i].f;
-        //            index[count]=count+1;
-        count++;
+    for (p in readyQueue) 
+    {
+        duplicate[p] = readyQueue[p].f;
+        flag[p]=false;
     }
+
     duplicate.sort(function (a, b) {
         return a - b;
     });
-    for (i = 0; i < readyQueue.length; i++) {
-        for (j = 0; j < n; j++) {
-            if (readyQueue[i].f == duplicate[j] && !flag[j]) {
-                readyQueue[i].fRank = j + 1;
-                flag[j] = true;
+
+    for (p in readyQueue) 
+    {
+        for (d in duplicate) 
+        {
+            if (readyQueue[p].f === duplicate[d] && !flag[d]) 
+            {
+                readyQueue[p].fRank = Number(d) + 1;
+                flag[d] = true;
                 break;
             }
         }
@@ -114,16 +89,21 @@ function calculateFRank() {
 }
 
 function sortByFRank() {
-    let i, j, minRank;
+    let j, minRank;
     let process;
-    while (readyQueue.length != 0) {
+    
+    while (readyQueue.length != 0) 
+    {
         minRank = Number.MAX_VALUE;
-        for (i = 0; i < readyQueue.length; i++)
-            if (readyQueue[i].fRank < minRank) {
-                minRank = readyQueue[i].fRank;
-                process = readyQueue[i];
-                j = i;
+        for (p in readyQueue)
+        {
+            if (readyQueue[p].fRank < minRank) 
+            {
+                minRank = readyQueue[p].fRank;
+                process = readyQueue[p];
+                j = p;
             }
+        }
         arrangedReadyQueue.push(process);
         readyQueue.splice(j, 1);
     }
@@ -140,30 +120,40 @@ var avgWaitingTimeNew = 0,
     avgTurnAroundTimeNew = 0;
 
 
-function customizedRoundRobin() {
+function customizedRoundRobin() 
+{
     readyQueueInit();
-    while (readyQueue.length != 0) {
+    let turnAroundTime=[];
+    let waitingTime=[];
+    let completionTime=[];
+    let time=0;
+    while (readyQueue.length != 0) 
+    {
         calculateTimeQuanta();
         calculateBurstTimePriority();
         calculateF();
         calculateFRank();
         sortByFRank();
-        while (arrangedReadyQueue.length != 0) {
+        while (arrangedReadyQueue.length != 0) 
+        {
             let p = arrangedReadyQueue.shift();
-            if (p.burst_time > timeQuanta) {
+            if (p.burst_time > timeQuanta) 
+            {
                 p.burst_time -= timeQuanta;
                 time += timeQuanta;
                 readyQueue.push(p);
-            } else {
-                //completed
+            } 
+            //completed
+            else 
+            {
                 time += p.burst_time;
                 completionTime[p.id] = time;
-                let process = getProcess(p.id);
+                let process=getProcess(p.id);
                 waitingTime[p.id] = completionTime[p.id] - process.burst_time;
             }
         }
     }
-    for (i = 0; i < completionTime.length; i++) {
+    for (i in completionTime) {
         turnAroundTime[i] = completionTime[i];
     }
     avgWaitingTimeNew = calculateAvgTime(waitingTime);
@@ -180,9 +170,8 @@ function calculateAvgTime(waitingTime) {
 var avgWaitingTimeFCFS = 0,
     avgTurnaroundTimeFCFS = 0;
 
-function FCFS() {
-
-    let i, currentTime = 0;
+function FCFS() 
+{
     readyQueueInit();
     let min = Number.MAX_VALUE;
     let p;
@@ -260,30 +249,42 @@ function SJFPre() {
     let processQueue = [];
     let completionTime = [];
     let time = 0;
-    outer: while (readyQueue.length != 0) {
-        for (process in readyQueue) {
+    while (readyQueue.length != 0) 
+    {
+        for (process in readyQueue) 
+        {
             if (readyQueue[process].arrival_time <= time)
-                processQueue[process] = readyQueue[process];
+                processQueue.push(readyQueue[process]);
         }
 
-        if (processQueue.length == 0) {
+        if (processQueue.length === 0) 
+        {
             time++;
-            continue outer;
+            continue;
         }
         min = Number.MAX_VALUE;
-        for (process in processQueue) {
-            if (processQueue[process].burst_time < min) {
+        for (process in processQueue) 
+        {
+            if (processQueue[process].burst_time < min) 
+            {
                 min = processQueue[process].burst_time;
                 p = process;
             }
         }
         time++;
         processQueue[p].burst_time--;
-        if (processQueue[p].burst_time === 0) {
+        if (processQueue[p].burst_time == 0) 
+        {
             completionTime[processQueue[p].id] = time;
-            readyQueue.splice(p, 1);
+            for(process in readyQueue)
+            {
+                if(readyQueue[process].id==processQueue[p].id)
+                {
+                    readyQueue.splice(process, 1);
+                }
+           }
         }
-        processQueue.splice(p, 1);
+        processQueue.splice(p, processQueue.length);
     }
     for (p in processes) {
         turnAroundSJFPre[processes[p].id] = completionTime[processes[p].id] - processes[p].arrival_time;
@@ -376,91 +377,102 @@ function priorityPre() {
 var avgWaitingTimeRoundRobin = 0,
     avgTurnaroundTimeRoundRobin = 0;
 
-function roundRobin() {
+function roundRobin() 
+{
     readyQueueInit();
     let timeQuanta = Number($("#time_quanta").val());
+    if(timeQuanta==0)
+    timeQuanta=90;
     let time = 0;
     let processQueue = [];
-    let min, p, j, flag;
+    let min, p, j, flag,i,n;
     let completionTime = [];
     let turnAroundRR = [];
     let waitingRR = [];
     let runningQueue = [];
     // getting the initial processes in to the running queue
-    while (true) {
+    while (true) 
+    {
         if (readyQueue.length == 0)
             break;
-        for (process in readyQueue) {
-            if (readyQueue[process].arrival_time <= time) {
-                processQueue[process] = readyQueue[process];
+        for (process in readyQueue) 
+        {
+            if (readyQueue[process].arrival_time <= time)
+            {
+                processQueue.push(readyQueue[process]);
             }
         }
-        if (processQueue.length === 0) {
+        if (processQueue.length === 0) 
+        {
             time++;
             continue;
         }
-        while (processQueue.length != 0) {
-            min = Number.MAX_VALUE;
-            for (process in processQueue) {
-                if (processQueue[process].arrival_time < min) {
-                    min = processQueue[process].arrival_time;
-                    j = process;
-                }
-            }
-            runningQueue.push(processQueue[j]);
-            processQueue.splice(j, 1);
-        }
+            
         break;
     }
     //then one by one all the processes
-    while (runningQueue.length != 0) {
-        let currentProcess = runningQueue[0];
-        if (currentProcess.burst_time > timeQuanta) {
+    while (processQueue.length != 0) 
+    {
+        let currentProcess = processQueue.shift();
+        
+        if (currentProcess.burst_time > timeQuanta) 
+        {
             currentProcess.burst_time -= timeQuanta;
             time += timeQuanta;
             flag = true;
-        } else {
+        }
+        else 
+        {
             flag = false;
             time += currentProcess.burst_time;
             completionTime[currentProcess.id] = time;
-            for (process in readyQueue) {
-                if (readyQueue[process].id == currentProcess.id) {
+            for (process in readyQueue) 
+            {
+                if (readyQueue[process].id == currentProcess.id) 
+                {
                     readyQueue.splice(process, 1);
                     break;
                 }
             }
         }
 
-        while (true) {
+        while (true) 
+        {
             if (readyQueue.length == 0)
                 break;
-            for (process in readyQueue) {
-                if (readyQueue[process].arrival_time <= time) {
-                    processQueue[process] = readyQueue[process];
+            for (process in readyQueue) 
+            {
+                if (readyQueue[process].arrival_time <= time) 
+                {
+                    runningQueue.push(readyQueue[process]);
                 }
             }
-            if (processQueue.length === 0) {
+            if (runningQueue.length === 0) 
+            {
                 time++;
                 continue;
             }
-            while (processQueue.length != 0) {
+            while (runningQueue.length != 0) 
+            {
                 min = Number.MAX_VALUE;
-                for (process in processQueue) {
-                    if (processQueue[process].arrival_time < min) {
-                        min = processQueue[process].arrival_time;
+                for (process in runningQueue) 
+                {
+                    if ( runningQueue[process].arrival_time < min) 
+                    {
+                        min = runningQueue[process].arrival_time;
                         j = process;
                     }
                 }
-                if (!runningQueue.includes(processQueue[j])) {
-                    runningQueue.push(processQueue[j]);
+                if (!processQueue.includes(runningQueue[j])) 
+                {
+                    processQueue.push(runningQueue[j]);
                 }
-                processQueue.splice(j, 1);
+                runningQueue.splice(j, 1);
             }
             break;
         }
-        runningQueue.shift();
         if (flag == true) {
-            runningQueue.push(currentProcess);
+            processQueue.push(currentProcess);
         }
 
     }
@@ -472,8 +484,7 @@ function roundRobin() {
     avgWaitingTimeRoundRobin = calculateAvgTime(waitingRR);
 }
 
-var avgTurnaroundTimeLJFNonPre = 0,
-    avgWaitingTimeLJFNonPre = 0;
+var avgTurnaroundTimeLJFNonPre = 0,avgWaitingTimeLJFNonPre = 0;
 
 function LJFNonPre() {
     readyQueueInit();
@@ -521,31 +532,45 @@ function LJFPre() {
     let processQueue = [];
     let completionTime = [];
     let time = 0;
-    outer: while (readyQueue.length != 0) {
-        for (process in readyQueue) {
+
+    while (readyQueue.length != 0) 
+    {
+        for (process in readyQueue) 
+        {
             if (readyQueue[process].arrival_time <= time)
-                processQueue[process] = readyQueue[process];
+                processQueue.push(readyQueue[process]);
         }
 
-        if (processQueue.length == 0) {
+        if (processQueue.length === 0) 
+        {
             time++;
-            continue outer;
+            continue;
         }
         max = Number.MIN_VALUE;
-        for (process in processQueue) {
-            if (processQueue[process].burst_time > max) {
+        for (process in processQueue) 
+        {
+            if (processQueue[process].burst_time > max) 
+            {
                 max = processQueue[process].burst_time;
                 p = process;
             }
         }
         time++;
         processQueue[p].burst_time--;
-        if (processQueue[p].burst_time === 0) {
+        if (processQueue[p].burst_time == 0) 
+        {
             completionTime[processQueue[p].id] = time;
-            readyQueue.splice(p, 1);
+            for(process in readyQueue)
+            {
+                if(readyQueue[process].id==processQueue[p].id)
+                {
+                    readyQueue.splice(process, 1);
+                }
+            }
         }
-        processQueue.splice(p, 1);
+        processQueue.splice(p, processQueue.length);
     }
+
     for (p in processes) {
         turnAroundLJFPre[processes[p].id] = completionTime[processes[p].id] - processes[p].arrival_time;
         waitingLJFPre[processes[p].id] = turnAroundLJFPre[processes[p].id] - processes[p].burst_time;

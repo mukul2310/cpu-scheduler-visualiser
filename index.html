@@ -36,7 +36,7 @@
           <div class="flex-center table-responsive m-t-40">
             <table class="table stylish-table" id="table">
             </table>
-            Time Quantum(For Round Robin Algorithm)<input id="time_quanta" type="number" placeholder="0" min="0">
+            Time Quantum(For Round Robin Algorithm)<input id="time_quanta" type="number" placeholder="90" min="0">
           </div>
           <div class="row text-center">
             <button class="btn-info btn-lg" style="background-color: #ecc85b;" data-toggle="modal"
@@ -53,9 +53,9 @@
       </div>
     </div>
   </div>
-
+  <!-- Use debouncing concept for start button -->
   <div class="btn-group">
-    <button type="button" class="btn btn-danger">Select Algorithms</button>
+    <button type="button" class="btn btn-danger">Start</button>
     <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown"
       aria-haspopup="true" aria-expanded="false">
       <span class="sr-only">Toggle Dropdown</span>
@@ -180,40 +180,15 @@
         </div>
       </div>
     </div>
-
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script> -->
     <script src="js/main.js"></script>
     <script src="js/algorithm.js"></script>
     <script>
       $(document).ready(function () {
         displayTable();
         displayResultTable();
-        // $('#modal_add').modal();
-        // M.updateTextFields();
-        // $('#modal_process_id').value=processes.length;
-        // console.log(processes.length);
-        // $("#modal_process_id").attr("placeholder", processes.length+1);
-
-        // $('#modal_edit').modal();
-
-        // $('#modal_remove').modal();
-        // $('select').formSelect();
-
+        
       });
 
-      // same as
-      // document.addEventListener("DOMContentLoaded", function(event) 
-      // {
-      //   createTable();
-      // });
-
-      // var process_table=document.getElementById('table');
-      // process_table.onclick=editTable();
-      // var cells=process_table.getElementsByTagName('td');
-      // for(var i=0;i<cells.length;i++)
-      // {
-      //   cells[i].onclick=editTable(this);
-      // }
     </script>
 </body>
 

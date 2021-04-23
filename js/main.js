@@ -191,7 +191,8 @@ function editProcess() {
 
 }
 
-function openRemoveModal() {
+function openRemoveModal() 
+{
     // $('#modal_remove').modal();
     // $('select').formSelect();
     //   $("#modal_remove_select").formSelect();
@@ -220,22 +221,10 @@ function removeProcess() {
     }
     orderProcess();
     displayTable();
-    // for (var i = 0; i < result.length; i++) {
-    //     options += '<option value="' + result[i].ImageFolderID + '">' + result[i].Name + '</option>';
-    // }
-    // id = $('#select').val();
-    // processes.splice(processes.findIndex(item => item.id === id), 1);
-    // displayTable();
 }
 
-function start() {
-    // alert("Starting the visualization");
-    // readyQueueInit();
-    // calculateTimeQuanta();
-    // calculateBurstTimePriority();
-    // calculateF();
-    // calculateFRank();
-    // sortByFRank();
+function start() 
+{
     customizedRoundRobin();
     FCFS();
     SJFNonPre();
