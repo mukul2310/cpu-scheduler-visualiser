@@ -24,7 +24,7 @@
           <div class="flex-center table-responsive m-t-40">
             <table class="table stylish-table" id="table">
             </table>
-            Time Quantum(For Round Robin Algorithm)<input id="time_quanta" type="number" placeholder="90" min="0">
+            Time Quantum(For Round Robin Algorithm)<input id="time_quanta" type="number" placeholder="90" min="2">
           </div>
           <div class="text-center">
             <a class="btn btn-primary btn-lg" style="background-color: #ecc85b; margin-top: 30px; margin-bottom: 30px;" data-bs-toggle="modal" href="#modal_add" role="button" onclick="openAddModal()"><i class="material-icons">add</i></a>
@@ -36,17 +36,62 @@
               <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split btn-lg" style="background-color: #58D68D;  margin-top: 30px; margin-bottom: 30px;" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="visually-hidden">Select Algorithms</span>
               </button>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">FCFS</a></li>
-                <li><a class="dropdown-item" href="#">SJF</a></li>
-                <li><a class="dropdown-item" href="#">SJF(Preemptive)</a></li>
-                <li><a class="dropdown-item" href="#">LJF</a></li>
-                <li><a class="dropdown-item" href="#">LJF(Preemptive</a></li>
-                <li><a class="dropdown-item" href="#">Priority</a></li>
-                <li><a class="dropdown-item" href="#">Priority(Preemptive)</a></li>
-                <li><a class="dropdown-item" href="#">Round Robin</a></li>
-                <li><a class="dropdown-item" href="#">Proposed</a></li>
-              </ul>
+              <div class="dropdown-menu shadow border-0">
+                <div class="dropdown-item">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="fcfs_switch" checked>
+                    <label class="form-check-label" for="fcfs_switch">FCFS</label>
+                  </div>
+                </div>
+                <div class="dropdown-item">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" id="sjf_switch" checked>
+                  <label class="form-check-label" for="sjf_switch">SJF</label>
+                </div>
+                </div>
+                <div class="dropdown-item">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" id="srtf_switch" checked>
+                  <label class="form-check-label" for="srtf_switch">SJF(Preemptive)</label>
+                </div>
+                </div>
+                <div class="dropdown-item">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" id="ljf_switch" checked>
+                  <label class="form-check-label" for="ljf_switch">LJF</label>
+                </div>
+                </div>
+                <div class="dropdown-item">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" id="lrtf_switch" checked>
+                  <label class="form-check-label" for="lrtf_switch">LJF(Preemptive)</label>
+                </div>
+                </div>
+                <div class="dropdown-item">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" id="priority_switch" checked>
+                  <label class="form-check-label" for="priority_switch">Priority</label>
+                </div>
+                </div>
+                <div class="dropdown-item">
+                <div class="form-check form-switch">  
+                  <input class="form-check-input" type="checkbox" id="priority_pre_switch" checked>
+                  <label class="form-check-label" for="priority_pre_switch">Priority(Preemptive)</label>
+                </div>
+                </div>
+                <div class="dropdown-item">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" id="roundrobin_switch" checked>
+                  <label class="form-check-label" for="roundrobin_switch">Round Robin</label>
+                </div>
+                </div>
+                <div class="dropdown-item">
+                <div class="form-check form-switch">  
+                  <input class="form-check-input" type="checkbox" id="proposed_switch" checked>
+                  <label class="form-check-label" for="proposed_switch">Proposed</label>
+                </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -79,22 +124,22 @@
             <form class="col s12">
               <div class="row">
                 <div class="mb-3">
-                  <label for="id" class="col-form-label">Id</label>
+                  <label for="modal_process_id" class="col-form-label">Id</label>
                   <input disabled placeholder="Id" class="form-control" type="number" id="modal_process_id">
                   
                 </div>
                 <div class="mb-3">
-                  <label for="burst_time" class="col-form-label">Burst Time</label>
+                  <label for="modal_burst_time" class="col-form-label">Burst Time</label>
                   <input id="modal_burst_time" class="form-control" type="number" min="0" required placeholder="0">
                   
                 </div>
                 <div class="mb-3">
-                  <label for="arrival_time" class="col-form-label">Arrival Time</label>
+                  <label for="modal_arrival_time" class="col-form-label">Arrival Time</label>
                   <input id="modal_arrival_time" class="form-control" type="number" min="0" required placeholder="0">
                   
                 </div>
                 <div class="mb-3">
-                  <label for="priority" class="col-form-label">Priority</label>
+                  <label for="modal_priority" class="col-form-label">Priority</label>
                   <input id="modal_priority" class="form-control" type="number" min="0" required placeholder="0">
                   
                 </div>
@@ -125,17 +170,17 @@
             </select>
           </div>
           <div class="mb-3">
-            <label class="col-form-label" for="burst_time">Burst Time</label>
+            <label class="col-form-label" for="modal_edit_burst_time">Burst Time</label>
             <input class="form-control" id="modal_edit_burst_time" type="number" min="0" class="validate" required>
             
           </div>
           <div class="mb-3">
-            <label class="col-form-label" for="arrival_time">Arrival Time</label>
+            <label class="col-form-label" for="modal_edit_arrival_time">Arrival Time</label>
             <input class="form-control" id="modal_edit_arrival_time" type="number" min="0" class="validate" required>
             
           </div>
           <div class="mb-3">
-            <label class="col-form-label" for="priority">Priority</label>
+            <label class="col-form-label" for="modal_edit_priority">Priority</label>
             <input class="form-control" id="modal_edit_priority" type="number" min="0" class="validate" required>
             
           </div>

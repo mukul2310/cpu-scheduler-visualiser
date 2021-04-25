@@ -225,14 +225,24 @@ function removeProcess() {
 
 function start() 
 {
-    customizedRoundRobin();
+    if($("#fcfs_switch").prop('checked')===true)
     FCFS();
+    if($("#proposed_switch").prop('checked')===true)
+    customizedRoundRobin();
+    if($("#sjf_switch").prop('checked')===true)
     SJFNonPre();
+    if($("#srtf_switch").prop('checked')===true)
     SJFPre();
+    if($("#ljf_switch").prop('checked')===true)
     LJFNonPre();
+    if($("#lrtf_switch").prop('checked')===true)
     LJFPre();
+    if($("#priority_switch").prop('checked')===true)
     priorityNonPre();
+    if($("#priority_pre_switch").prop('checked')===true)
     priorityPre();
+    if($("#roundrobin_switch").prop('checked')===true)
     roundRobin();
+    
     displayResultTable();
 }
