@@ -240,6 +240,7 @@ function removeProcess() {
 
 function start() 
 {
+    resultTableInit();
     if($("#fcfs_switch").prop('checked')===true)
     FCFS();
     if($("#proposed_switch").prop('checked')===true)
@@ -258,6 +259,16 @@ function start()
     priorityPre();
     if($("#roundrobin_switch").prop('checked')===true)
     roundRobin();
-    
     displayResultTable();
 }
+$("#roundrobin_switch").on('change', ()=>
+{
+    if($("#roundrobin_switch").prop('checked')===false)
+    {
+        $('#show_time_quanta').hide();
+    }
+    if($("#roundrobin_switch").prop('checked')===true)
+    {
+        $('#show_time_quanta').show();
+    }
+})

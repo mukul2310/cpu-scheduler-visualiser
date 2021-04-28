@@ -656,7 +656,27 @@ function createResultTable() {
 
 
 }
-
+function resultTableInit()
+{
+    avgWaitingTimeNew = 0,
+    avgTurnAroundTimeNew = 0;
+    avgWaitingTimeLJFPre = 0,
+    avgTurnaroundTimeLJFPre = 0;
+    avgTurnaroundTimeLJFNonPre = 0,
+    avgWaitingTimeLJFNonPre = 0;
+    avgWaitingTimeRoundRobin = 0,
+    avgTurnaroundTimeRoundRobin = 0;
+    avgWaitingTimePriorityPre = 0,
+    avgTurnaroundTimePriorityPre = 0;
+    avgWaitingTimePriorityNonPre = 0,
+    avgTurnaroundTimePriorityNonPre = 0;
+    avgWaitingTimeSJFPre = 0,
+    avgTurnaroundTimeSJFPre = 0;
+    avgWaitingTimeSJFNonPre = 0,
+    avgTurnaroundTimeSJFNonPre = 0;
+    avgWaitingTimeFCFS = 0,
+    avgTurnaroundTimeFCFS = 0;
+}
 function displayResultTable() {
     createResultTable();
     resultTable.removeChild(resultTable.lastChild);
