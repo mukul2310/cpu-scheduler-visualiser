@@ -117,15 +117,17 @@ function getProcess(id) {
     }
 }
 var avgWaitingTimeNew = 0,
-    avgTurnAroundTimeNew = 0;
+    avgTurnAroundTimeNew = 0,
+    avgResponseTimeNew = 0;
 var ganttProposed=[];
 var completionTimeNew=0;
-function customizedRoundRobin() 
+function newProposed() 
 {
     readyQueueInit();
     let turnAroundTime=[];
     let waitingTime=[];
     let completionTime=[];
+    let responseTime=[];
     let time=0;
     while (readyQueue.length != 0) 
     {
@@ -138,14 +140,18 @@ function customizedRoundRobin()
         {
             let p = arrangedReadyQueue.shift();
             prev_time=time;
+            if(p.burst_time===getProcess(p.id).burst_time)
+            {
+                //It means came for the first time
+                responseTime[p.id]=prev_time;
+            }
             if (p.burst_time > timeQuanta) 
             {
                 p.burst_time -= timeQuanta;
                 time += timeQuanta;
                 readyQueue.push(p);
             } 
-            //completed
-            else 
+            else  //completed
             {
                 time += p.burst_time;
                 completionTime[p.id] = time;
@@ -166,6 +172,7 @@ function customizedRoundRobin()
     completionTimeNew=time;
     avgWaitingTimeNew = calculateAvgTime(waitingTime);
     avgTurnAroundTimeNew = calculateAvgTime(turnAroundTime);
+    avgResponseTimeNew=calculateAvgTime(responseTime);
 }
 
 function calculateAvgTime(waitingTime) {
@@ -176,7 +183,8 @@ function calculateAvgTime(waitingTime) {
     return avg / (waitingTime.length - 1);
 }
 var avgWaitingTimeFCFS = 0,
-    avgTurnaroundTimeFCFS = 0;
+    avgTurnaroundTimeFCFS = 0,
+    avgResponseTimeFCFS = 0;
 var ganttFCFS=[];
 var completionTimeFCFS=0;
 
@@ -225,9 +233,11 @@ function FCFS()
     completionTimeFCFS=time;
     avgTurnaroundTimeFCFS = calculateAvgTime(turnAroundFCFS);
     avgWaitingTimeFCFS = calculateAvgTime(waitingFCFS);
+    avgResponseTimeFCFS=avgWaitingTimeFCFS;
 }
 var avgWaitingTimeSJFNonPre = 0,
-    avgTurnaroundTimeSJFNonPre = 0;
+    avgTurnaroundTimeSJFNonPre = 0,
+    avgResponseTimeSJFNonPre = 0;
 var ganttSJFNonPre=[];
 var completionTimeSJF=0;
 function SJFNonPre() {
@@ -278,9 +288,11 @@ function SJFNonPre() {
     completionTimeSJF=time;
     avgTurnaroundTimeSJFNonPre = calculateAvgTime(turnAroundSJFNonPre);
     avgWaitingTimeSJFNonPre = calculateAvgTime(waitingSJFNonPre);
+    avgResponseTimeSJFNonPre=avgWaitingTimeSJFNonPre;
 }
 var avgWaitingTimeSJFPre = 0,
-    avgTurnaroundTimeSJFPre = 0;
+    avgTurnaroundTimeSJFPre = 0,
+    avgResponseTimeSJFPre = 0;
 var ganttSJFPre=[];
 var completionTimeSJFPre=0;
 
@@ -290,6 +302,7 @@ function SJFPre() {
     let p;
     let turnAroundSJFPre = [];
     let waitingSJFPre = [];
+    let responseSJFPre=[];
     let processQueue = [];
     let completionTime = [];
     let time = 0;
@@ -355,6 +368,11 @@ function SJFPre() {
                 endTime:time
             });
         }
+        if(processQueue[p].burst_time===getProcess(processQueue[p].id).burst_time)
+        {
+            //It means came for the first time
+            responseSJFPre[processQueue[p].id]=prev_time-processQueue[p].arrival_time;
+        }        
         processQueue[p].burst_time--;
         if (processQueue[p].burst_time == 0) 
         {
@@ -379,9 +397,11 @@ function SJFPre() {
     completionTimeSJFPre=time;
     avgTurnaroundTimeSJFPre = calculateAvgTime(turnAroundSJFPre);
     avgWaitingTimeSJFPre = calculateAvgTime(waitingSJFPre);
+    avgResponseTimeSJFPre=calculateAvgTime(responseSJFPre);
 }
 var avgWaitingTimePriorityNonPre = 0,
-    avgTurnaroundTimePriorityNonPre = 0;
+    avgTurnaroundTimePriorityNonPre = 0,
+    avgResponseTimePriorityNonPre = 0;
 var ganttPriorityNonPre=[];
 var completionTimePriority=0;
 
@@ -432,9 +452,11 @@ function priorityNonPre() {
     completionTimePriority=time;
     avgTurnaroundTimePriorityNonPre = calculateAvgTime(turnAroundPriorityNonPre);
     avgWaitingTimePriorityNonPre = calculateAvgTime(waitingPriorityNonPre);
+    avgResponseTimePriorityNonPre=avgWaitingTimePriorityNonPre;
 }
 var avgWaitingTimePriorityPre = 0,
-    avgTurnaroundTimePriorityPre = 0;
+    avgTurnaroundTimePriorityPre = 0,
+    avgResponseTimePriorityPre = 0;
 var ganttPriorityPre=[];
 var completionTimePriorityPre=0;
 
@@ -444,6 +466,7 @@ function priorityPre() {
     let p;
     let turnAroundPriorityPre = [];
     let waitingPriorityPre = [];
+    let responsePriorityPre = [];
     let processQueue = [];
     let completionTime = [];
     let time = 0;
@@ -505,6 +528,11 @@ function priorityPre() {
                 endTime:time
             });
         }
+        if(processQueue[p].burst_time===getProcess(processQueue[p].id).burst_time)
+        {
+            //It means came for the first time
+            responsePriorityPre[processQueue[p].id]=prev_time-processQueue[p].arrival_time;
+        }   
         processQueue[p].burst_time--;
         if (processQueue[p].burst_time === 0) {
             completionTime[processQueue[p].id] = time;
@@ -521,9 +549,11 @@ function priorityPre() {
     ganttPriorityPre[ganttPriorityPre.length-1].endTime=time;
     avgTurnaroundTimePriorityPre = calculateAvgTime(turnAroundPriorityPre);
     avgWaitingTimePriorityPre = calculateAvgTime(waitingPriorityPre);
+    avgResponseTimePriorityPre=calculateAvgTime(responsePriorityPre);
 }
 var avgWaitingTimeRoundRobin = 0,
-    avgTurnaroundTimeRoundRobin = 0;
+    avgTurnaroundTimeRoundRobin = 0,
+    avgResponseTimeRoundRobin = 0;
 
 var ganttRoundRobin=[];
 var completionTimeRoundRobin=0;
@@ -539,6 +569,7 @@ function roundRobin()
     let min, p, j, flag;
     let completionTime = [];
     let turnAroundRR = [];
+    let responseRR=[];
     let waitingRR = [];
     let runningQueue = [];
     // getting the initial processes in to the process queue
@@ -571,8 +602,14 @@ function roundRobin()
     while (processQueue.length != 0) 
     {
         prev_time=time;
-        let currentProcess = processQueue.shift();
+        let currentProcess = processQueue[0];
         
+        if(currentProcess.burst_time===getProcess(currentProcess.id).burst_time)
+        {
+            //It means came for the first time
+            responseRR[currentProcess.id]=prev_time-currentProcess.arrival_time;
+        }   
+
         if (currentProcess.burst_time > timeQuanta) 
         {
             currentProcess.burst_time -= timeQuanta;
@@ -613,6 +650,12 @@ function roundRobin()
             }
             if (runningQueue.length === 0) 
             {
+                ganttRoundRobin.push(
+                {   
+                    processId:null,
+                    startTime:time,
+                    endTime:time
+                });
                 time++;
                 continue;
             }
@@ -639,7 +682,7 @@ function roundRobin()
         if (flag == true) {
             processQueue.push(currentProcess);
         }
-
+        processQueue.shift();
     }
     for (p in processes) {
         turnAroundRR[processes[p].id] = completionTime[processes[p].id] - processes[p].arrival_time;
@@ -648,9 +691,13 @@ function roundRobin()
     completionTimeRoundRobin=time;
     avgTurnaroundTimeRoundRobin = calculateAvgTime(turnAroundRR);
     avgWaitingTimeRoundRobin = calculateAvgTime(waitingRR);
+    avgResponseTimeRoundRobin=calculateAvgTime(responseRR);
 }
 
-var avgTurnaroundTimeLJFNonPre = 0,avgWaitingTimeLJFNonPre = 0;
+var avgTurnaroundTimeLJFNonPre = 0,
+    avgWaitingTimeLJFNonPre = 0,
+    avgResponseTimeLJFNonPre = 0;
+
 var ganttLJFNonPre=[];
 var completionTimeLJF=0;
 
@@ -701,10 +748,12 @@ function LJFNonPre() {
     completionTimeLJF=time;
     avgTurnaroundTimeLJFNonPre = calculateAvgTime(turnAroundLJFNonPre);
     avgWaitingTimeLJFNonPre = calculateAvgTime(waitingLJFNonPre);
+    avgResponseTimeLJFNonPre=avgWaitingTimeLJFNonPre;
 }
 var avgWaitingTimeLJFPre = 0,
-    avgTurnaroundTimeLJFPre = 0;
-var ganttLJFPre=[];
+    avgTurnaroundTimeLJFPre = 0,
+    avgResponseTimeLJFPre = 0;
+    var ganttLJFPre=[];
 var completionTimeLJFPre=0;
 
 function LJFPre() {
@@ -713,6 +762,7 @@ function LJFPre() {
     let p;
     let turnAroundLJFPre = [];
     let waitingLJFPre = [];
+    let responseLJFPre = [];
     let processQueue = [];
     let completionTime = [];
     let time = 0;
@@ -779,6 +829,11 @@ function LJFPre() {
                 endTime:time
             });
         }
+        if(processQueue[p].burst_time===getProcess(processQueue[p].id).burst_time)
+        {
+            //It means came for the first time
+            responseLJFPre[processQueue[p].id]=prev_time-processQueue[p].arrival_time;
+        }   
         processQueue[p].burst_time--;
         if (processQueue[p].burst_time == 0) 
         {
@@ -803,6 +858,7 @@ function LJFPre() {
     completionTimeLJFPre=time;
     avgTurnaroundTimeLJFPre = calculateAvgTime(turnAroundLJFPre);
     avgWaitingTimeLJFPre = calculateAvgTime(waitingLJFPre);
+    avgResponseTimeLJFPre=calculateAvgTime(responseLJFPre);
 }
 
 var resultTable;
@@ -884,24 +940,35 @@ function createResultTable() {
 }
 function init()
 {
-    avgWaitingTimeNew = 0,
-    avgTurnAroundTimeNew = 0;
-    avgWaitingTimeLJFPre = 0,
-    avgTurnaroundTimeLJFPre = 0;
-    avgTurnaroundTimeLJFNonPre = 0,
+    avgWaitingTimeNew = 0;
+    avgWaitingTimeLJFPre = 0;
+    avgWaitingTimeRoundRobin = 0;
+    avgWaitingTimePriorityPre = 0;
+    avgWaitingTimePriorityNonPre = 0;
+    avgWaitingTimeSJFPre = 0;
+    avgWaitingTimeSJFNonPre = 0;
     avgWaitingTimeLJFNonPre = 0;
-    avgWaitingTimeRoundRobin = 0,
+    avgWaitingTimeFCFS = 0;
+
+    avgTurnAroundTimeNew = 0;
+    avgTurnaroundTimeLJFPre = 0;
+    avgTurnaroundTimeLJFNonPre = 0;
     avgTurnaroundTimeRoundRobin = 0;
-    avgWaitingTimePriorityPre = 0,
     avgTurnaroundTimePriorityPre = 0;
-    avgWaitingTimePriorityNonPre = 0,
     avgTurnaroundTimePriorityNonPre = 0;
-    avgWaitingTimeSJFPre = 0,
     avgTurnaroundTimeSJFPre = 0;
-    avgWaitingTimeSJFNonPre = 0,
     avgTurnaroundTimeSJFNonPre = 0;
-    avgWaitingTimeFCFS = 0,
     avgTurnaroundTimeFCFS = 0;
+
+    avgResponseTimeNew = 0;
+    avgResponseTimeLJFPre = 0;
+    avgResponseTimeRoundRobin = 0;
+    avgResponseTimePriorityPre = 0;
+    avgResponseTimePriorityNonPre = 0;
+    avgResponseTimeSJFPre = 0;
+    avgResponseTimeSJFNonPre = 0;
+    avgResponseTimeLJFNonPre = 0;
+    avgResponseTimeFCFS = 0;
     
     ganttProposed=[];
     ganttFCFS=[];
@@ -964,6 +1031,44 @@ function displayGanttChart()
         
 }
 let bestAlgo=[];
+function calculateRank(a,b)
+{
+    let duplicate=[];
+    let rank=[];
+    currentRank=0;
+    for(i in a)
+    {
+        duplicate[i]=a[i];
+    }
+    if(b===1)
+    {
+        duplicate.sort((a,b)=>
+        {
+            return a-b;
+        });
+    }
+    else
+    {
+        duplicate.sort((a,b)=>
+        {
+            return b-a;
+        });
+    }
+    let set=new Set(duplicate);
+    set.forEach((values)=>
+    {
+        currentRank++;
+        for(i in a)
+        {
+            if(a[i]===values)
+            {
+                rank[i]=currentRank;
+            }
+        }
+    });
+
+    return rank;
+}
 function findBest() 
 {
     //calculate max CPU utilization
@@ -973,6 +1078,7 @@ function findBest()
     let algorithms=["FCFS","SJF","SJF(Preemptive)","LJF","LJF(Preemptive)","Priority","Priority(Preemptive)","Round Robin","Proposed Algorithm"];
     let wt=[avgWaitingTimeFCFS,avgWaitingTimeSJFNonPre,avgWaitingTimeSJFPre,avgWaitingTimeLJFNonPre,avgWaitingTimeLJFPre,avgWaitingTimePriorityNonPre,avgWaitingTimePriorityPre,avgWaitingTimeRoundRobin,avgWaitingTimeNew];
     let tat=[avgTurnaroundTimeFCFS,avgTurnaroundTimeSJFNonPre,avgTurnaroundTimeSJFPre,avgTurnaroundTimeLJFNonPre,avgTurnaroundTimeLJFPre,avgTurnaroundTimePriorityNonPre,avgTurnaroundTimePriorityPre,avgTurnaroundTimeRoundRobin,avgTurnAroundTimeNew];
+    let rt=[avgResponseTimeFCFS,avgResponseTimeSJFNonPre,avgResponseTimeSJFPre,avgResponseTimeLJFNonPre,avgResponseTimeLJFPre,avgResponseTimePriorityNonPre,avgResponseTimePriorityPre,avgResponseTimeRoundRobin,avgResponseTimeNew];
     let cpuUtil=[];
     let throughput=[];
     let minArrivalTime=Number.MAX_VALUE;
@@ -1000,59 +1106,18 @@ function findBest()
     let cpuUtilRank=[];
     let wtRank=[];
     let tatRank=[];
+    let rtRank=[];
     let rank=[];
-    for (a in algorithms)
-    {
-        min=0
-        for( b in algorithms)
-        {
-            if(a!=b&&throughput[a]>throughput[b])
-            {
-                min++;
-            }
-        }
-        throughputRank[a]=min;
-    }
-    for (a in algorithms)
-    {
-        min=0
-        for( b in algorithms)
-        {
-            if(a!=b&&cpuUtil[a]>cpuUtil[b])
-            {
-                min++;
-            }
-        }
-        cpuUtilRank[a]=min;
-    }
-    for (a in algorithms)
-    {
-        min=0
-        for( b in algorithms)
-        {
-            if(a!=b&&wt[a]>wt[b])
-            {
-                min++;
-            }
-        }
-        wtRank[a]=min;
-    }
-    for (a in algorithms)
-    {
-        min=0
-        for( b in algorithms)
-        {
-            if(a!=b&&tat[a]>tat[b])
-            {
-                min++;
-            }
-        }
-        tatRank[a]=min;
-    }
+    throughputRank=calculateRank(throughput,0);
+    cpuUtilRank=calculateRank(cpuUtil,0);
+    wtRank=calculateRank(wt,1);
+    tatRank=calculateRank(tat,1);
+    rtRank=calculateRank(rt,1);
+    
     let minRank=Number.MAX_VALUE;
     for(a in algorithms)
     {
-        rank[a]=(wtRank[a]+tatRank[a]+cpuUtilRank[a]+throughputRank[a])/4;
+        rank[a]=(wtRank[a]+tatRank[a]+cpuUtilRank[a]+throughputRank[a]+rtRank[a])/5;
         if(rank[a]<minRank)
         minRank=rank[a];
     }
@@ -1063,9 +1128,10 @@ function findBest()
             bestAlgo.push({
                 Algorithm:algorithms[a],
                 CPU_Utilization:(cpuUtil[a]*100).toFixed(2),
-                Throughput:throughput[a].toFixed(2),
+                Throughput:throughput[a].toFixed(2)+'(No of Process/Total time unit)',
                 TurnAroundTime:tat[a].toFixed(2),
-                Waiting_Time:wt[a].toFixed(2)
+                Waiting_Time:wt[a].toFixed(2),
+                Response_Time:rt[a].toFixed(2)
             });
         }
     }

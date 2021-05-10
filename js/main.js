@@ -244,7 +244,7 @@ function start()
     if($("#fcfs_switch").prop('checked')===true)
     FCFS();
     if($("#proposed_switch").prop('checked')===true)
-    customizedRoundRobin();
+    newProposed();
     if($("#sjf_switch").prop('checked')===true)
     SJFNonPre();
     if($("#srtf_switch").prop('checked')===true)
