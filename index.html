@@ -5,14 +5,17 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <meta charset='utf-8'>
   <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-  <title>SchAlgo</title>
+  <title>SchAlgo:CPU Scheduling Algorithm Visualizer</title>
   <meta name='viewport' content='width=device-width, initial-scale=1'>
   <link rel="icon" type="image/png" href="images/image3.png">
   <script defer src="js/main.js"></script>
   <script defer src="js/algorithm.js"></script>
   <script src="js/jquery-3.5.1.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">
+  </script>
   <link rel="stylesheet" type="csss" href="css/bootstrap.min.css">
   <script href="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
@@ -30,16 +33,26 @@
               <label class="col-form-label" for="time_quanta">Time Quantum(For Round Robin Algorithm)</label>
               <input class="form-control" id="time_quanta" type="number" placeholder="90" min="2" style="width: auto;">
             </div>
-            </div>
-            <div class="row">
-              <a class="btn btn-primary btn-lg d-flex align-items-center justify-content-between my-4 mx-5 col-md-2" style="background-color: #ecc85b;" data-bs-toggle="modal" href="#modal_add" role="button" onclick="openAddModal()">Add Process  <span class="material-icons">add</span></a>
-              <a class="btn btn-primary btn-lg d-flex align-items-center justify-content-between my-4 mx-5 col-md-2" data-bs-toggle="modal" href="#modal_edit" role="button" onclick="openEditModal()">Edit Process  <span class="material-icons">mode_edit</span></a>
-              <a class="btn btn-primary btn-lg d-flex align-items-center justify-content-between my-4 mx-5 col-md-2" style="background-color: #EC7063;" data-bs-toggle="modal" href="#modal_remove" role="button" onclick="openRemoveModal()">Remove Process  <span class="material-icons">remove_circle_outline</span></a>
-              <div class="btn-group col-sm-2 mx-5">
-                <button type="button" id="start_btn" class="btn btn-primary btn-lg d-flex align-items-center justify-content-between my-4" style="background-color: #58D68D;">Start  <span class="material-icons">play_circle</span></button>
-                <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split btn-lg align-items-center justify-content-between my-4" style="background-color: #58D68D;" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <span class="visually-hidden">Select Algorithms</span>
-                </button>
+          </div>
+          <div class="row">
+            <a class="btn btn-primary btn-lg d-flex align-items-center justify-content-between my-4 mx-5 col-md-2"
+              style="background-color: #ecc85b;" data-bs-toggle="modal" href="#modal_add" role="button"
+              onclick="openAddModal()">Add Process <span class="material-icons">add</span></a>
+            <a class="btn btn-primary btn-lg d-flex align-items-center justify-content-between my-4 mx-5 col-md-2"
+              data-bs-toggle="modal" href="#modal_edit" role="button" onclick="openEditModal()">Edit Process <span
+                class="material-icons">mode_edit</span></a>
+            <a class="btn btn-primary btn-lg d-flex align-items-center justify-content-between my-4 mx-5 col-md-2"
+              style="background-color: #EC7063;" data-bs-toggle="modal" href="#modal_remove" role="button"
+              onclick="openRemoveModal()">Remove Process <span class="material-icons">remove_circle_outline</span></a>
+            <div class="btn-group col-sm-2 mx-5">
+              <button type="button" id="start_btn"
+                class="btn btn-primary btn-lg d-flex align-items-center justify-content-between my-4"
+                style="background-color: #58D68D;">Start <span class="material-icons">play_circle</span></button>
+              <button type="button"
+                class="btn btn-primary dropdown-toggle dropdown-toggle-split btn-lg align-items-center justify-content-between my-4"
+                style="background-color: #58D68D;" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="visually-hidden">Select Algorithms</span>
+              </button>
               <div class="dropdown-menu shadow border-0">
                 <div class="dropdown-item">
                   <div class="form-check form-switch">
@@ -48,52 +61,52 @@
                   </div>
                 </div>
                 <div class="dropdown-item">
-                <div class="form-check form-switch">
-                  <input class="form-check-input" type="checkbox" id="sjf_switch" checked>
-                  <label class="form-check-label" for="sjf_switch">SJF</label>
-                </div>
-                </div>
-                <div class="dropdown-item">
-                <div class="form-check form-switch">
-                  <input class="form-check-input" type="checkbox" id="srtf_switch" checked>
-                  <label class="form-check-label" for="srtf_switch">SJF(Preemptive)</label>
-                </div>
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="sjf_switch" checked>
+                    <label class="form-check-label" for="sjf_switch">SJF</label>
+                  </div>
                 </div>
                 <div class="dropdown-item">
-                <div class="form-check form-switch">
-                  <input class="form-check-input" type="checkbox" id="ljf_switch" checked>
-                  <label class="form-check-label" for="ljf_switch">LJF</label>
-                </div>
-                </div>
-                <div class="dropdown-item">
-                <div class="form-check form-switch">
-                  <input class="form-check-input" type="checkbox" id="lrtf_switch" checked>
-                  <label class="form-check-label" for="lrtf_switch">LJF(Preemptive)</label>
-                </div>
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="srtf_switch" checked>
+                    <label class="form-check-label" for="srtf_switch">SJF(Preemptive)</label>
+                  </div>
                 </div>
                 <div class="dropdown-item">
-                <div class="form-check form-switch">
-                  <input class="form-check-input" type="checkbox" id="priority_switch" checked>
-                  <label class="form-check-label" for="priority_switch">Priority</label>
-                </div>
-                </div>
-                <div class="dropdown-item">
-                <div class="form-check form-switch">  
-                  <input class="form-check-input" type="checkbox" id="priority_pre_switch" checked>
-                  <label class="form-check-label" for="priority_pre_switch">Priority(Preemptive)</label>
-                </div>
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="ljf_switch" checked>
+                    <label class="form-check-label" for="ljf_switch">LJF</label>
+                  </div>
                 </div>
                 <div class="dropdown-item">
-                <div class="form-check form-switch">
-                  <input class="form-check-input" type="checkbox" id="roundrobin_switch" checked>
-                  <label class="form-check-label" for="roundrobin_switch">Round Robin</label>
-                </div>
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="lrtf_switch" checked>
+                    <label class="form-check-label" for="lrtf_switch">LJF(Preemptive)</label>
+                  </div>
                 </div>
                 <div class="dropdown-item">
-                <div class="form-check form-switch">  
-                  <input class="form-check-input" type="checkbox" id="proposed_switch" checked>
-                  <label class="form-check-label" for="proposed_switch">Proposed</label>
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="priority_switch" checked>
+                    <label class="form-check-label" for="priority_switch">Priority</label>
+                  </div>
                 </div>
+                <div class="dropdown-item">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="priority_pre_switch" checked>
+                    <label class="form-check-label" for="priority_pre_switch">Priority(Preemptive)</label>
+                  </div>
+                </div>
+                <div class="dropdown-item">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="roundrobin_switch" checked>
+                    <label class="form-check-label" for="roundrobin_switch">Round Robin</label>
+                  </div>
+                </div>
+                <div class="dropdown-item">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="proposed_switch" checked>
+                    <label class="form-check-label" for="proposed_switch">Proposed</label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -138,7 +151,14 @@
         <!-- Final Result -->
         <div class="row">
           <div class="col-sm-12">
-            <h5>The best algorithms for these processes is <span role="img" data-toggle="tooltip" data-placement="bottom" title="Based on CPU utilization, Throughput, Turnaround time, Waiting time, Response time" style="opacity: 0.6;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 32 32"><path d="M16 0C7.164 0 0 7.164 0 16s7.164 16 16 16 16-7.164 16-16S24.836 0 16 0zm-2 14a2 2 0 0 1 4 0v10a2 2 0 0 1-4 0V14zm2-3.968a2 2 0 1 1 .001-4.001A2 2 0 0 1 16 10.032z"/></svg></span></h5>
+            <h5>The best algorithms for these processes is <span role="img" data-toggle="tooltip"
+                data-placement="bottom"
+                title="Based on CPU utilization, Throughput, Turnaround time, Waiting time, Response time"
+                style="opacity: 0.6;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                  viewBox="0 0 32 32">
+                  <path
+                    d="M16 0C7.164 0 0 7.164 0 16s7.164 16 16 16 16-7.164 16-16S24.836 0 16 0zm-2 14a2 2 0 0 1 4 0v10a2 2 0 0 1-4 0V14zm2-3.968a2 2 0 1 1 .001-4.001A2 2 0 0 1 16 10.032z" />
+                  </svg></span></h5>
             <span id="final_result"></span>
           </div>
         </div>
@@ -146,49 +166,59 @@
     </div>
   </div>
   <!-- Modal Structure -->
-  <div id="modal_add" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div id="modal_add" class="modal fade" tabindex="-1" aria-labelledby="modal_add" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">Add a process</h4>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-          <div class="modal-body">
-            <form class="col s12">
-              <div class="row">
-                <div class="mb-3">
-                  <label for="modal_process_id" class="col-form-label">Id</label>
-                  <input disabled placeholder="Id" class="form-control" type="number" id="modal_process_id">
-                  
-                </div>
-                <div class="mb-3">
-                  <label for="modal_burst_time" class="col-form-label">Burst Time</label>
-                  <input id="modal_burst_time" class="form-control" type="number" min="0" required placeholder="0">
-                  
-                </div>
-                <div class="mb-3">
-                  <label for="modal_arrival_time" class="col-form-label">Arrival Time</label>
-                  <input id="modal_arrival_time" class="form-control" type="number" min="0" required placeholder="0">
-                  
-                </div>
-                <div class="mb-3">
-                  <label for="modal_priority" class="col-form-label">Priority</label>
-                  <input id="modal_priority" class="form-control" type="number" min="0" required placeholder="0">
-                  
-                </div>
-              </div>
+        <div class="modal-body">
+          <form class="col s12">
+            <div class="row">
+              <div class="mb-3">
+                <label for="modal_process_id" class="col-form-label">Id</label>
+                <input disabled placeholder="Id" class="form-control" type="number" id="modal_process_id">
 
-            </form>
+              </div>
+              <div class="mb-3">
+                <label for="modal_burst_time" class="col-form-label">Burst Time</label>
+                <input id="modal_burst_time" class="form-control" type="number" min="0" required>
+                <div class="text-danger" id="error_bt" hidden>
+                  Please enter value greater than 0
+                </div>
+
+              </div>
+              <div class="mb-3">
+                <label for="modal_arrival_time" class="col-form-label">Arrival Time</label>
+                <input id="modal_arrival_time" class="form-control" type="number" min="0" required placeholder="0">
+                <div class="text-danger" id="error_at" hidden>
+                  Please enter value greater than or equal to 0
+                </div>
+
+              </div>
+              <div class="mb-3">
+                <label for="modal_priority" class="col-form-label">Priority</label>
+                <input id="modal_priority" class="form-control" type="number" min="0" required placeholder="0">
+                <div class="text-danger" id="error_pt" hidden>
+                  Please enter value greater than or equal to 0
+                </div>
+
+              </div>
+            </div>
+
+          </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" style="background-color: #e7c560;  color: aliceblue;" onclick="addProcess();" data-bs-dismiss="modal">ADD</button>
+          <button type="button" class="btn btn-primary" style="background-color: #e7c560;  color: aliceblue;"
+            onclick="addProcess();">ADD</button>
         </div>
       </div>
     </div>
   </div>
 
 
-  <div id="modal_edit" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div id="modal_edit" class="modal fade" tabindex="-1" aria-labelledby="modal_edit" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -205,28 +235,35 @@
           <div class="mb-3">
             <label class="col-form-label" for="modal_edit_burst_time">Burst Time</label>
             <input class="form-control" id="modal_edit_burst_time" type="number" min="0" class="validate" required>
-            
+            <div class="text-danger" id="error_edit_bt" hidden>
+              Please enter value greater than 0
+            </div>
           </div>
           <div class="mb-3">
             <label class="col-form-label" for="modal_edit_arrival_time">Arrival Time</label>
             <input class="form-control" id="modal_edit_arrival_time" type="number" min="0" class="validate" required>
-            
+            <div class="text-danger" id="error_edit_at" hidden>
+              Please enter value greater than or equal to 0
+            </div>
           </div>
           <div class="mb-3">
             <label class="col-form-label" for="modal_edit_priority">Priority</label>
             <input class="form-control" id="modal_edit_priority" type="number" min="0" class="validate" required>
-            
+            <div class="text-danger" id="error_edit_pt" hidden>
+              Please enter value greater than or equal to 0
+            </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" style=" color: aliceblue;" onclick="editProcess()" data-bs-dismiss="modal">Proceed</button>
-        
+          <button type="button" class="btn btn-primary" style=" color: aliceblue;"
+            onclick="editProcess()">Proceed</button>
+
         </div>
       </div>
     </div>
   </div>
 
-  <div id="modal_remove" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div id="modal_remove" class="modal fade" tabindex="-1" aria-labelledby="modal_remove" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -236,32 +273,30 @@
         <div class="modal-body">
           <div class="mb-3">
             <span>Select one or more processes to remove</span>
-            <select multiple id="modal_remove_select" class="form-select form-select-lg mb-3" multiple aria-label="multiple select example">
+            <select multiple id="modal_remove_select" class="form-select form-select-lg mb-3" multiple
+              aria-label="multiple select example">
               <option value="" disabled>Select Process Id</option>
             </select>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" style="background-color: #EC7063 ;  color: aliceblue;" onclick="removeProcess()" data-bs-dismiss="modal">Remove</button>
+          <button type="button" class="btn btn-primary" style="background-color: #EC7063 ;  color: aliceblue;"
+            onclick="removeProcess()" data-bs-dismiss="modal">Remove</button>
         </div>
       </div>
     </div>
     <script async>
-      $(document).ready(function () 
-      {
+      $(document).ready(function () {
         displayTable();
         displayResultTable();
-        $("#start_btn").click(function() 
-        {
+        $("#start_btn").click(function () {
           start();
-          $('html, body').animate(
-            {
-              scrollTop: $("#result_div").offset().top
-            }, 0);
+          $('html, body').animate({
+            scrollTop: $("#result_div").offset().top
+          }, 0);
         });
         $('[data-toggle="tooltip"]').tooltip();
       });
-
     </script>
 </body>
 

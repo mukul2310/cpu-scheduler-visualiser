@@ -120,23 +120,41 @@ function openAddModal() {
 function addProcess() {
     // let table = document.getElementById('table');
 
-    let input_burst = Math.max($('#modal_burst_time').val(), 0);
-    let input_arrival = Math.max($('#modal_arrival_time').val(), 0);
-    let input_priority = Math.max($('#modal_priority').val(), 0);
+    if ($("#modal_burst_time").val() < 1) {
+        $("#error_bt").removeAttr("hidden");
+    } else {
+        $("#error_bt").attr("hidden", true);
+    }
+    if ($("#modal_arrival_time").val() < 0) {
+        $("#error_at").removeAttr("hidden");
+    } else {
+        $("#error_at").attr("hidden", true);
+    }
+    if ($("#modal_priority").val() < 0) {
+        $("#error_pt").removeAttr("hidden");
+    } else {
+        $("#error_pt").attr("hidden", true);
+    }
+    if ($("#modal_burst_time").val() > 0 && $("#modal_arrival_time").val() >= 0 && $("#modal_priority").val() >= 0) {
+        let input_burst = Number($('#modal_burst_time').val());
+        let input_arrival = Math.max($('#modal_arrival_time').val(), 0);
+        let input_priority = Math.max($('#modal_priority').val(), 0);
 
-    obj = {
-        id: processes.length + 1,
-        burst_time: Number(input_burst),
-        arrival_time: Number(input_arrival),
-        priority: Number(input_priority)
-    };
+        obj = {
+            id: processes.length + 1,
+            burst_time: Number(input_burst),
+            arrival_time: Number(input_arrival),
+            priority: Number(input_priority)
+        };
 
-    processes.push(obj);
-    displayTable();
-    $('#modal_burst_time').val(Math.floor(Math.random() * 100));
-    $('#modal_arrival_time').val(Math.floor(Math.random() * 100));
-    $('#modal_priority').val(Math.floor(Math.random() * 100));
+        processes.push(obj);
+        displayTable();
+        $("#modal_add").modal("toggle");
 
+        $('#modal_burst_time').val(Math.floor(Math.random() * 100));
+        $('#modal_arrival_time').val(Math.floor(Math.random() * 100));
+        $('#modal_priority').val(Math.floor(Math.random() * 100));
+    }
 }
 
 function openEditModal() {
@@ -148,8 +166,7 @@ function openEditModal() {
         $dropdown_edit.append($("<option />").val(processes[i].id).text("Process " + processes[i].id));
         // $dropdown.append(new Option("Process "+processes[i].id, processes[i].id))
     }
-    if(processes.length!=0)
-    {
+    if (processes.length != 0) {
         $("#modal_edit_select").attr("disabled", false);
         $("#modal_edit_burst_time").attr("disabled", false);
         $("#modal_edit_arrival_time").attr("disabled", false);
@@ -160,9 +177,7 @@ function openEditModal() {
         $('#modal_edit_burst_time').val(processes[0].burst_time);
         $('#modal_edit_arrival_time').val(processes[0].arrival_time);
         $('#modal_edit_priority').val(processes[0].priority);
-    }
-    else
-    {
+    } else {
         $("#modal_edit_select").attr("disabled", true);
         $("#modal_edit_burst_time").attr("disabled", true);
         $("#modal_edit_arrival_time").attr("disabled", true);
@@ -180,34 +195,50 @@ function openEditModal() {
     });
 }
 
-function editProcess() 
-{
-    if(processes.length!=0)
-    {
-        let process_id = $("#modal_edit_select").val();
-        let new_burst_time = $("#modal_edit_burst_time").val();
-        let new_arrival_time = $("#modal_edit_arrival_time").val();
-        let new_priority = $("#modal_edit_priority").val();
-        if (new_burst_time == "") {
-            new_burst_time = processes[process_id - 1].burst_time;
+function editProcess() {
+    if (processes.length != 0) {
+        if ($("#modal_edit_burst_time").val() < 1) {
+            $("#error_edit_bt").removeAttr("hidden");
+        } else {
+            $("#error_edit_bt").attr("hidden", true);
         }
-        if (new_arrival_time == "") {
-            new_arrival_time = processes[process_id - 1].arrival_time;
+        if ($("#modal_edit_arrival_time").val() < 0) {
+            $("#error_edit_at").removeAttr("hidden");
+        } else {
+            $("#error_edit_at").attr("hidden", true);
         }
-        if (new_priority == "") {
-            new_priority = processes[process_id - 1].priority;
+        if ($("#modal_edit_priority").val() < 0) {
+            $("#error_edit_pt").removeAttr("hidden");
+        } else {
+            $("#error_edit_pt").attr("hidden", true);
         }
+        if ($("#modal_edit_burst_time").val() > 0 && $("#modal_edit_arrival_time").val() >= 0 && $("#modal_edit_priority").val() >= 0) {
+            let process_id = Number($("#modal_edit_select").val());
+            let new_burst_time = Number($("#modal_edit_burst_time").val());
+            let new_arrival_time = Number($("#modal_edit_arrival_time").val());
+            let new_priority = Number($("#modal_edit_priority").val());
+            if (new_burst_time == "") {
+                new_burst_time = processes[process_id - 1].burst_time;
+            }
+            if (new_arrival_time == "") {
+                new_arrival_time = processes[process_id - 1].arrival_time;
+            }
+            if (new_priority == "") {
+                new_priority = processes[process_id - 1].priority;
+            }
 
-        processes[process_id - 1].burst_time = Number(new_burst_time);
-        processes[process_id - 1].arrival_time = Number(new_arrival_time);
-        processes[process_id - 1].priority = Number(new_priority);
+            processes[process_id - 1].burst_time = Number(new_burst_time);
+            processes[process_id - 1].arrival_time = Number(new_arrival_time);
+            processes[process_id - 1].priority = Number(new_priority);
+            $("#modal_edit").modal("toggle");
+        }
+    } else {
+        $("#modal_edit").modal("toggle");
     }
     displayTable();
-
 }
 
-function openRemoveModal() 
-{
+function openRemoveModal() {
     // $('#modal_remove').modal();
     // $('select').formSelect();
     //   $("#modal_remove_select").formSelect();
@@ -238,46 +269,40 @@ function removeProcess() {
     displayTable();
 }
 
-function start() 
-{
+function start() {
     init();
-    if($("#fcfs_switch").prop('checked')===true)
-    FCFS();
-    if($("#proposed_switch").prop('checked')===true)
-    newProposed();
-    if($("#sjf_switch").prop('checked')===true)
-    SJFNonPre();
-    if($("#srtf_switch").prop('checked')===true)
-    SJFPre();
-    if($("#ljf_switch").prop('checked')===true)
-    LJFNonPre();
-    if($("#lrtf_switch").prop('checked')===true)
-    LJFPre();
-    if($("#priority_switch").prop('checked')===true)
-    priorityNonPre();
-    if($("#priority_pre_switch").prop('checked')===true)
-    priorityPre();
-    if($("#roundrobin_switch").prop('checked')===true)
-    roundRobin();
+    if ($("#fcfs_switch").prop('checked') === true)
+        FCFS();
+    if ($("#proposed_switch").prop('checked') === true)
+        newProposed();
+    if ($("#sjf_switch").prop('checked') === true)
+        SJFNonPre();
+    if ($("#srtf_switch").prop('checked') === true)
+        SJFPre();
+    if ($("#ljf_switch").prop('checked') === true)
+        LJFNonPre();
+    if ($("#lrtf_switch").prop('checked') === true)
+        LJFPre();
+    if ($("#priority_switch").prop('checked') === true)
+        priorityNonPre();
+    if ($("#priority_pre_switch").prop('checked') === true)
+        priorityPre();
+    if ($("#roundrobin_switch").prop('checked') === true)
+        roundRobin();
     displayGanttChart();
     displayResultTable();
     findBest();
-    $.each(bestAlgo,(index,object)=>
-    {
-        $.each(object,(key,value)=>
-        {
+    $.each(bestAlgo, (index, object) => {
+        $.each(object, (key, value) => {
             $("#final_result").append(key + ": " + value + '<br>');
         });
     });
 }
-$("#roundrobin_switch").on('change', ()=>
-{
-    if($("#roundrobin_switch").prop('checked')===false)
-    {
+$("#roundrobin_switch").on('change', () => {
+    if ($("#roundrobin_switch").prop('checked') === false) {
         $('#show_time_quanta').hide();
     }
-    if($("#roundrobin_switch").prop('checked')===true)
-    {
+    if ($("#roundrobin_switch").prop('checked') === true) {
         $('#show_time_quanta').show();
     }
 })
