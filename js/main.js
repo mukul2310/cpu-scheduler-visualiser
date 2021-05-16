@@ -264,28 +264,56 @@ function removeProcess() {
 
 function start() {
     init();
+    let checked=[false,false,false,false,false,false,false,false,false]
     if ($("#fcfs_switch").prop('checked') === true)
+    {
         FCFS();
-    if ($("#proposed_switch").prop('checked') === true)
-        newProposed();
+        checked[0]=true;
+    }
     if ($("#sjf_switch").prop('checked') === true)
+    {
         SJFNonPre();
+        checked[1]=true;
+    }
     if ($("#srtf_switch").prop('checked') === true)
+    {
         SJFPre();
+        checked[2]=true;
+    }
     if ($("#ljf_switch").prop('checked') === true)
+    {
         LJFNonPre();
+        checked[3]=true;
+    }
     if ($("#lrtf_switch").prop('checked') === true)
+    {
         LJFPre();
+        checked[4]=true;
+    }
     if ($("#priority_switch").prop('checked') === true)
+    {
         priorityNonPre();
+        checked[5]=true;
+    }
     if ($("#priority_pre_switch").prop('checked') === true)
+    {
         priorityPre();
+        checked[6]=true;
+    }
     if ($("#roundrobin_switch").prop('checked') === true)
+    {
         roundRobin();
+        checked[7]=true;
+    }
+    if ($("#proposed_switch").prop('checked') === true)
+    {
+        newProposed();
+        checked[8]=true;
+    }
     
     displayGanttChart();
     displayResultTable();
-    findBest();
+    findBest(checked);
 
     $.each(bestAlgo, (index, object) => {
         $.each(object, (key, value) => {

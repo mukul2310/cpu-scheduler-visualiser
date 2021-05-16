@@ -1102,7 +1102,7 @@ function calculateRank(a, b) {
     return rank;
 }
 
-function findBest() {
+function findBest(checked) {
     //calculate max CPU utilization
     //calculate min wt
     // calculate min tat
@@ -1111,6 +1111,20 @@ function findBest() {
     let wt = [avgWaitingTimeFCFS, avgWaitingTimeSJFNonPre, avgWaitingTimeSJFPre, avgWaitingTimeLJFNonPre, avgWaitingTimeLJFPre, avgWaitingTimePriorityNonPre, avgWaitingTimePriorityPre, avgWaitingTimeRoundRobin, avgWaitingTimeNew];
     let tat = [avgTurnaroundTimeFCFS, avgTurnaroundTimeSJFNonPre, avgTurnaroundTimeSJFPre, avgTurnaroundTimeLJFNonPre, avgTurnaroundTimeLJFPre, avgTurnaroundTimePriorityNonPre, avgTurnaroundTimePriorityPre, avgTurnaroundTimeRoundRobin, avgTurnAroundTimeNew];
     let rt = [avgResponseTimeFCFS, avgResponseTimeSJFNonPre, avgResponseTimeSJFPre, avgResponseTimeLJFNonPre, avgResponseTimeLJFPre, avgResponseTimePriorityNonPre, avgResponseTimePriorityPre, avgResponseTimeRoundRobin, avgResponseTimeNew];
+    let ct = [completionTimeFCFS, completionTimeSJF, completionTimeSJFPre, completionTimeLJF, completionTimeLJFPre, completionTimePriority, completionTimePriorityPre, completionTimeRoundRobin, completionTimeNew];
+    let cs = [ganttFCFS.length - 1, ganttSJFNonPre.length - 1, ganttSJFPre.length - 1, ganttLJFNonPre.length - 1, ganttLJFPre.length - 1, ganttPriorityNonPre.length - 1, ganttPriorityPre.length - 1, ganttRoundRobin.length - 1, ganttProposed.length - 1];
+    for(c in checked)
+    {
+        if(!checked[c])
+        {
+            algorithms.splice(c,1);
+            wt.splice(c,1);
+            tat.splice(c,1);
+            rt.splice(c,1);
+            ct.splice(c,1);
+            cs.splice(c,1);
+        }
+    }
     let cpuUtil = [];
     let throughput = [];
     let minArrivalTime = Number.MAX_VALUE;
@@ -1118,8 +1132,6 @@ function findBest() {
         if (processes[p].arrival_time < minArrivalTime)
             minArrivalTime = processes[p].arrival_time;
     }
-    let ct = [completionTimeFCFS, completionTimeSJF, completionTimeSJFPre, completionTimeLJF, completionTimeLJFPre, completionTimePriority, completionTimePriorityPre, completionTimeRoundRobin, completionTimeNew];
-    let cs = [ganttFCFS.length - 1, ganttSJFNonPre.length - 1, ganttSJFPre.length - 1, ganttLJFNonPre.length - 1, ganttLJFPre.length - 1, ganttPriorityNonPre.length - 1, ganttPriorityPre.length - 1, ganttRoundRobin.length - 1, ganttProposed.length - 1];
     for (i in cs) {
         if (i != cs.length - 1) {
             cpuUtil.push(ct[i] / (ct[i] + cs[i] - minArrivalTime));
