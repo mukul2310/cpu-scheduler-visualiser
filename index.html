@@ -4,10 +4,11 @@
 <head>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <meta charset='utf-8'>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
   <meta http-equiv='X-UA-Compatible' content='IE=edge'>
   <title>SchAlgo:CPU Scheduling Algorithm Visualizer</title>
-  <meta name='viewport' content='width=device-width, initial-scale=1'>
   <link rel="icon" type="image/png" href="images/image3.png">
+  <link rel="stylesheet" href="css/style.css">
   <script defer src="js/main.js"></script>
   <script defer src="js/algorithm.js"></script>
   <script src="js/jquery-3.5.1.min.js"></script>
@@ -16,12 +17,11 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">
   </script>
-  <link rel="stylesheet" type="csss" href="css/bootstrap.min.css">
   <script href="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
-<body style="background-color:rgb(255, 255, 255);">
-  <div class="row">
+<body>
+  <div>
     <div class="col-sm-12">
       <div class="card">
         <div class="card-block">
@@ -31,10 +31,10 @@
             </table>
             <div id="show_time_quanta">
               <label class="col-form-label" for="time_quanta">Time Quantum(For Round Robin Algorithm)</label>
-              <input class="form-control" id="time_quanta" type="number" placeholder="90" min="2" style="width: auto;">
+              <input class="form-control" id="time_quanta" type="number" placeholder="90" min="2">
             </div>
           </div>
-          <div class="row">
+          <div class="btn-toolbar" role="toolbar">
             <a class="btn btn-primary btn-lg d-flex align-items-center justify-content-between my-4 mx-5 col-md-2"
               style="background-color: #ecc85b;" data-bs-toggle="modal" href="#modal_add" role="button"
               onclick="openAddModal()">Add Process <span class="material-icons">add</span></a>
@@ -44,10 +44,10 @@
             <a class="btn btn-primary btn-lg d-flex align-items-center justify-content-between my-4 mx-5 col-md-2"
               style="background-color: #EC7063;" data-bs-toggle="modal" href="#modal_remove" role="button"
               onclick="openRemoveModal()">Remove Process <span class="material-icons">remove_circle_outline</span></a>
-            <div class="btn-group col-sm-2 mx-5">
+            <div class="btn-group col-md-2 mx-5">
               <button type="button" id="start_btn"
                 class="btn btn-primary btn-lg d-flex align-items-center justify-content-between my-4"
-                style="background-color: #58D68D;">Start <span class="material-icons">play_circle</span></button>
+                >Start <span class="material-icons">play_circle</span></button>
               <button type="button"
                 class="btn btn-primary dropdown-toggle dropdown-toggle-split btn-lg align-items-center justify-content-between my-4"
                 style="background-color: #58D68D;" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -138,7 +138,7 @@
     <div class="row" id="gantt_Proposed"></div>
   </div>
   <!-- Result Table -->
-  <div class="row">
+  <div>
     <div class="col-sm-12">
       <div class="card">
         <div class="card-block" id="result_div">
@@ -149,7 +149,7 @@
           </div>
         </div>
         <!-- Final Result -->
-        <div class="row">
+        <div>
           <div class="col-sm-12">
             <h5>The best algorithms for these processes is <span role="img" data-toggle="tooltip"
                 data-placement="bottom"
@@ -175,7 +175,7 @@
         </div>
         <div class="modal-body">
           <form class="col s12">
-            <div class="row">
+            <div>
               <div class="mb-3">
                 <label for="modal_process_id" class="col-form-label">Id</label>
                 <input disabled placeholder="Id" class="form-control" type="number" id="modal_process_id">

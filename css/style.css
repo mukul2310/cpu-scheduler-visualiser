@@ -1,0 +1,30 @@
+.gantt-box
+{
+	position: relative;
+	border: 3px solid #73AD21;
+	height: 5px;
+	padding: 50px;
+	text-align: center;
+}
+.gantt-box-left
+{
+	position: absolute;
+	left: 0;
+	margin-left: 3px;
+	bottom: 0;
+}
+.gantt-box-right
+{
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	margin-right: 3px;
+}
+#time_quanta
+{
+    width: auto;
+}
+#start_btn
+{
+    background-color: #58D68D;
+}

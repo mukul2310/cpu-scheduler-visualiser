@@ -107,14 +107,11 @@ function orderProcess() {
 }
 
 function openAddModal() {
-    // $('#modal_process_id').value = processes.length;
-    $("#modal_process_id").attr("value", processes.length + 1);
-    $("#modal_burst_time").attr("value", Math.floor(Math.random() * 100));
-    $("#modal_arrival_time").attr("value", Math.floor(Math.random() * 100));
-    $("#modal_priority").attr("value", Math.floor(Math.random() * 100));
-    // $("#modal_burst_time").attr("value", 0);
-    // $("#modal_arrival_time").attr("value",0);
-    // $("#modal_priority").attr("value", 0);
+    
+    $('#modal_process_id').val(processes.length + 1);
+    $('#modal_burst_time').val(Math.floor(Math.random() * 100));
+    $('#modal_arrival_time').val(Math.floor(Math.random() * 100));
+    $('#modal_priority').val(Math.floor(Math.random() * 100));
 }
 
 function addProcess() {
@@ -150,10 +147,6 @@ function addProcess() {
         processes.push(obj);
         displayTable();
         $("#modal_add").modal("toggle");
-
-        $('#modal_burst_time').val(Math.floor(Math.random() * 100));
-        $('#modal_arrival_time').val(Math.floor(Math.random() * 100));
-        $('#modal_priority').val(Math.floor(Math.random() * 100));
     }
 }
 
@@ -289,13 +282,16 @@ function start() {
         priorityPre();
     if ($("#roundrobin_switch").prop('checked') === true)
         roundRobin();
+    
     displayGanttChart();
     displayResultTable();
     findBest();
+
     $.each(bestAlgo, (index, object) => {
         $.each(object, (key, value) => {
             $("#final_result").append(key + ": " + value + '<br>');
         });
+        $("#final_result").append('<br>');
     });
 }
 $("#roundrobin_switch").on('change', () => {
