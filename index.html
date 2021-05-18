@@ -21,13 +21,14 @@
 </head>
 
 <body>
-  <div>
+  <h1 class="display-4 text-center">CPU Scheduling Algorithm Visualiser</h1>
+  <div class="container-fluid">
     <div class="col-sm-12">
-      <div class="card">
+      <div class="card border-bottom-0 border-start-0 border-end-0">
         <div class="card-block">
           <h4 class="card-title">Processes</h4>
           <div class="flex-center m-t-40">
-            <table class="table table-striped table-hover" id="table">
+            <table class="table table-hover" id="table">
             </table>
             <div id="show_time_quanta">
               <label class="col-form-label" for="time_quanta">Time Quantum(For Round Robin Algorithm)</label>
@@ -116,35 +117,55 @@
     </div>
   </div>
   <!-- Gantt Chart -->
-  <div class="container-fluid">
-    <h4>Gantt Charts</h4>
-    <h5>Gantt Chart for FCFS</h5>
-    <div class="row" id="gantt_FCFS"></div>
-    <h5>Gantt Chart for SJF non pre</h5>
-    <div class="row" id="gantt_SJFNonPre"></div>
-    <h5>Gantt Chart for SJF pre</h5>
-    <div class="row" id="gantt_SJFPre"></div>
-    <h5>Gantt Chart for LJF non pre</h5>
-    <div class="row" id="gantt_LJFNonPre"></div>
-    <h5>Gantt Chart for LJF pre</h5>
-    <div class="row" id="gantt_LJFPre"></div>
-    <h5>Gantt Chart for Priority non pre</h5>
-    <div class="row" id="gantt_PriorityNonPre"></div>
-    <h5>Gantt Chart for Priority pre</h5>
-    <div class="row" id="gantt_PriorityPre"></div>
-    <h5>Gantt Chart for Round Robin</h5>
-    <div class="row" id="gantt_RoundRobin"></div>
-    <h5>Gantt Chart for Proposed</h5>
-    <div class="row" id="gantt_Proposed"></div>
+  <div class="container-fluid" id="gantt" hidden>
+    <div class="card border-bottom-0 border-start-0 border-end-0">
+      <h4>Gantt Charts</h4>
+      <div>
+        <h5>Gantt Chart for FCFS <button class="btn p-0" onclick="openGantt(gantt_FCFS)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M12 4c4.41 0 8 3.59 8 8s-3.59 8-8 8-8-3.59-8-8 3.59-8 8-8m0-2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 13l-4-4h8z"/></svg></button></h5>
+        <div class="row" id="gantt_FCFS" hidden></div>
+      </div>
+      <div>
+        <h5>Gantt Chart for SJF non pre <button class="btn p-0" onclick="openGantt(gantt_SJFNonPre)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M12 4c4.41 0 8 3.59 8 8s-3.59 8-8 8-8-3.59-8-8 3.59-8 8-8m0-2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 13l-4-4h8z"/></svg></button></h5>
+        <div class="row" id="gantt_SJFNonPre" hidden></div>
+      </div>
+      <div>
+        <h5>Gantt Chart for SJF pre <button class="btn p-0" onclick="openGantt(gantt_SJFPre)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M12 4c4.41 0 8 3.59 8 8s-3.59 8-8 8-8-3.59-8-8 3.59-8 8-8m0-2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 13l-4-4h8z"/></svg></button></h5>
+        <div class="row" id="gantt_SJFPre" hidden></div>
+      </div>
+      <div>
+        <h5>Gantt Chart for LJF non pre <button class="btn p-0" onclick="openGantt(gantt_LJFNonPre)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M12 4c4.41 0 8 3.59 8 8s-3.59 8-8 8-8-3.59-8-8 3.59-8 8-8m0-2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 13l-4-4h8z"/></svg></button></h5>
+        <div class="row" id="gantt_LJFNonPre" hidden></div>
+      </div>
+      <div>
+        <h5>Gantt Chart for LJF pre <button class="btn p-0" onclick="openGantt(gantt_LJFPre)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M12 4c4.41 0 8 3.59 8 8s-3.59 8-8 8-8-3.59-8-8 3.59-8 8-8m0-2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 13l-4-4h8z"/></svg></button></h5>
+        <div class="row" id="gantt_LJFPre" hidden></div>
+      </div>
+      <div>
+        <h5>Gantt Chart for Priority non pre <button class="btn p-0" onclick="openGantt(gantt_PriorityNonPre)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M12 4c4.41 0 8 3.59 8 8s-3.59 8-8 8-8-3.59-8-8 3.59-8 8-8m0-2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 13l-4-4h8z"/></svg></button></h5>
+        <div class="row" id="gantt_PriorityNonPre" hidden></div>
+      </div>
+      <div>
+        <h5>Gantt Chart for Priority pre <button class="btn p-0" onclick="openGantt(gantt_PriorityPre)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M12 4c4.41 0 8 3.59 8 8s-3.59 8-8 8-8-3.59-8-8 3.59-8 8-8m0-2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 13l-4-4h8z"/></svg></button></h5>
+        <div class="row" id="gantt_PriorityPre" hidden></div>
+      </div>
+      <div>
+        <h5>Gantt Chart for Round Robin <button class="btn p-0" onclick="openGantt(gantt_RoundRobin)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M12 4c4.41 0 8 3.59 8 8s-3.59 8-8 8-8-3.59-8-8 3.59-8 8-8m0-2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 13l-4-4h8z"/></svg></button></h5>
+        <div class="row" id="gantt_RoundRobin" hidden></div>
+      </div>
+      <div>
+        <h5>Gantt Chart for Proposed <button class="btn p-0" onclick="openGantt(gantt_Proposed)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M12 4c4.41 0 8 3.59 8 8s-3.59 8-8 8-8-3.59-8-8 3.59-8 8-8m0-2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 13l-4-4h8z"/></svg></button></h5>
+        <div class="row" id="gantt_Proposed" hidden></div>
+      </div>
+    </div>
   </div>
   <!-- Result Table -->
-  <div>
+  <div class="container-fluid" id="result" hidden>
     <div class="col-sm-12">
-      <div class="card">
+      <div class="card border-bottom-0 border-start-0 border-end-0">
         <div class="card-block" id="result_div">
           <h4 class="card-title">Results</h4>
           <div class="flex-center m-t-40">
-            <table class="table table-striped table-hover" id="result_table">
+            <table class="table table-hover" id="result_table">
             </table>
           </div>
         </div>
@@ -159,7 +180,7 @@
                   <path
                     d="M16 0C7.164 0 0 7.164 0 16s7.164 16 16 16 16-7.164 16-16S24.836 0 16 0zm-2 14a2 2 0 0 1 4 0v10a2 2 0 0 1-4 0V14zm2-3.968a2 2 0 1 1 .001-4.001A2 2 0 0 1 16 10.032z" />
                   </svg></span></h5>
-            <span id="final_result"></span>
+            <ul id="final_result"></ul>
           </div>
         </div>
       </div>

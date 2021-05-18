@@ -852,9 +852,6 @@ function LJFPre() {
 var resultTable;
 
 function createResultTable() {
-    resultTable = document.querySelector('#result_table');
-    table = document.createElement('table');
-    let headerRow = document.createElement('tr');
     let resultHeaders = ['Scheduling Algorithm', 'Average Turnaround Time', 'Average Waiting Time'];
     let results = [{
             name: "FCFS",
@@ -902,29 +899,23 @@ function createResultTable() {
             avgWT: avgWaitingTimeNew.toFixed(2)
         }
     ];
-
-    resultHeaders.forEach(headerText => {
-        let header = document.createElement('th');
-        let textNode = document.createTextNode(headerText);
-        header.appendChild(textNode);
-        headerRow.appendChild(header);
-    });
-
-    table.appendChild(headerRow);
-
-    results.forEach(result => {
-        let row = document.createElement('tr');
-
-        Object.values(result).forEach(text => {
-            let cell = document.createElement('td');
-            let textNode = document.createTextNode(text);
-            cell.appendChild(textNode);
-            row.appendChild(cell);
-        })
-        table.appendChild(row);
-    });
-
-
+    header="";
+    for(head in resultHeaders)
+    {
+        header+="<th>"+resultHeaders[head]+"</th>";
+    }
+    $("#result_table").append(`<thead><tr>${header}</tr></thead>`)
+    data="";
+    for(r in results)
+    {
+        let row="";
+        for(obj in results[r])
+        {
+            row+="<td>"+results[r][obj]+"</td>";
+        }
+        data+="<tr>"+row+"</tr>";
+    }
+    $("#result_table").append(`<tbody>${data}</tbody>`);
 }
 
 function init() {
@@ -992,10 +983,10 @@ function init() {
     $("#final_result").empty();
 }
 
-function displayResultTable() {
+function displayResultTable() 
+{
+    $("#result_table").empty();
     createResultTable();
-    resultTable.removeChild(resultTable.lastChild);
-    resultTable.appendChild(table);
 }
 
 function displayGanttChart() 
@@ -1163,9 +1154,9 @@ function findBest(checked) {
         if (rank[a] === minRank) {
             bestAlgo.push({
                 Algorithm: algorithms[a],
-                CPU_Utilization: (cpuUtil[a] * 100).toFixed(2),
-                Throughput: throughput[a].toFixed(2) + '(No of Process/Total time unit)',
-                TurnAroundTime: tat[a].toFixed(2),
+                CPU_Utilization: (cpuUtil[a] * 100).toFixed(2)+" %",
+                Throughput: throughput[a].toFixed(2) +" (Process per unit time)",
+                TurnAround_Time: tat[a].toFixed(2),
                 Waiting_Time: wt[a].toFixed(2),
                 Response_Time: rt[a].toFixed(2)
             });

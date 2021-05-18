@@ -1,5 +1,3 @@
-let myTable = document.querySelector('#table');
-var table, processCount;
 var processes = [{
         id: 1,
         burst_time: 80,
@@ -64,38 +62,32 @@ var processes = [{
 
 let headers = ['Process Id', 'Burst Time', 'Arrival Time', 'Priority'];
 
-function createTable() {
-    table = document.createElement('table');
-    let headerRow = document.createElement('tr');
+function createTable() 
+{
+    let table=$("#table");
+    let head="";
+    for(h in headers)
+    {
+        head+="<th>"+headers[h]+"</th>";
+    }
+    table.append(`<thead><tr>${head}</tr></thead>`);
 
-    headers.forEach(headerText => {
-        let header = document.createElement('th');
-        let textNode = document.createTextNode(headerText);
-        header.appendChild(textNode);
-        headerRow.appendChild(header);
-    });
-
-    table.appendChild(headerRow);
-
-    processes.forEach(process => {
-        let row = document.createElement('tr');
-
-        Object.values(process).forEach(text => {
-            let cell = document.createElement('td');
-            let textNode = document.createTextNode(text);
-            cell.appendChild(textNode);
-            row.appendChild(cell);
-        })
-        table.appendChild(row);
-    });
-
-
+    data="";
+    for(p in processes)
+    {
+        let row="";
+        for(obj in processes[p])
+        {
+            row+="<td>"+processes[p][obj]+"</td>";
+        }
+        data+="<tr>"+row+"</tr>";
+    }
+    table.append(`<tbody>${data}</tbody>`);
 }
 
 function displayTable() {
+    $("#table").empty();
     createTable();
-    myTable.removeChild(myTable.lastChild);
-    myTable.appendChild(table);
 }
 
 function orderProcess() {
@@ -264,6 +256,8 @@ function removeProcess() {
 
 function start() {
     init();
+    $("#gantt").removeAttr("hidden");
+    $("#result").removeAttr("hidden");
     let checked=[false,false,false,false,false,false,false,false,false]
     if ($("#fcfs_switch").prop('checked') === true)
     {
@@ -315,12 +309,23 @@ function start() {
     displayResultTable();
     findBest(checked);
 
-    $.each(bestAlgo, (index, object) => {
-        $.each(object, (key, value) => {
-            $("#final_result").append(key + ": " + value + '<br>');
-        });
-        $("#final_result").append('<br>');
-    });
+    for(b in bestAlgo)
+    {
+        let row="";
+        for(obj in bestAlgo[b])
+        {
+            row+="<span>"+obj +" : "+bestAlgo[b][obj]+"<br></span>";
+        }
+        $("#final_result").append(`<li>${row}<br></li>`);
+    }
+}
+
+function openGantt(id)
+{
+    if($(id).attr("hidden"))
+        $(id).removeAttr("hidden");
+    else
+        $(id).attr("hidden",true);
 }
 $("#roundrobin_switch").on('change', () => {
     if ($("#roundrobin_switch").prop('checked') === false) {
