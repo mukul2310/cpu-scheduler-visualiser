@@ -258,6 +258,7 @@ function start() {
     init();
     $("#gantt").removeAttr("hidden");
     $("#result").removeAttr("hidden");
+    $('[data-toggle="tooltip"]').tooltip();
     let checked=[false,false,false,false,false,false,false,false,false]
     if ($("#fcfs_switch").prop('checked') === true)
     {
@@ -318,6 +319,10 @@ function start() {
         }
         $("#final_result").append(`<li>${row}<br></li>`);
     }
+    $('html, body').animate(
+    {
+        scrollTop: $("#result_div").offset().top
+    }, 0);
 }
 
 function openGantt(id)

@@ -46,8 +46,7 @@
                data-bs-toggle="modal" href="#modal_remove" role="button"
               onclick="openRemoveModal()">Remove Process <span class="material-icons">remove_circle_outline</span></a>
             <div class="btn-group col-md-2 mx-5">
-              <button type="button" id="start_btn"
-                class="btn btn-success btn-lg d-flex align-items-center justify-content-between my-4"
+              <button type="button" class="btn btn-success btn-lg d-flex align-items-center justify-content-between my-4" onclick="start()"
                 style="background-color: hsl(125, 62%, 50%);">Start <span class="material-icons">play_circle</span></button>
               <button type="button"
                 class="btn btn-success dropdown-toggle dropdown-toggle-split btn-lg align-items-center justify-content-between my-4" 
@@ -231,7 +230,7 @@
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" style="background-color: #e7c560;  color: aliceblue;"
+          <button type="button" class="btn btn-warning text-white" 
             onclick="addProcess();">ADD</button>
         </div>
       </div>
@@ -276,7 +275,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" style=" color: aliceblue;"
+          <button type="button" class="btn btn-primary text-white"
             onclick="editProcess()">Proceed</button>
 
         </div>
@@ -301,7 +300,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" style="background-color: #EC7063 ;  color: aliceblue;"
+          <button type="button" class="btn btn-danger text-white"
             onclick="removeProcess()" data-bs-dismiss="modal">Remove</button>
         </div>
       </div>
@@ -309,14 +308,6 @@
     <script async>
       $(document).ready(function () {
         displayTable();
-        displayResultTable();
-        $("#start_btn").click(function () {
-          start();
-          $('html, body').animate({
-            scrollTop: $("#result_div").offset().top
-          }, 0);
-        });
-        $('[data-toggle="tooltip"]').tooltip();
       });
     </script>
 </body>

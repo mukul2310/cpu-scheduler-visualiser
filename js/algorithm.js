@@ -172,13 +172,21 @@ var completionTimeFCFS = 0;
 
 function FCFS() {
     readyQueueInit();
-    let p;
+    let p,min;
     let turnAroundFCFS = [];
     let waitingFCFS = [];
+    let processQueue=[];
     let time = 0;
     outer: while (readyQueue.length != 0) 
     {
-        if(readyQueue[0].arrival_time>time)
+        for(process in readyQueue)
+        {
+            if(readyQueue[process].arrival_time<=time)
+            {
+                processQueue.push(readyQueue[process]);
+            }
+        }
+        if(processQueue.length===0)
         {
             if(ganttFCFS.length>0&&ganttFCFS[ganttFCFS.length-1].processId!=null)
             {
@@ -200,21 +208,38 @@ function FCFS() {
             time++;
             continue outer;
         }
-        p=readyQueue.shift();
+        min=Number.MAX_VALUE;
+        for(process in processQueue)
+        {
+            if(processQueue[process].arrival_time<min)
+            {
+                min=processQueue[process];
+                p=process;
+            }
+        }
+        // p=readyQueue.shift();
         prev_time = time;
-        time += p.burst_time;
-        turnAroundFCFS[p.id] = time - p.arrival_time;
-        waitingFCFS[p.id] = turnAroundFCFS[p.id] - p.burst_time;
+        time += processQueue[p].burst_time;
+        turnAroundFCFS[processQueue[p].id] = time - processQueue[p].arrival_time;
+        waitingFCFS[processQueue[p].id] = turnAroundFCFS[processQueue[p].id] - processQueue[p].burst_time;
         
+        for(pro in readyQueue)
+        {
+            if(readyQueue[pro].id===processQueue[p].id)
+                readyQueue.splice(pro, 1);
+        }
+
         if(ganttFCFS.length>0)
         {
             ganttFCFS[ganttFCFS.length-1].endTime=prev_time;
         }
         ganttFCFS.push({
-            processId: p.id,
+            processId: processQueue[p].id,
             startTime: prev_time,
             endTime: time
         });
+        processQueue.splice(0,processQueue.length);
+
     }
     completionTimeFCFS = time;
     avgTurnaroundTimeFCFS = calculateAvgTime(turnAroundFCFS);
@@ -1125,8 +1150,8 @@ function findBest(checked) {
     }
     for (i in cs) {
         if (i != cs.length - 1) {
-            cpuUtil.push(ct[i] / (ct[i] + cs[i] - minArrivalTime));
-            throughput.push(processes.length / (ct[i] - minArrivalTime + cs[i]));
+            cpuUtil.push(ct[i] / (ct[i] + cs[i]));
+            throughput.push(processes.length / (ct[i] + cs[i] - minArrivalTime));
         } else {
             cpuUtil.push(ct[i] / (ct[i] + cs[i]));
             throughput.push(processes.length / (ct[i] + cs[i]));
@@ -1155,7 +1180,7 @@ function findBest(checked) {
             bestAlgo.push({
                 Algorithm: algorithms[a],
                 CPU_Utilization: (cpuUtil[a] * 100).toFixed(2)+" %",
-                Throughput: throughput[a].toFixed(2) +" (Process per unit time)",
+                Throughput: (throughput[a]* 100).toFixed(2) +" % (Process per unit time)",
                 TurnAround_Time: tat[a].toFixed(2),
                 Waiting_Time: wt[a].toFixed(2),
                 Response_Time: rt[a].toFixed(2)
