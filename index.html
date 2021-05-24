@@ -46,11 +46,8 @@
                data-bs-toggle="modal" href="#modal_remove" role="button"
               onclick="openRemoveModal()">Remove Process <span class="material-icons">remove_circle_outline</span></a>
             <div class="btn-group col-md-2 mx-5">
-              <button type="button" class="btn btn-success btn-lg d-flex align-items-center justify-content-between my-4" onclick="start()"
-                style="background-color: hsl(125, 62%, 50%);">Start <span class="material-icons">play_circle</span></button>
-              <button type="button"
-                class="btn btn-success dropdown-toggle dropdown-toggle-split btn-lg align-items-center justify-content-between my-4" 
-                style="background-color: hsl(125, 62%, 50%);" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <button type="button" class="btn btn-lg d-flex align-items-center justify-content-between my-4" onclick="start()" id="start_btn">Start <span class="material-icons">play_circle</span></button>
+              <button type="button" class="btn dropdown-toggle dropdown-toggle-split btn-lg align-items-center justify-content-between my-4" id="drop_btn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="visually-hidden">Select Algorithms</span>
               </button>
               <div class="dropdown-menu shadow border-0">
