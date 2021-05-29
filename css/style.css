@@ -44,3 +44,13 @@
 {
 	opacity: 0.8;
 }
+#vis_btn
+{
+	background-color: hsl(273, 100%, 66%);
+	transition: opacity 0.15s ease-in-out, color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+	color: aliceblue;
+}
+#vis_btn:hover
+{
+	opacity: 0.8;
+}

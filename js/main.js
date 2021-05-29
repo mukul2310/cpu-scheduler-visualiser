@@ -202,13 +202,13 @@ function editProcess() {
             let new_burst_time = Number($("#modal_edit_burst_time").val());
             let new_arrival_time = Number($("#modal_edit_arrival_time").val());
             let new_priority = Number($("#modal_edit_priority").val());
-            if (new_burst_time == "") {
+            if (new_burst_time === "") {
                 new_burst_time = processes[process_id - 1].burst_time;
             }
-            if (new_arrival_time == "") {
+            if (new_arrival_time === "") {
                 new_arrival_time = processes[process_id - 1].arrival_time;
             }
-            if (new_priority == "") {
+            if (new_priority === "") {
                 new_priority = processes[process_id - 1].priority;
             }
 
@@ -262,47 +262,47 @@ function start() {
     let checked=[false,false,false,false,false,false,false,false,false]
     if ($("#fcfs_switch").prop('checked') === true)
     {
-        FCFS();
+        FCFS(false);
         checked[0]=true;
     }
     if ($("#sjf_switch").prop('checked') === true)
     {
-        SJFNonPre();
+        SJFNonPre(false);
         checked[1]=true;
     }
     if ($("#srtf_switch").prop('checked') === true)
     {
-        SJFPre();
+        SJFPre(false);
         checked[2]=true;
     }
     if ($("#ljf_switch").prop('checked') === true)
     {
-        LJFNonPre();
+        LJFNonPre(false);
         checked[3]=true;
     }
     if ($("#lrtf_switch").prop('checked') === true)
     {
-        LJFPre();
+        LJFPre(false);
         checked[4]=true;
     }
     if ($("#priority_switch").prop('checked') === true)
     {
-        priorityNonPre();
+        priorityNonPre(false);
         checked[5]=true;
     }
     if ($("#priority_pre_switch").prop('checked') === true)
     {
-        priorityPre();
+        priorityPre(false);
         checked[6]=true;
     }
     if ($("#roundrobin_switch").prop('checked') === true)
     {
-        roundRobin();
+        roundRobin(false);
         checked[7]=true;
     }
     if ($("#proposed_switch").prop('checked') === true)
     {
-        newProposed();
+        newProposed(false);
         checked[8]=true;
     }
     
@@ -313,10 +313,12 @@ function start() {
     for(b in bestAlgo)
     {
         let row="";
-        for(obj in bestAlgo[b])
-        {
-            row+="<span>"+obj +" : "+bestAlgo[b][obj]+"<br></span>";
-        }
+        row+="<span>"+"Algorithm" +" : "+bestAlgo[b].algorithm+"<br></span>";
+        row+="<span>"+"CPU Utilization" +" : "+bestAlgo[b].cpu_util+"<br></span>";
+        row+="<span>"+"Throughput" +" : "+bestAlgo[b].throughput+"<br></span>";
+        row+="<span>"+"TurnAround Time" +" : "+bestAlgo[b].tat+"<br></span>";
+        row+="<span>"+"Waiting Time" +" : "+bestAlgo[b].wt+"<br></span>";
+        row+="<span>"+"Response Time" +" : "+bestAlgo[b].rt+"<br></span>";
         $("#final_result").append(`<li>${row}<br></li>`);
     }
     $('html, body').animate(
