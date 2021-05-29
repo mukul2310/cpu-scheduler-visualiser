@@ -6,6 +6,9 @@
   <meta charset='utf-8'>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
   <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <meta name="description" content="Visualizer for 9 Scheduling Algorithms, like FCFS, SJF(Preemptive/non Preemptive), RR, LJF(Preemptive/non Preemptive), Priority(Preemptive/non Preemptive) and a new algorithm combination of SJF,RR and priority">
+  <meta name="keywords" content="cpu, scheduling, algorithm, Visualizer">
+  <meta name="author" content="mukul2310">
   <title>SchAlgo:CPU Scheduling Algorithm Visualizer</title>
   <link rel="icon" type="image/png" href="images/image3.png">
   <link rel="stylesheet" href="css/style.css">
@@ -107,7 +110,7 @@
                 </div>
               </div>
             </div>
-            <button type="button" class="btn dropdown-toggle dropdown-toggle-split btn-lg d-flex align-items-center justify-content-between my-4 mx-4 col-md-2" id="vis_btn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Visualise <span class="material-icons">leaderboard</span></button>
+            <button type="button" class="btn btn-lg d-flex align-items-center justify-content-between my-4 mx-4 col-md-2" id="vis_btn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Visualise <span class="material-icons">leaderboard</span></button>
             <div class="dropdown-menu shadow">
               <div class="dropdown-item">
                   <button class="btn btn-outline-dark w-100" onclick="FCFS(true)">FCFS</button>
@@ -375,7 +378,7 @@
       </div>
     </div>
     <script async>
-      $(document).ready(function () {
+      $(function(){
         displayTable();
       });
     </script>
