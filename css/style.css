@@ -54,3 +54,23 @@
 {
 	opacity: 0.8;
 }
+.fcontainer
+{
+	display: flex;
+	border: 2px solid #73AD21;
+	height: auto;
+	padding: 20px;
+	margin: 20px;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+.fitem
+{
+	display: flex;
+	border: 2px solid #73AD21;
+	width: 120px;
+	height: 120px;
+	margin: 20px;
+	justify-content: center;
+	align-items: center;
+}

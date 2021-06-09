@@ -38,15 +38,15 @@
             </div>
           </div>
           <div class="btn-toolbar" role="toolbar">
-            <a class="btn btn-warning text-white btn-lg d-flex align-items-center justify-content-between my-4 mx-4 col-md-2"
+            <button class="btn btn-warning text-white btn-lg d-flex align-items-center justify-content-between my-4 mx-4 col-md-2"
                data-bs-toggle="modal" href="#modal_add" role="button"
-              onclick="openAddModal()">Add Process <span class="material-icons">add</span></a>
-            <a class="btn btn-primary btn-lg d-flex align-items-center justify-content-between my-4 mx-4 col-md-2"
+              onclick="openAddModal()">Add Process <span class="material-icons">add</span></button>
+            <button class="btn btn-primary btn-lg d-flex align-items-center justify-content-between my-4 mx-4 col-md-2"
               data-bs-toggle="modal" href="#modal_edit" role="button" onclick="openEditModal()">Edit Process <span
-                class="material-icons">mode_edit</span></a>
-            <a class="btn btn-danger btn-lg d-flex align-items-center justify-content-between my-4 mx-4 col-md-2"
+                class="material-icons">mode_edit</span></button>
+            <button class="btn btn-danger btn-lg d-flex align-items-center justify-content-between my-4 mx-4 col-md-2"
                data-bs-toggle="modal" href="#modal_remove" role="button"
-              onclick="openRemoveModal()">Remove Process <span class="material-icons">remove_circle_outline</span></a>
+              onclick="openRemoveModal()">Remove Process <span class="material-icons">remove_circle_outline</span></button>
             <div class="btn-group col-md-2 my-4 mx-4">
               <button type="button" class="btn btn-lg d-flex align-items-center justify-content-between" onclick="start()" id="start_btn">Evaluate <span class="material-icons">play_circle</span></button>
               <button type="button" class="btn dropdown-toggle dropdown-toggle-split btn-lg align-items-center justify-content-between" id="drop_btn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -157,30 +157,28 @@
 <div class="container-fluid" id="vis" hidden>
   <div class="card border-bottom-0 border-start-0 border-end-0">
     <div>
+      <div class="card-title"> Algorithm: <span id="vis_name"></span></div>
       <div>
         Ready Queue
-        <div class="row" id="vis_rq">
+        <div class="fcontainer" id="vis_rq">
           P1
         </div>
       </div>
       <div id="wq" hidden>
         Waiting Queue
-        <div class="row" id="vis_wq">
+        <div class="fcontainer" id="vis_wq">
           P4
         </div>
       </div>
       <div class="d-flex">
         CPU
-        <div class="row" id="vis_cpu">
+        <div class="fcontainer" id="vis_cpu">
         P1
         </div>
-        Time
-        <div id="vis_time" class="ms-lg-1">
-        0
+        <div class="p-0 m-auto display-6">
+          Time: <span id="vis_time" class="bg-warning"></span>
+          <a class="btn btn-outline-danger" href="javascript:void(0)" id="vis_stop">STOP!</a>
         </div>
-      </div>
-      <div>
-        <button class="btn btn-outline-danger" id="vis_stop">STOP!</button>
       </div>
     </div>
   </div>

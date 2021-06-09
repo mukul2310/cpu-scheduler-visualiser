@@ -342,3 +342,7 @@ $("#roundrobin_switch").on('change', () => {
         $('#show_time_quanta').show();
     }
 })
+$("#vis_stop").on('click',()=>
+{
+    stop_flag=true;
+})

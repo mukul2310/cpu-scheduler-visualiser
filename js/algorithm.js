@@ -1,7 +1,7 @@
 var readyQueue = [];
 var arrangedReadyQueue = [];
 var timeQuanta;
-
+var stop_flag=false;
 function readyQueueInit() {
     for (i = 0; i < processes.length; i++) {
         let copiedProcess = Object.assign({}, processes[i]);
@@ -52,7 +52,7 @@ function calculateBurstTimePriority() {
 //formula2
 function calculateF() {
     for (p in readyQueue) {
-        readyQueue[p].f = (1.0 * (3 * readyQueue[p].priority + readyQueue[p].burstTimePriority) / 4);
+        readyQueue[p].f = 1.0 * ((3 * readyQueue[p].priority) + readyQueue[p].burstTimePriority) / 4;
     }
 }
 
@@ -126,7 +126,7 @@ async function newProposed(flag) {
             scrollTop: $("#vis").offset().top
         }, 0);
     }
-    while (readyQueue.length != 0) {
+    outer:while (readyQueue.length != 0) {
         calculateTimeQuanta();
         calculateBurstTimePriority();
         calculateF();
@@ -138,7 +138,7 @@ async function newProposed(flag) {
             let vis_block=""
             for(let process in arrangedReadyQueue)
             {
-                vis_block+=`<span class='col gantt-box'>P${arrangedReadyQueue[process].id}<span class='gantt-box-left'>Arrival time: ${arrangedReadyQueue[process].arrival_time}</span></span>`
+                vis_block+=`<span class='fitem'>P${arrangedReadyQueue[process].id}</span>`
             }
             let p = arrangedReadyQueue.shift();
             prev_time = time;
@@ -153,7 +153,7 @@ async function newProposed(flag) {
                 let vis_block=""
                 for(let process in readyQueue)
                 {
-                    vis_block+=`<span class='col gantt-box'>P${readyQueue[process].id}<span class='gantt-box-left'>Arrival time: ${readyQueue[process].arrival_time}</span></span>`
+                    vis_block+=`<span class='fitem'>P${readyQueue[process].id}</span>`
                 }
                 if(flag)
                 {
@@ -168,10 +168,14 @@ async function newProposed(flag) {
             }
             if(flag)
             {
+                $("#vis_name").empty().append("Proposed")
                 $("#vis_rq").empty().html(vis_block)
-                $("#vis_cpu").empty().html(`<span class='gantt-box'>P${p.id}`)
+                $("#vis_cpu").empty().html(`<span class='fitem'>P${p.id}</span>`)
                 $("#vis_time").empty().append(time)
+                $(".btn").attr("disabled",true)
                 await new Promise(r => setTimeout(r, 2000));
+                if(stop_flag)
+                    break outer;
             }
             ganttProposed.push({
                 processId: p.id,
@@ -180,6 +184,8 @@ async function newProposed(flag) {
             });
         }
     }
+    $(".btn").removeAttr("disabled")
+    stop_flag=false;
     for (i in completionTime) {
         turnAroundTime[i] = completionTime[i];
     }
@@ -211,6 +217,7 @@ async function FCFS(flag) {
     let time = 0;
     if(flag)
     {
+        $("#wq").attr("hidden",true)
         $("#vis").removeAttr("hidden");
         $('html, body').animate(
         {
@@ -252,7 +259,7 @@ async function FCFS(flag) {
         min=Number.MAX_VALUE;
         for(let process in processQueue)
         {
-            vis_block+=`<span class='col gantt-box'>P${processQueue[process].id}<span class='gantt-box-left'>Arrival time: ${processQueue[process].arrival_time}</span></span>`
+            vis_block+=`<span class='fitem'>P${processQueue[process].id}</span>`
             if(processQueue[process].arrival_time<min)
             {
                 min=processQueue[process];
@@ -261,10 +268,14 @@ async function FCFS(flag) {
         }
         if(flag)
         {
+            $("#vis_name").empty().append("FCFS")
             $("#vis_rq").empty().html(vis_block)
-            $("#vis_cpu").empty().html(`<span class='gantt-box'>P${processQueue[p].id}`)
+            $("#vis_cpu").empty().html(`<span class='fitem'>P${processQueue[p].id}</span>`)
             $("#vis_time").empty().append(time)
+            $(".btn").attr("disabled",true)
             await new Promise(r => setTimeout(r, 2000));
+            if(stop_flag)
+                break outer;
         }
         prev_time = time;
         time += processQueue[p].burst_time;
@@ -289,6 +300,8 @@ async function FCFS(flag) {
         processQueue.splice(0,processQueue.length);
 
     }
+    $(".btn").removeAttr("disabled")
+    stop_flag=false;
     completionTimeFCFS = time;
     avgTurnaroundTimeFCFS = calculateAvgTime(turnAroundFCFS);
     avgWaitingTimeFCFS = calculateAvgTime(waitingFCFS);
@@ -310,6 +323,7 @@ async function SJFNonPre(flag) {
     let time = 0;
     if(flag)
     {
+        $("#wq").attr("hidden",true)
         $("#vis").removeAttr("hidden");
         $('html, body').animate(
         {
@@ -347,7 +361,7 @@ async function SJFNonPre(flag) {
         min = Number.MAX_VALUE;
         let vis_block=""
         for (let process in processQueue) {
-            vis_block+=`<span class='col gantt-box'>P${processQueue[process].id}<span class='gantt-box-left'>Arrival time: ${processQueue[process].arrival_time}</span></span>`
+            vis_block+=`<span class='fitem'>P${processQueue[process].id}</span>`
             if (processQueue[process].burst_time < min) {
                 min = processQueue[process].burst_time;
                 p = process;
@@ -355,10 +369,14 @@ async function SJFNonPre(flag) {
         }
         if(flag)
         {
+            $("#vis_name").empty().append("SJF (non pre)")
             $("#vis_rq").empty().html(vis_block)
-            $("#vis_cpu").empty().html(`<span class='gantt-box'>P${processQueue[p].id}`)
+            $("#vis_cpu").empty().html(`<span class='fitem'>P${processQueue[p].id}</span>`)
             $("#vis_time").empty().append(time)
+            $(".btn").attr("disabled",true)
             await new Promise(r => setTimeout(r, 2000));
+            if(stop_flag)
+                break outer;
         }
         prev_time = time;
         time += processQueue[p].burst_time;
@@ -378,6 +396,8 @@ async function SJFNonPre(flag) {
         }
         processQueue.splice(0, processQueue.length);
     }
+    $(".btn").removeAttr("disabled")
+    stop_flag=false;
     completionTimeSJF = time;
     avgTurnaroundTimeSJFNonPre = calculateAvgTime(turnAroundSJFNonPre);
     avgWaitingTimeSJFNonPre = calculateAvgTime(waitingSJFNonPre);
@@ -401,13 +421,14 @@ async function SJFPre(flag) {
     let time = 0;
     if(flag)
     {
+        $("#wq").attr("hidden",true)
         $("#vis").removeAttr("hidden");
         $('html, body').animate(
         {
             scrollTop: $("#vis").offset().top
         }, 0);
     }
-    while (readyQueue.length != 0) {
+    outer:while (readyQueue.length != 0) {
         for (let process in readyQueue) {
             if (readyQueue[process].arrival_time <= time)
                 processQueue.push(readyQueue[process]);
@@ -434,7 +455,7 @@ async function SJFPre(flag) {
         min = Number.MAX_VALUE;
         let vis_block=""
         for (let process in processQueue) {
-            vis_block+=`<span class='col gantt-box'>P${processQueue[process].id}<span class='gantt-box-left'>Arrival time: ${processQueue[process].arrival_time}</span></span>`
+            vis_block+=`<span class='fitem'>P${processQueue[process].id}</span>`
             if (processQueue[process].burst_time < min) {
                 min = processQueue[process].burst_time;
                 p = process;
@@ -442,10 +463,14 @@ async function SJFPre(flag) {
         }
         if(flag)
         {
+            $("#vis_name").empty().append("SJF (pre)")
             $("#vis_rq").empty().html(vis_block)
-            $("#vis_cpu").empty().html(`<span class='gantt-box'>P${processQueue[p].id}`)
+            $("#vis_cpu").empty().html(`<span class='fitem'>P${processQueue[p].id}</span>`)
             $("#vis_time").empty().append(time)
+            $(".btn").attr("disabled",true)
             await new Promise(r => setTimeout(r, 2000));
+            if(stop_flag)
+                break outer;
         }
         prev_time = time;
         time++;
@@ -478,6 +503,8 @@ async function SJFPre(flag) {
         }
         processQueue.splice(p, processQueue.length);
     }
+    $(".btn").removeAttr("disabled")
+    stop_flag=false;
     for (p in processes) {
         turnAroundSJFPre[processes[p].id] = completionTime[processes[p].id] - processes[p].arrival_time;
         waitingSJFPre[processes[p].id] = turnAroundSJFPre[processes[p].id] - processes[p].burst_time;
@@ -505,13 +532,14 @@ async function priorityNonPre(flag) {
     let time = 0;
     if(flag)
     {
+        $("#wq").attr("hidden",true)
         $("#vis").removeAttr("hidden");
         $('html, body').animate(
         {
             scrollTop: $("#vis").offset().top
         }, 0);
     }
-    while (readyQueue.length != 0) {
+    outer:while (readyQueue.length != 0) {
         for (let process in readyQueue) {
             if (readyQueue[process].arrival_time <= time) {
                 processQueue.push(readyQueue[process]);
@@ -539,7 +567,7 @@ async function priorityNonPre(flag) {
         min = Number.MAX_VALUE;
         let vis_block=""
         for (let process in processQueue) {
-            vis_block+=`<span class='col gantt-box'>P${processQueue[process].id}<span class='gantt-box-left'>Arrival time: ${processQueue[process].arrival_time}</span></span>`
+            vis_block+=`<span class='fitem'>P${processQueue[process].id}</span>`
             if (processQueue[process].priority < min) {
                 min = processQueue[process].priority;
                 p = process;
@@ -547,10 +575,14 @@ async function priorityNonPre(flag) {
         }
         if(flag)
         {
+            $("#vis_name").empty().append("Priority (non pre)")
             $("#vis_rq").empty().html(vis_block)
-            $("#vis_cpu").empty().html(`<span class='gantt-box'>P${processQueue[p].id}`)
+            $("#vis_cpu").empty().html(`<span class='fitem'>P${processQueue[p].id}</span>`)
             $("#vis_time").empty().append(time)
+            $(".btn").attr("disabled",true)
             await new Promise(r => setTimeout(r, 2000));
+            if(stop_flag)
+                break outer;
         }
         prev_time = time;
         time += processQueue[p].burst_time;
@@ -570,6 +602,8 @@ async function priorityNonPre(flag) {
         }
         processQueue.splice(0, processQueue.length);
     }
+    $(".btn").removeAttr("disabled")
+    stop_flag=false;
     completionTimePriority = time;
     avgTurnaroundTimePriorityNonPre = calculateAvgTime(turnAroundPriorityNonPre);
     avgWaitingTimePriorityNonPre = calculateAvgTime(waitingPriorityNonPre);
@@ -593,6 +627,7 @@ async function priorityPre(flag) {
     let time = 0;
     if(flag)
     {
+        $("#wq").attr("hidden",true)
         $("#vis").removeAttr("hidden");
         $('html, body').animate(
         {
@@ -626,7 +661,7 @@ async function priorityPre(flag) {
         min = Number.MAX_VALUE;
         let vis_block="";
         for (let process in processQueue) {  
-            vis_block+=`<span class='col gantt-box'>P${processQueue[process].id}<span class='gantt-box-left'>Arrival time: ${processQueue[process].arrival_time}</span></span>`
+            vis_block+=`<span class='fitem'>P${processQueue[process].id}</span>`
             if (processQueue[process].priority < min) {
                 min = processQueue[process].priority;
                 p = process;
@@ -634,10 +669,14 @@ async function priorityPre(flag) {
         }
         if(flag)
         {
+            $("#vis_name").empty().append("Priority (pre)")
             $("#vis_rq").empty().html(vis_block)
-            $("#vis_cpu").empty().html(`<span class='gantt-box'>P${processQueue[p].id}`)
+            $("#vis_cpu").empty().html(`<span class='fitem'>P${processQueue[p].id}</span>`)
             $("#vis_time").empty().append(time)
+            $(".btn").attr("disabled",true)
             await new Promise(r => setTimeout(r, 2000));
+            if(stop_flag)
+                break outer;
         }
         prev_time = time;
         time++;
@@ -672,6 +711,8 @@ async function priorityPre(flag) {
         }
         processQueue.splice(0, processQueue.length);
     }
+    $(".btn").removeAttr("disabled")
+    stop_flag=false;
     for (p in processes) {
         turnAroundPriorityPre[processes[p].id] = completionTime[processes[p].id] - processes[p].arrival_time;
         waitingPriorityPre[processes[p].id] = turnAroundPriorityPre[processes[p].id] - processes[p].burst_time;
@@ -705,6 +746,7 @@ async function roundRobin(flag1) {
     let runningQueue = [];
     if(flag1)
     {
+        $("#wq").attr("hidden",true)
         $("#vis").removeAttr("hidden");
         $('html, body').animate(
         {
@@ -743,7 +785,7 @@ async function roundRobin(flag1) {
         break;
     }
     //then one by one all the processes
-    while (processQueue.length != 0) {
+    outer:while (processQueue.length != 0) {
         prev_time = time;
         let currentProcess = processQueue[0];
 
@@ -769,13 +811,17 @@ async function roundRobin(flag1) {
         }
         let vis_block=""
         for(let process in processQueue)
-            vis_block+=`<span class='col gantt-box'>P${processQueue[process].id}<span class='gantt-box-left'>Arrival time: ${processQueue[process].arrival_time}</span></span>`
+        vis_block+=`<span class='fitem'>P${processQueue[process].id}</span>`
         if(flag1)
         {
+            $("#vis_name").empty().append("Round Robin")
             $("#vis_rq").empty().html(vis_block)
-            $("#vis_cpu").empty().html(`<span class='gantt-box'>P${currentProcess.id}`)
+            $("#vis_cpu").empty().html(`<span class='fitem'>P${processQueue[p].id}</span>`)
             $("#vis_time").empty().append(time)
+            $(".btn").attr("disabled",true)
             await new Promise(r => setTimeout(r, 2000));
+            if(stop_flag)
+                break outer;
         }
         if(ganttRoundRobin.length>0)
             ganttRoundRobin[ganttRoundRobin.length-1].endTime=prev_time;
@@ -836,6 +882,8 @@ async function roundRobin(flag1) {
         }
         processQueue.shift();
     }
+    $(".btn").removeAttr("disabled")
+    stop_flag=false;
     for (p in processes) {
         turnAroundRR[processes[p].id] = completionTime[processes[p].id] - processes[p].arrival_time;
         waitingRR[processes[p].id] = turnAroundRR[processes[p].id] - processes[p].burst_time;
@@ -863,6 +911,7 @@ async function LJFNonPre(flag) {
     let time = 0;
     if(flag)
     {
+        $("#wq").attr("hidden",true)
         $("#vis").removeAttr("hidden");
         $('html, body').animate(
         {
@@ -897,7 +946,7 @@ async function LJFNonPre(flag) {
         max = Number.MIN_VALUE;
         let vis_block=""
         for (let process in processQueue) {
-            vis_block+=`<span class='col gantt-box'>P${processQueue[process].id}<span class='gantt-box-left'>Arrival time: ${processQueue[process].arrival_time}</span></span>`
+            vis_block+=`<span class='fitem'>P${processQueue[process].id}</span>`
             if (processQueue[process].burst_time > max) {
                 max = processQueue[process].burst_time;
                 p = process;
@@ -905,10 +954,14 @@ async function LJFNonPre(flag) {
         }
         if(flag)
         {
+            $("#vis_name").empty().append("LJF (non pre)")
             $("#vis_rq").empty().html(vis_block)
-            $("#vis_cpu").empty().html(`<span class='gantt-box'>P${processQueue[p].id}`)
+            $("#vis_cpu").empty().html(`<span class='fitem'>P${processQueue[p].id}</span>`)
             $("#vis_time").empty().append(time)
+            $(".btn").attr("disabled",true)
             await new Promise(r => setTimeout(r, 2000));
+            if(stop_flag)
+                break outer;
         }
         prev_time = time;
         time += processQueue[p].burst_time;
@@ -928,6 +981,8 @@ async function LJFNonPre(flag) {
         }
         processQueue.splice(0, processQueue.length);
     }
+    $(".btn").removeAttr("disabled")
+    stop_flag=false;
     completionTimeLJF = time;
     avgTurnaroundTimeLJFNonPre = calculateAvgTime(turnAroundLJFNonPre);
     avgWaitingTimeLJFNonPre = calculateAvgTime(waitingLJFNonPre);
@@ -951,13 +1006,14 @@ async function LJFPre(flag) {
     let time = 0;
     if(flag)
     {
+        $("#wq").attr("hidden",true)
         $("#vis").removeAttr("hidden");
         $('html, body').animate(
         {
             scrollTop: $("#vis").offset().top
         }, 0);
     }
-    while (readyQueue.length != 0) {
+    outer:while (readyQueue.length != 0) {
         for (let process in readyQueue) {
             if (readyQueue[process].arrival_time <= time)
                 processQueue.push(readyQueue[process]);
@@ -984,7 +1040,7 @@ async function LJFPre(flag) {
         max = Number.MIN_VALUE;
         let vis_block=""
         for (let process in processQueue) {
-            vis_block+=`<span class='col gantt-box'>P${processQueue[process].id}<span class='gantt-box-left'>Arrival time: ${processQueue[process].arrival_time}</span></span>`
+            vis_block+=`<span class='fitem'>P${processQueue[process].id}</span>`
             if (processQueue[process].burst_time > max) {
                 max = processQueue[process].burst_time;
                 p = process;
@@ -992,10 +1048,14 @@ async function LJFPre(flag) {
         }
         if(flag)
         {
+            $("#vis_name").empty().append("LJF (pre)")
             $("#vis_rq").empty().html(vis_block)
-            $("#vis_cpu").empty().html(`<span class='gantt-box'>P${processQueue[p].id}`)
+            $("#vis_cpu").empty().html(`<span class='fitem'>P${processQueue[p].id}</span>`)
             $("#vis_time").empty().append(time)
+            $(".btn").attr("disabled",true)
             await new Promise(r => setTimeout(r, 2000));
+            if(stop_flag)
+                break outer;
         }
         prev_time = time;
         time++;
@@ -1028,7 +1088,8 @@ async function LJFPre(flag) {
         }
         processQueue.splice(p, processQueue.length);
     }
-
+    $(".btn").removeAttr("disabled")
+    stop_flag=false;
     for (p in processes) {
         turnAroundLJFPre[processes[p].id] = completionTime[processes[p].id] - processes[p].arrival_time;
         waitingLJFPre[processes[p].id] = turnAroundLJFPre[processes[p].id] - processes[p].burst_time;
