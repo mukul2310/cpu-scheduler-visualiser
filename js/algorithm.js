@@ -816,7 +816,7 @@ async function roundRobin(flag1) {
         {
             $("#vis_name").empty().append("Round Robin")
             $("#vis_rq").empty().html(vis_block)
-            $("#vis_cpu").empty().html(`<span class='fitem'>P${processQueue[p].id}</span>`)
+            $("#vis_cpu").empty().html(`<span class='fitem'>P${currentProcess.id}</span>`)
             $("#vis_time").empty().append(time)
             $(".btn").attr("disabled",true)
             await new Promise(r => setTimeout(r, 2000));
