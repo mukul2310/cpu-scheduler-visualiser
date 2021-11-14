@@ -1351,6 +1351,7 @@ function findBest(checked) {
     //calculate min wt
     // calculate min tat
     // calculate max through put
+    // cs is context switching
     let algorithms = ["FCFS", "SJF", "SJF(Preemptive)", "LJF", "LJF(Preemptive)", "Priority", "Priority(Preemptive)", "Round Robin", "Proposed Algorithm"];
     let wt = [avgWaitingTimeFCFS, avgWaitingTimeSJFNonPre, avgWaitingTimeSJFPre, avgWaitingTimeLJFNonPre, avgWaitingTimeLJFPre, avgWaitingTimePriorityNonPre, avgWaitingTimePriorityPre, avgWaitingTimeRoundRobin, avgWaitingTimeNew];
     let tat = [avgTurnaroundTimeFCFS, avgTurnaroundTimeSJFNonPre, avgTurnaroundTimeSJFPre, avgTurnaroundTimeLJFNonPre, avgTurnaroundTimeLJFPre, avgTurnaroundTimePriorityNonPre, avgTurnaroundTimePriorityPre, avgTurnaroundTimeRoundRobin, avgTurnAroundTimeNew];

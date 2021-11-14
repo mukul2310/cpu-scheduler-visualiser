@@ -1,3 +1,11 @@
+body, .bg-linear
+{
+	background-image: linear-gradient(to right,rgb(252, 199, 199), rgb(196, 211, 255));
+}
+#time_quanta
+{
+	background-image: linear-gradient(to right,rgb(248, 221, 221), rgb(255, 228, 228));
+}
 .gantt-box
 {
 	position: relative;

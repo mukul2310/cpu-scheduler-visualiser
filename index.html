@@ -23,21 +23,21 @@
 </head>
 
 <body>
-  <h1 class="display-4 text-center">CPU Scheduling Algorithm Visualiser</h1>
+  <h1 class="display-4 text-center fw-bold">CPU Scheduling Algorithm Visualiser</h1>
   <div class="container-fluid">
     <div class="col-sm-12">
       <div class="card border-bottom-0 border-start-0 border-end-0">
         <div class="card-block">
-          <h4 class="card-title">Processes</h4>
+          <h4 class="card-title m-0 p-1 bg-linear">Processes</h4>
           <div class="flex-center m-t-40">
-            <table class="table table-hover" id="table">
+            <table class="table table-hover m-0 p-3 bg-linear" id="table">
             </table>
-            <div id="show_time_quanta">
-              <label class="col-form-label" for="time_quanta">Time Quantum(For Round Robin Algorithm)</label>
-              <input class="form-control" id="time_quanta" type="number" placeholder="90" min="2">
+            <div id="show_time_quanta" class="bg-linear">
+              <h4 class="col-form-label" for="time_quanta">Time Quantum(For Round Robin Algorithm)</h4>
+              <input class="form-control" id="time_quanta" type="number" placeholder="90 (by default)" min="2">
             </div>
           </div>
-          <div class="btn-toolbar" role="toolbar">
+          <div class="btn-toolbar bg-linear" role="toolbar">
             <button class="btn btn-warning text-white btn-lg d-flex align-items-center justify-content-between my-4 mx-4 col-md-2"
                data-bs-toggle="modal" href="#modal_add" role="button"
               onclick="openAddModal()">Add Process <span class="material-icons">add</span></button>
@@ -156,27 +156,27 @@
   <!-- Visualization part -->
 <div class="container-fluid" id="vis" hidden>
   <div class="card border-bottom-0 border-start-0 border-end-0">
-    <div>
-      <div class="card-title"> Algorithm: <span id="vis_name"></span></div>
+    <div class="bg-linear">
+      <div class="card-title"><h4>Algorithm: <span id="vis_name"></span></h4></div>
       <div>
-        Ready Queue
+        <h4>Ready Queue</h4>
         <div class="fcontainer" id="vis_rq">
           P1
         </div>
       </div>
       <div id="wq" hidden>
-        Waiting Queue
+        <h4>Waiting Queue</h4>
         <div class="fcontainer" id="vis_wq">
           P4
         </div>
       </div>
       <div class="d-flex">
-        CPU
+        <h4>CPU</h4>
         <div class="fcontainer" id="vis_cpu">
         P1
         </div>
         <div class="p-0 m-auto display-6">
-          Time: <span id="vis_time" class="bg-warning"></span>
+          <h4>Time: <span id="vis_time" class="bg-warning"></span></h4>
           <a class="btn btn-outline-danger" href="javascript:void(0)" id="vis_stop">STOP!</a>
         </div>
       </div>
@@ -186,7 +186,7 @@
 
   <!-- Gantt Chart -->
   <div class="container-fluid" id="gantt" hidden>
-    <div class="card border-bottom-0 border-start-0 border-end-0">
+    <div class="card border-bottom-0 border-start-0 border-end-0 bg-linear">
       <h4>Gantt Charts</h4>
       <div>
         <h5>Gantt Chart for FCFS <button class="btn p-0" onclick="openGantt(gantt_FCFS)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M12 4c4.41 0 8 3.59 8 8s-3.59 8-8 8-8-3.59-8-8 3.59-8 8-8m0-2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 13l-4-4h8z"/></svg></button></h5>
@@ -229,7 +229,7 @@
   <!-- Result Table -->
   <div class="container-fluid" id="result" hidden>
     <div class="col-sm-12">
-      <div class="card border-bottom-0 border-start-0 border-end-0">
+      <div class="card border-bottom-0 border-start-0 border-end-0 bg-linear">
         <div class="card-block" id="result_div">
           <h4 class="card-title">Results</h4>
           <div class="flex-center m-t-40">
