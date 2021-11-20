@@ -82,3 +82,37 @@ body, .bg-linear
 	justify-content: center;
 	align-items: center;
 }
+.triangle 
+{	
+	width: 0px;
+	height: 0px;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	z-index: 4;
+	border-width: 0 80px 80px 0;
+	border-style: solid;
+	background-color: #e6e7e8;
+	display:block;
+	/*border-radius:3px 0 0 0;*/
+	border-color:transparent #fff transparent #fff;
+}
+.logo
+{
+	position: absolute;
+	right: 10px;
+	z-index: 5;
+}
+
+@media only screen and (max-width: 600px) {
+	.triangle
+	{
+		border-width: 0 65px 50px 0;
+	}
+}
+@media only screen and (min-width: 768px) {
+	.triangle
+	{
+		border-width: 0 80px 80px 0;
+	}
+}
