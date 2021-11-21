@@ -100,6 +100,7 @@ body, .bg-linear
 .logo
 {
 	position: absolute;
+	top: 3px;
 	right: 10px;
 	z-index: 5;
 }
