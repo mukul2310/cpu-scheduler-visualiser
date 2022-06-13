@@ -6,10 +6,10 @@
   <meta charset='utf-8'>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
   <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-  <meta name="description" content="Visualizer for 9 Scheduling Algorithms, like FCFS, SJF(Preemptive/non Preemptive), RR, LJF(Preemptive/non Preemptive), Priority(Preemptive/non Preemptive) and a new algorithm combination of SJF,RR and priority">
-  <meta name="keywords" content="cpu, scheduling, algorithm, Visualizer">
+  <meta name="description" content="Visualiser for 9 Scheduling Algorithms, like FCFS, SJF(Preemptive/non Preemptive), RR, LJF(Preemptive/non Preemptive), Priority(Preemptive/non Preemptive) and a new algorithm combination of SJF,RR and priority">
+  <meta name="keywords" content="cpu, scheduling, algorithm, Visualiser">
   <meta name="author" content="mukul2310">
-  <title>SchAlgo:CPU Scheduling Algorithm Visualizer</title>
+  <title>SchAlgo:CPU Scheduling Algorithm Visualiser</title>
   <link rel="icon" type="image/png" href="images/image3.png">
   <link rel="stylesheet" href="css/style.css">
   <script defer src="js/main.js"></script>
@@ -30,7 +30,7 @@
   <h1 class="display-4 text-center fw-bold">CPU Scheduling Algorithm Visualiser</h1>
   <div class="container-fluid">
     <div class="col-sm-12">
-      <div class="card border-bottom-0 border-start-0 border-end-0">
+      <div class="card border-0">
         <div class="card-block">
           <h4 class="card-title m-0 p-1 bg-linear">Processes</h4>
           <div class="flex-center m-t-40">
@@ -42,18 +42,18 @@
             </div>
           </div>
           <div class="btn-toolbar bg-linear" role="toolbar">
-            <button class="btn btn-warning text-white btn-lg d-flex align-items-center justify-content-between my-4 mx-4 col-md-2"
+            <button class="btn bg-warning bg-gradient btn-lg d-flex align-items-center justify-content-between my-4 mx-4 col-md-2"
                data-bs-toggle="modal" href="#modal_add" role="button"
               onclick="openAddModal()">Add Process <span class="material-icons">add</span></button>
-            <button class="btn btn-primary btn-lg d-flex align-items-center justify-content-between my-4 mx-4 col-md-2"
+            <button class="btn bg-primary bg-gradient text-white btn-lg d-flex align-items-center justify-content-between my-4 mx-4 col-md-2"
               data-bs-toggle="modal" href="#modal_edit" role="button" onclick="openEditModal()">Edit Process <span
                 class="material-icons">mode_edit</span></button>
-            <button class="btn btn-danger btn-lg d-flex align-items-center justify-content-between my-4 mx-4 col-md-2"
+            <button class="btn bg-danger bg-gradient text-white btn-lg d-flex align-items-center justify-content-between my-4 mx-4 col-md-2"
                data-bs-toggle="modal" href="#modal_remove" role="button"
               onclick="openRemoveModal()">Remove Process <span class="material-icons">remove_circle_outline</span></button>
             <div class="btn-group col-md-2 my-4 mx-4">
-              <button type="button" class="btn btn-lg d-flex align-items-center justify-content-between" onclick="start()" id="start_btn">Evaluate <span class="material-icons">play_circle</span></button>
-              <button type="button" class="btn dropdown-toggle dropdown-toggle-split btn-lg align-items-center justify-content-between" id="drop_btn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <button type="button" class="btn btn-lg bg-gradient d-flex align-items-center justify-content-between" onclick="start()" id="start_btn">Evaluate <span class="material-icons">play_circle</span></button>
+              <button type="button" class="btn bg-gradient dropdown-toggle dropdown-toggle-split btn-lg align-items-center justify-content-between" id="drop_btn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="visually-hidden">Select Algorithms</span>
               </button>
               <div class="dropdown-menu shadow border-0">
@@ -113,7 +113,7 @@
                 </div>
               </div>
             </div>
-            <button type="button" class="btn btn-lg d-flex align-items-center justify-content-between my-4 mx-4 col-md-2" id="vis_btn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Visualise <span class="material-icons">leaderboard</span></button>
+            <button type="button" class="btn bg-gradient btn-lg d-flex align-items-center justify-content-between my-4 mx-4 col-md-2" id="vis_btn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Visualise <span class="material-icons">leaderboard</span></button>
             <div class="dropdown-menu shadow">
               <div class="dropdown-item">
                   <button class="btn btn-outline-dark w-100" onclick="FCFS(true)">FCFS</button>
