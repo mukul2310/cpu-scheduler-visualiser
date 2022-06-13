@@ -8,7 +8,7 @@ body
 }
 #time_quanta
 {
-	background-image: linear-gradient(to right,rgb(248, 221, 221), rgb(255, 228, 228));
+	background-image: linear-gradient(to left,rgb(255, 241, 241), rgb(205, 229, 255));
 }
 .gantt-box
 {
