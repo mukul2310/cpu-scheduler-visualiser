@@ -1,7 +1,8 @@
 var readyQueue = [];
 var arrangedReadyQueue = [];
 var timeQuanta;
-var stop_flag=false;
+var stop_flag = false;
+
 function readyQueueInit() {
     for (i = 0; i < processes.length; i++) {
         let copiedProcess = Object.assign({}, processes[i]);
@@ -117,16 +118,14 @@ async function newProposed(flag) {
     let completionTime = [];
     let responseTime = [];
     let time = 0;
-    if(flag)
-    {
+    if (flag) {
         $("#vis").removeAttr("hidden");
         $("#wq").removeAttr("hidden");
-        $('html, body').animate(
-        {
+        $('html, body').animate({
             scrollTop: $("#vis").offset().top
         }, 0);
     }
-    outer:while (readyQueue.length != 0) {
+    outer: while (readyQueue.length != 0) {
         calculateTimeQuanta();
         calculateBurstTimePriority();
         calculateF();
@@ -135,10 +134,9 @@ async function newProposed(flag) {
         $("#vis_wq").empty()
         $("#vis_rq").empty()
         while (arrangedReadyQueue.length != 0) {
-            let vis_block=""
-            for(let process in arrangedReadyQueue)
-            {
-                vis_block+=`<span class='fitem'>P${arrangedReadyQueue[process].id}</span>`
+            let vis_block = ""
+            for (let process in arrangedReadyQueue) {
+                vis_block += `<span class='fitem'>P${arrangedReadyQueue[process].id}</span>`
             }
             let p = arrangedReadyQueue.shift();
             prev_time = time;
@@ -150,13 +148,11 @@ async function newProposed(flag) {
                 p.burst_time -= timeQuanta;
                 time += timeQuanta;
                 readyQueue.push(p);
-                let vis_block=""
-                for(let process in readyQueue)
-                {
-                    vis_block+=`<span class='fitem'>P${readyQueue[process].id}</span>`
+                let vis_block = ""
+                for (let process in readyQueue) {
+                    vis_block += `<span class='fitem'>P${readyQueue[process].id}</span>`
                 }
-                if(flag)
-                {
+                if (flag) {
                     $("#vis_wq").empty().html(vis_block)
                 }
             } else //completed
@@ -166,15 +162,14 @@ async function newProposed(flag) {
                 let process = getProcessById(p.id);
                 waitingTime[p.id] = completionTime[p.id] - process.burst_time;
             }
-            if(flag)
-            {
+            if (flag) {
                 $("#vis_name").empty().append("Proposed")
                 $("#vis_rq").empty().html(vis_block)
                 $("#vis_cpu").empty().html(`<span class='fitem'>P${p.id}</span>`)
                 $("#vis_time").empty().append(time)
-                $(".btn").attr("disabled",true)
+                $(".btn").attr("disabled", true)
                 await new Promise(r => setTimeout(r, 2000));
-                if(stop_flag)
+                if (stop_flag)
                     break outer;
             }
             ganttProposed.push({
@@ -185,7 +180,7 @@ async function newProposed(flag) {
         }
     }
     $(".btn").removeAttr("disabled")
-    stop_flag=false;
+    stop_flag = false;
     for (i in completionTime) {
         turnAroundTime[i] = completionTime[i];
     }
@@ -210,42 +205,33 @@ var completionTimeFCFS = 0;
 
 async function FCFS(flag) {
     readyQueueInit();
-    let p,min;
+    let p, min;
     let turnAroundFCFS = [];
     let waitingFCFS = [];
-    let processQueue=[];
+    let processQueue = [];
     let time = 0;
-    if(flag)
-    {
-        $("#wq").attr("hidden",true)
+    if (flag) {
+        $("#wq").attr("hidden", true)
         $("#vis").removeAttr("hidden");
-        $('html, body').animate(
-        {
+        $('html, body').animate({
             scrollTop: $("#vis").offset().top
         }, 0);
     }
-    outer: while (readyQueue.length != 0) 
-    {
-        for(let process in readyQueue)
-        {
-            if(readyQueue[process].arrival_time<=time)
-            {
+    outer: while (readyQueue.length != 0) {
+        for (let process in readyQueue) {
+            if (readyQueue[process].arrival_time <= time) {
                 processQueue.push(readyQueue[process]);
             }
         }
-        if(processQueue.length===0)
-        {
-            if(ganttFCFS.length>0&&ganttFCFS[ganttFCFS.length-1].processId!=null)
-            {
-                ganttFCFS[ganttFCFS.length-1].endTime=time;
+        if (processQueue.length === 0) {
+            if (ganttFCFS.length > 0 && ganttFCFS[ganttFCFS.length - 1].processId != null) {
+                ganttFCFS[ganttFCFS.length - 1].endTime = time;
                 ganttFCFS.push({
                     processId: null,
                     startTime: time,
                     endTime: time + 1
                 });
-            }
-            else if(ganttFCFS.length==0)
-            {
+            } else if (ganttFCFS.length == 0) {
                 ganttFCFS.push({
                     processId: null,
                     startTime: time,
@@ -255,53 +241,48 @@ async function FCFS(flag) {
             time++;
             continue outer;
         }
-        let vis_block="";
-        min=Number.MAX_VALUE;
-        for(let process in processQueue)
-        {
-            vis_block+=`<span class='fitem'>P${processQueue[process].id}</span>`
-            if(processQueue[process].arrival_time<min)
-            {
-                min=processQueue[process];
-                p=process;
+        let vis_block = "";
+        min = Number.MAX_VALUE;
+        for (let process in processQueue) {
+            vis_block += `<span class='fitem'>P${processQueue[process].id}</span>`
+            if (processQueue[process].arrival_time < min) {
+                min = processQueue[process];
+                p = process;
             }
         }
-        if(flag)
-        {
+        if (flag) {
             $("#vis_name").empty().append("FCFS")
             $("#vis_rq").empty().html(vis_block)
             $("#vis_cpu").empty().html(`<span class='fitem'>P${processQueue[p].id}</span>`)
             $("#vis_time").empty().append(time)
-            $(".btn").attr("disabled",true)
+            $(".btn").attr("disabled", true)
             await new Promise(r => setTimeout(r, 2000));
-            if(stop_flag)
+            if (stop_flag)
                 break outer;
         }
         prev_time = time;
         time += processQueue[p].burst_time;
         turnAroundFCFS[processQueue[p].id] = time - processQueue[p].arrival_time;
         waitingFCFS[processQueue[p].id] = turnAroundFCFS[processQueue[p].id] - processQueue[p].burst_time;
-        
-        for(let pro in readyQueue)
-        {
-            if(readyQueue[pro].id===processQueue[p].id)
+
+        for (let pro in readyQueue) {
+            if (readyQueue[pro].id === processQueue[p].id)
                 readyQueue.splice(pro, 1);
         }
 
-        if(ganttFCFS.length>0)
-        {
-            ganttFCFS[ganttFCFS.length-1].endTime=prev_time;
+        if (ganttFCFS.length > 0) {
+            ganttFCFS[ganttFCFS.length - 1].endTime = prev_time;
         }
         ganttFCFS.push({
             processId: processQueue[p].id,
             startTime: prev_time,
             endTime: time
         });
-        processQueue.splice(0,processQueue.length);
+        processQueue.splice(0, processQueue.length);
 
     }
     $(".btn").removeAttr("disabled")
-    stop_flag=false;
+    stop_flag = false;
     completionTimeFCFS = time;
     avgTurnaroundTimeFCFS = calculateAvgTime(turnAroundFCFS);
     avgWaitingTimeFCFS = calculateAvgTime(waitingFCFS);
@@ -321,12 +302,10 @@ async function SJFNonPre(flag) {
     let waitingSJFNonPre = [];
     let processQueue = [];
     let time = 0;
-    if(flag)
-    {
-        $("#wq").attr("hidden",true)
+    if (flag) {
+        $("#wq").attr("hidden", true)
         $("#vis").removeAttr("hidden");
-        $('html, body').animate(
-        {
+        $('html, body').animate({
             scrollTop: $("#vis").offset().top
         }, 0);
     }
@@ -336,19 +315,15 @@ async function SJFNonPre(flag) {
                 processQueue.push(readyQueue[process]);
         }
 
-        if (processQueue.length === 0) 
-        {
-            if(ganttSJFNonPre.length>0&&ganttSJFNonPre[ganttSJFNonPre.length-1].processId!=null)
-            {
-                ganttSJFNonPre[ganttSJFNonPre.length-1].endTime=time;
+        if (processQueue.length === 0) {
+            if (ganttSJFNonPre.length > 0 && ganttSJFNonPre[ganttSJFNonPre.length - 1].processId != null) {
+                ganttSJFNonPre[ganttSJFNonPre.length - 1].endTime = time;
                 ganttSJFNonPre.push({
                     processId: null,
                     startTime: time,
                     endTime: time + 1
                 });
-            }
-            else if(ganttSJFNonPre.length==0)
-            {
+            } else if (ganttSJFNonPre.length == 0) {
                 ganttSJFNonPre.push({
                     processId: null,
                     startTime: time,
@@ -359,29 +334,28 @@ async function SJFNonPre(flag) {
             continue outer;
         }
         min = Number.MAX_VALUE;
-        let vis_block=""
+        let vis_block = ""
         for (let process in processQueue) {
-            vis_block+=`<span class='fitem'>P${processQueue[process].id}</span>`
+            vis_block += `<span class='fitem'>P${processQueue[process].id}</span>`
             if (processQueue[process].burst_time < min) {
                 min = processQueue[process].burst_time;
                 p = process;
             }
         }
-        if(flag)
-        {
+        if (flag) {
             $("#vis_name").empty().append("SJF (non pre)")
             $("#vis_rq").empty().html(vis_block)
             $("#vis_cpu").empty().html(`<span class='fitem'>P${processQueue[p].id}</span>`)
             $("#vis_time").empty().append(time)
-            $(".btn").attr("disabled",true)
+            $(".btn").attr("disabled", true)
             await new Promise(r => setTimeout(r, 2000));
-            if(stop_flag)
+            if (stop_flag)
                 break outer;
         }
         prev_time = time;
         time += processQueue[p].burst_time;
-        if(ganttSJFNonPre.length>0)
-            ganttSJFNonPre[ganttSJFNonPre.length-1].endTime=prev_time;
+        if (ganttSJFNonPre.length > 0)
+            ganttSJFNonPre[ganttSJFNonPre.length - 1].endTime = prev_time;
         ganttSJFNonPre.push({
             processId: processQueue[p].id,
             startTime: prev_time,
@@ -389,15 +363,14 @@ async function SJFNonPre(flag) {
         });
         turnAroundSJFNonPre[processQueue[p].id] = time - processQueue[p].arrival_time;
         waitingSJFNonPre[processQueue[p].id] = turnAroundSJFNonPre[processQueue[p].id] - processQueue[p].burst_time;
-        for(pro in readyQueue)
-        {
-            if(readyQueue[pro].id===processQueue[p].id)
+        for (pro in readyQueue) {
+            if (readyQueue[pro].id === processQueue[p].id)
                 readyQueue.splice(pro, 1);
         }
         processQueue.splice(0, processQueue.length);
     }
     $(".btn").removeAttr("disabled")
-    stop_flag=false;
+    stop_flag = false;
     completionTimeSJF = time;
     avgTurnaroundTimeSJFNonPre = calculateAvgTime(turnAroundSJFNonPre);
     avgWaitingTimeSJFNonPre = calculateAvgTime(waitingSJFNonPre);
@@ -419,16 +392,14 @@ async function SJFPre(flag) {
     let processQueue = [];
     let completionTime = [];
     let time = 0;
-    if(flag)
-    {
-        $("#wq").attr("hidden",true)
+    if (flag) {
+        $("#wq").attr("hidden", true)
         $("#vis").removeAttr("hidden");
-        $('html, body').animate(
-        {
+        $('html, body').animate({
             scrollTop: $("#vis").offset().top
         }, 0);
     }
-    outer:while (readyQueue.length != 0) {
+    outer: while (readyQueue.length != 0) {
         for (let process in readyQueue) {
             if (readyQueue[process].arrival_time <= time)
                 processQueue.push(readyQueue[process]);
@@ -453,23 +424,22 @@ async function SJFPre(flag) {
             continue;
         }
         min = Number.MAX_VALUE;
-        let vis_block=""
+        let vis_block = ""
         for (let process in processQueue) {
-            vis_block+=`<span class='fitem'>P${processQueue[process].id}</span>`
+            vis_block += `<span class='fitem'>P${processQueue[process].id}</span>`
             if (processQueue[process].burst_time < min) {
                 min = processQueue[process].burst_time;
                 p = process;
             }
         }
-        if(flag)
-        {
+        if (flag) {
             $("#vis_name").empty().append("SJF (pre)")
             $("#vis_rq").empty().html(vis_block)
             $("#vis_cpu").empty().html(`<span class='fitem'>P${processQueue[p].id}</span>`)
             $("#vis_time").empty().append(time)
-            $(".btn").attr("disabled",true)
+            $(".btn").attr("disabled", true)
             await new Promise(r => setTimeout(r, 2000));
-            if(stop_flag)
+            if (stop_flag)
                 break outer;
         }
         prev_time = time;
@@ -504,7 +474,7 @@ async function SJFPre(flag) {
         processQueue.splice(p, processQueue.length);
     }
     $(".btn").removeAttr("disabled")
-    stop_flag=false;
+    stop_flag = false;
     for (p in processes) {
         turnAroundSJFPre[processes[p].id] = completionTime[processes[p].id] - processes[p].arrival_time;
         waitingSJFPre[processes[p].id] = turnAroundSJFPre[processes[p].id] - processes[p].burst_time;
@@ -530,23 +500,20 @@ async function priorityNonPre(flag) {
     let turnAroundPriorityNonPre = [];
     let waitingPriorityNonPre = [];
     let time = 0;
-    if(flag)
-    {
-        $("#wq").attr("hidden",true)
+    if (flag) {
+        $("#wq").attr("hidden", true)
         $("#vis").removeAttr("hidden");
-        $('html, body').animate(
-        {
+        $('html, body').animate({
             scrollTop: $("#vis").offset().top
         }, 0);
     }
-    outer:while (readyQueue.length != 0) {
+    outer: while (readyQueue.length != 0) {
         for (let process in readyQueue) {
             if (readyQueue[process].arrival_time <= time) {
                 processQueue.push(readyQueue[process]);
             }
         }
-        if (processQueue.length === 0) 
-        {
+        if (processQueue.length === 0) {
             if (ganttPriorityNonPre.length > 0 && ganttPriorityNonPre[ganttPriorityNonPre.length - 1].processId != null) {
                 ganttPriorityNonPre[ganttPriorityNonPre.length - 1].endTime = time;
                 ganttPriorityNonPre.push({
@@ -565,29 +532,28 @@ async function priorityNonPre(flag) {
             continue;
         }
         min = Number.MAX_VALUE;
-        let vis_block=""
+        let vis_block = ""
         for (let process in processQueue) {
-            vis_block+=`<span class='fitem'>P${processQueue[process].id}</span>`
+            vis_block += `<span class='fitem'>P${processQueue[process].id}</span>`
             if (processQueue[process].priority < min) {
                 min = processQueue[process].priority;
                 p = process;
             }
         }
-        if(flag)
-        {
+        if (flag) {
             $("#vis_name").empty().append("Priority (non pre)")
             $("#vis_rq").empty().html(vis_block)
             $("#vis_cpu").empty().html(`<span class='fitem'>P${processQueue[p].id}</span>`)
             $("#vis_time").empty().append(time)
-            $(".btn").attr("disabled",true)
+            $(".btn").attr("disabled", true)
             await new Promise(r => setTimeout(r, 2000));
-            if(stop_flag)
+            if (stop_flag)
                 break outer;
         }
         prev_time = time;
         time += processQueue[p].burst_time;
-        if(ganttPriorityNonPre.length>0)
-           ganttPriorityNonPre[ganttPriorityNonPre.length-1].endTime=prev_time;
+        if (ganttPriorityNonPre.length > 0)
+            ganttPriorityNonPre[ganttPriorityNonPre.length - 1].endTime = prev_time;
         ganttPriorityNonPre.push({
             processId: processQueue[p].id,
             startTime: prev_time,
@@ -595,15 +561,14 @@ async function priorityNonPre(flag) {
         });
         turnAroundPriorityNonPre[processQueue[p].id] = time - processQueue[p].arrival_time;
         waitingPriorityNonPre[processQueue[p].id] = turnAroundPriorityNonPre[processQueue[p].id] - processQueue[p].burst_time;
-        for(pro in readyQueue)
-        {
-            if(readyQueue[pro].id===processQueue[p].id)
+        for (pro in readyQueue) {
+            if (readyQueue[pro].id === processQueue[p].id)
                 readyQueue.splice(pro, 1);
         }
         processQueue.splice(0, processQueue.length);
     }
     $(".btn").removeAttr("disabled")
-    stop_flag=false;
+    stop_flag = false;
     completionTimePriority = time;
     avgTurnaroundTimePriorityNonPre = calculateAvgTime(turnAroundPriorityNonPre);
     avgWaitingTimePriorityNonPre = calculateAvgTime(waitingPriorityNonPre);
@@ -625,12 +590,10 @@ async function priorityPre(flag) {
     let processQueue = [];
     let completionTime = [];
     let time = 0;
-    if(flag)
-    {
-        $("#wq").attr("hidden",true)
+    if (flag) {
+        $("#wq").attr("hidden", true)
         $("#vis").removeAttr("hidden");
-        $('html, body').animate(
-        {
+        $('html, body').animate({
             scrollTop: $("#vis").offset().top
         }, 0);
     }
@@ -659,23 +622,22 @@ async function priorityPre(flag) {
             continue outer;
         }
         min = Number.MAX_VALUE;
-        let vis_block="";
-        for (let process in processQueue) {  
-            vis_block+=`<span class='fitem'>P${processQueue[process].id}</span>`
+        let vis_block = "";
+        for (let process in processQueue) {
+            vis_block += `<span class='fitem'>P${processQueue[process].id}</span>`
             if (processQueue[process].priority < min) {
                 min = processQueue[process].priority;
                 p = process;
             }
         }
-        if(flag)
-        {
+        if (flag) {
             $("#vis_name").empty().append("Priority (pre)")
             $("#vis_rq").empty().html(vis_block)
             $("#vis_cpu").empty().html(`<span class='fitem'>P${processQueue[p].id}</span>`)
             $("#vis_time").empty().append(time)
-            $(".btn").attr("disabled",true)
+            $(".btn").attr("disabled", true)
             await new Promise(r => setTimeout(r, 2000));
-            if(stop_flag)
+            if (stop_flag)
                 break outer;
         }
         prev_time = time;
@@ -699,10 +661,9 @@ async function priorityPre(flag) {
             responsePriorityPre[processQueue[p].id] = prev_time - processQueue[p].arrival_time;
         }
         let index;
-        for(pro in readyQueue)
-        {
-            if(readyQueue[pro].id===processQueue[p].id)
-                index=pro;
+        for (pro in readyQueue) {
+            if (readyQueue[pro].id === processQueue[p].id)
+                index = pro;
         }
         processQueue[p].burst_time--;
         if (processQueue[p].burst_time === 0) {
@@ -712,7 +673,7 @@ async function priorityPre(flag) {
         processQueue.splice(0, processQueue.length);
     }
     $(".btn").removeAttr("disabled")
-    stop_flag=false;
+    stop_flag = false;
     for (p in processes) {
         turnAroundPriorityPre[processes[p].id] = completionTime[processes[p].id] - processes[p].arrival_time;
         waitingPriorityPre[processes[p].id] = turnAroundPriorityPre[processes[p].id] - processes[p].burst_time;
@@ -744,12 +705,10 @@ async function roundRobin(flag1) {
     let responseRR = [];
     let waitingRR = [];
     let runningQueue = [];
-    if(flag1)
-    {
-        $("#wq").attr("hidden",true)
+    if (flag1) {
+        $("#wq").attr("hidden", true)
         $("#vis").removeAttr("hidden");
-        $('html, body').animate(
-        {
+        $('html, body').animate({
             scrollTop: $("#vis").offset().top
         }, 0);
     }
@@ -762,8 +721,7 @@ async function roundRobin(flag1) {
                 processQueue.push(readyQueue[process]);
             }
         }
-        if (processQueue.length === 0) 
-        {
+        if (processQueue.length === 0) {
             if (ganttRoundRobin.length > 0 && ganttRoundRobin[ganttRoundRobin.length - 1].processId != null) {
                 ganttRoundRobin[ganttRoundRobin.length - 1].endTime = time;
                 ganttRoundRobin.push({
@@ -785,7 +743,7 @@ async function roundRobin(flag1) {
         break;
     }
     //then one by one all the processes
-    outer:while (processQueue.length != 0) {
+    outer: while (processQueue.length != 0) {
         prev_time = time;
         let currentProcess = processQueue[0];
 
@@ -809,22 +767,21 @@ async function roundRobin(flag1) {
                 }
             }
         }
-        let vis_block=""
-        for(let process in processQueue)
-        vis_block+=`<span class='fitem'>P${processQueue[process].id}</span>`
-        if(flag1)
-        {
+        let vis_block = ""
+        for (let process in processQueue)
+            vis_block += `<span class='fitem'>P${processQueue[process].id}</span>`
+        if (flag1) {
             $("#vis_name").empty().append("Round Robin")
             $("#vis_rq").empty().html(vis_block)
             $("#vis_cpu").empty().html(`<span class='fitem'>P${currentProcess.id}</span>`)
             $("#vis_time").empty().append(time)
-            $(".btn").attr("disabled",true)
+            $(".btn").attr("disabled", true)
             await new Promise(r => setTimeout(r, 2000));
-            if(stop_flag)
+            if (stop_flag)
                 break outer;
         }
-        if(ganttRoundRobin.length>0)
-            ganttRoundRobin[ganttRoundRobin.length-1].endTime=prev_time;
+        if (ganttRoundRobin.length > 0)
+            ganttRoundRobin[ganttRoundRobin.length - 1].endTime = prev_time;
         ganttRoundRobin.push({
             processId: currentProcess.id,
             startTime: prev_time,
@@ -839,19 +796,15 @@ async function roundRobin(flag1) {
                     runningQueue.push(readyQueue[process]);
                 }
             }
-            if (runningQueue.length === 0) 
-            {
-                if(ganttRoundRobin.length>0&&ganttRoundRobin[ganttRoundRobin.length-1].processId!=null)
-                {
-                    ganttRoundRobin[ganttRoundRobin.length-1].endTime=time;
+            if (runningQueue.length === 0) {
+                if (ganttRoundRobin.length > 0 && ganttRoundRobin[ganttRoundRobin.length - 1].processId != null) {
+                    ganttRoundRobin[ganttRoundRobin.length - 1].endTime = time;
                     ganttRoundRobin.push({
                         processId: null,
                         startTime: time,
                         endTime: time + 1
                     });
-                }
-                else if(ganttRoundRobin.length==0)
-                {
+                } else if (ganttRoundRobin.length == 0) {
                     ganttRoundRobin.push({
                         processId: null,
                         startTime: time,
@@ -883,7 +836,7 @@ async function roundRobin(flag1) {
         processQueue.shift();
     }
     $(".btn").removeAttr("disabled")
-    stop_flag=false;
+    stop_flag = false;
     for (p in processes) {
         turnAroundRR[processes[p].id] = completionTime[processes[p].id] - processes[p].arrival_time;
         waitingRR[processes[p].id] = turnAroundRR[processes[p].id] - processes[p].burst_time;
@@ -909,12 +862,10 @@ async function LJFNonPre(flag) {
     let waitingLJFNonPre = [];
     let processQueue = [];
     let time = 0;
-    if(flag)
-    {
-        $("#wq").attr("hidden",true)
+    if (flag) {
+        $("#wq").attr("hidden", true)
         $("#vis").removeAttr("hidden");
-        $('html, body').animate(
-        {
+        $('html, body').animate({
             scrollTop: $("#vis").offset().top
         }, 0);
     }
@@ -924,8 +875,7 @@ async function LJFNonPre(flag) {
                 processQueue.push(readyQueue[process]);
         }
 
-        if (processQueue.length == 0) 
-        {
+        if (processQueue.length == 0) {
             if (ganttLJFNonPre.length > 0 && ganttLJFNonPre[ganttLJFNonPre.length - 1].processId != null) {
                 ganttLJFNonPre[ganttLJFNonPre.length - 1].endTime = time;
                 ganttLJFNonPre.push({
@@ -944,29 +894,28 @@ async function LJFNonPre(flag) {
             continue outer;
         }
         max = Number.MIN_VALUE;
-        let vis_block=""
+        let vis_block = ""
         for (let process in processQueue) {
-            vis_block+=`<span class='fitem'>P${processQueue[process].id}</span>`
+            vis_block += `<span class='fitem'>P${processQueue[process].id}</span>`
             if (processQueue[process].burst_time > max) {
                 max = processQueue[process].burst_time;
                 p = process;
             }
         }
-        if(flag)
-        {
+        if (flag) {
             $("#vis_name").empty().append("LJF (non pre)")
             $("#vis_rq").empty().html(vis_block)
             $("#vis_cpu").empty().html(`<span class='fitem'>P${processQueue[p].id}</span>`)
             $("#vis_time").empty().append(time)
-            $(".btn").attr("disabled",true)
+            $(".btn").attr("disabled", true)
             await new Promise(r => setTimeout(r, 2000));
-            if(stop_flag)
+            if (stop_flag)
                 break outer;
         }
         prev_time = time;
         time += processQueue[p].burst_time;
-        if(ganttLJFNonPre.length>0)
-            ganttLJFNonPre[ganttLJFNonPre.length-1].endTime=prev_time;
+        if (ganttLJFNonPre.length > 0)
+            ganttLJFNonPre[ganttLJFNonPre.length - 1].endTime = prev_time;
         ganttLJFNonPre.push({
             processId: processQueue[p].id,
             startTime: prev_time,
@@ -974,15 +923,14 @@ async function LJFNonPre(flag) {
         });
         turnAroundLJFNonPre[processQueue[p].id] = time - processQueue[p].arrival_time;
         waitingLJFNonPre[processQueue[p].id] = turnAroundLJFNonPre[processQueue[p].id] - processQueue[p].burst_time;
-        for(pro in readyQueue)
-        {
-            if(readyQueue[pro].id===processQueue[p].id)
+        for (pro in readyQueue) {
+            if (readyQueue[pro].id === processQueue[p].id)
                 readyQueue.splice(pro, 1);
         }
         processQueue.splice(0, processQueue.length);
     }
     $(".btn").removeAttr("disabled")
-    stop_flag=false;
+    stop_flag = false;
     completionTimeLJF = time;
     avgTurnaroundTimeLJFNonPre = calculateAvgTime(turnAroundLJFNonPre);
     avgWaitingTimeLJFNonPre = calculateAvgTime(waitingLJFNonPre);
@@ -1004,16 +952,14 @@ async function LJFPre(flag) {
     let processQueue = [];
     let completionTime = [];
     let time = 0;
-    if(flag)
-    {
-        $("#wq").attr("hidden",true)
+    if (flag) {
+        $("#wq").attr("hidden", true)
         $("#vis").removeAttr("hidden");
-        $('html, body').animate(
-        {
+        $('html, body').animate({
             scrollTop: $("#vis").offset().top
         }, 0);
     }
-    outer:while (readyQueue.length != 0) {
+    outer: while (readyQueue.length != 0) {
         for (let process in readyQueue) {
             if (readyQueue[process].arrival_time <= time)
                 processQueue.push(readyQueue[process]);
@@ -1038,23 +984,22 @@ async function LJFPre(flag) {
             continue;
         }
         max = Number.MIN_VALUE;
-        let vis_block=""
+        let vis_block = ""
         for (let process in processQueue) {
-            vis_block+=`<span class='fitem'>P${processQueue[process].id}</span>`
+            vis_block += `<span class='fitem'>P${processQueue[process].id}</span>`
             if (processQueue[process].burst_time > max) {
                 max = processQueue[process].burst_time;
                 p = process;
             }
         }
-        if(flag)
-        {
+        if (flag) {
             $("#vis_name").empty().append("LJF (pre)")
             $("#vis_rq").empty().html(vis_block)
             $("#vis_cpu").empty().html(`<span class='fitem'>P${processQueue[p].id}</span>`)
             $("#vis_time").empty().append(time)
-            $(".btn").attr("disabled",true)
+            $(".btn").attr("disabled", true)
             await new Promise(r => setTimeout(r, 2000));
-            if(stop_flag)
+            if (stop_flag)
                 break outer;
         }
         prev_time = time;
@@ -1089,7 +1034,7 @@ async function LJFPre(flag) {
         processQueue.splice(p, processQueue.length);
     }
     $(".btn").removeAttr("disabled")
-    stop_flag=false;
+    stop_flag = false;
     for (p in processes) {
         turnAroundLJFPre[processes[p].id] = completionTime[processes[p].id] - processes[p].arrival_time;
         waitingLJFPre[processes[p].id] = turnAroundLJFPre[processes[p].id] - processes[p].burst_time;
@@ -1152,21 +1097,18 @@ function createResultTable() {
             avgWT: avgWaitingTimeNew.toFixed(2)
         }
     ];
-    header="";
-    for(head in resultHeaders)
-    {
-        header+="<th>"+resultHeaders[head]+"</th>";
+    header = "";
+    for (head in resultHeaders) {
+        header += "<th>" + resultHeaders[head] + "</th>";
     }
     $("#result_table").append(`<thead><tr>${header}</tr></thead>`)
-    data="";
-    for(r in results)
-    {
-        let row="";
-        for(obj in results[r])
-        {
-            row+="<td>"+results[r][obj]+"</td>";
+    data = "";
+    for (r in results) {
+        let row = "";
+        for (obj in results[r]) {
+            row += "<td>" + results[r][obj] + "</td>";
         }
-        data+="<tr>"+row+"</tr>";
+        data += "<tr>" + row + "</tr>";
     }
     $("#result_table").append(`<tbody>${data}</tbody>`);
 }
@@ -1236,83 +1178,72 @@ function init() {
     $("#final_result").empty();
 }
 
-function displayResultTable() 
-{
+function displayResultTable() {
     $("#result_table").empty();
     createResultTable();
 }
 
-function displayGanttChart() 
-{
-    for (i in ganttFCFS)
-    {
-        let diff=ganttFCFS[i].endTime-ganttFCFS[i].startTime+80;
-        if(ganttFCFS[i].processId!=null)
+function displayGanttChart() {
+    for (i in ganttFCFS) {
+        let diff = ganttFCFS[i].endTime - ganttFCFS[i].startTime + 80;
+        if (ganttFCFS[i].processId != null)
             $("#gantt_FCFS").append(`<div class="gantt-box" style="width: ${diff}px"><span class="gantt-box-left">${ganttFCFS[i].startTime}</span>P${ganttFCFS[i].processId}<span class="gantt-box-right">${ganttFCFS[i].endTime}<span></div>`);
         else
             $("#gantt_FCFS").append(`<div class="gantt-box" style="background-color: #58D68D; width: ${diff}px"><span class="gantt-box-left">${ganttFCFS[i].startTime}</span><span class="gantt-box-right">${ganttFCFS[i].endTime}<span></div>`);
     }
-    for (i in ganttSJFNonPre)
-    {
-        let diff=ganttSJFNonPre[i].endTime-ganttSJFNonPre[i].startTime+80;
-        if(ganttSJFNonPre[i].processId!=null)
-        $("#gantt_SJFNonPre").append(`<div class="gantt-box" style="width:${diff}px"><span class="gantt-box-left">${ganttSJFNonPre[i].startTime}</span>P${ganttSJFNonPre[i].processId}<span class="gantt-box-right">${ganttSJFNonPre[i].endTime}<span></div>`);
+    for (i in ganttSJFNonPre) {
+        let diff = ganttSJFNonPre[i].endTime - ganttSJFNonPre[i].startTime + 80;
+        if (ganttSJFNonPre[i].processId != null)
+            $("#gantt_SJFNonPre").append(`<div class="gantt-box" style="width:${diff}px"><span class="gantt-box-left">${ganttSJFNonPre[i].startTime}</span>P${ganttSJFNonPre[i].processId}<span class="gantt-box-right">${ganttSJFNonPre[i].endTime}<span></div>`);
         else
-        $("#gantt_SJFNonPre").append(`<div class="gantt-box" style="background-color: #58D68D; width: ${diff}px"><span class="gantt-box-left">${ganttSJFNonPre[i].startTime}</span><span class="gantt-box-right">${ganttSJFNonPre[i].endTime}<span></div>`);
+            $("#gantt_SJFNonPre").append(`<div class="gantt-box" style="background-color: #58D68D; width: ${diff}px"><span class="gantt-box-left">${ganttSJFNonPre[i].startTime}</span><span class="gantt-box-right">${ganttSJFNonPre[i].endTime}<span></div>`);
     }
-    for (i in ganttSJFPre)
-    {
-        let diff=ganttSJFPre[i].endTime-ganttSJFPre[i].startTime+80;
-        if(ganttSJFPre[i].processId!=null)
-        $("#gantt_SJFPre").append(`<div class="gantt-box" style="width:${diff}px"><span class="gantt-box-left">${ganttSJFPre[i].startTime}</span>P${ganttSJFPre[i].processId}<span class="gantt-box-right">${ganttSJFPre[i].endTime}<span></div>`);
+    for (i in ganttSJFPre) {
+        let diff = ganttSJFPre[i].endTime - ganttSJFPre[i].startTime + 80;
+        if (ganttSJFPre[i].processId != null)
+            $("#gantt_SJFPre").append(`<div class="gantt-box" style="width:${diff}px"><span class="gantt-box-left">${ganttSJFPre[i].startTime}</span>P${ganttSJFPre[i].processId}<span class="gantt-box-right">${ganttSJFPre[i].endTime}<span></div>`);
         else
-        $("#gantt_SJFPre").append(`<div class="gantt-box" style="background-color: #58D68D; width: ${diff}px"><span class="gantt-box-left">${ganttSJFPre[i].startTime}</span><span class="gantt-box-right">${ganttSJFPre[i].endTime}<span></div>`);
+            $("#gantt_SJFPre").append(`<div class="gantt-box" style="background-color: #58D68D; width: ${diff}px"><span class="gantt-box-left">${ganttSJFPre[i].startTime}</span><span class="gantt-box-right">${ganttSJFPre[i].endTime}<span></div>`);
     }
-    for (i in ganttLJFNonPre)
-    {
-        let diff=ganttLJFNonPre[i].endTime-ganttLJFNonPre[i].startTime+80;
-        if(ganttLJFNonPre[i].processId!=null)
-        $("#gantt_LJFNonPre").append(`<div class="gantt-box" style="width:${diff}px"><span class="gantt-box-left">${ganttLJFNonPre[i].startTime}</span>P${ganttLJFNonPre[i].processId}<span class="gantt-box-right">${ganttLJFNonPre[i].endTime}<span></div>`);
+    for (i in ganttLJFNonPre) {
+        let diff = ganttLJFNonPre[i].endTime - ganttLJFNonPre[i].startTime + 80;
+        if (ganttLJFNonPre[i].processId != null)
+            $("#gantt_LJFNonPre").append(`<div class="gantt-box" style="width:${diff}px"><span class="gantt-box-left">${ganttLJFNonPre[i].startTime}</span>P${ganttLJFNonPre[i].processId}<span class="gantt-box-right">${ganttLJFNonPre[i].endTime}<span></div>`);
         else
-        $("#gantt_LJFNonPre").append(`<div class="gantt-box" style="background-color: #58D68D; width: ${diff}px"><span class="gantt-box-left">${ganttLJFNonPre[i].startTime}</span><span class="gantt-box-right">${ganttLJFNonPre[i].endTime}<span></div>`);
+            $("#gantt_LJFNonPre").append(`<div class="gantt-box" style="background-color: #58D68D; width: ${diff}px"><span class="gantt-box-left">${ganttLJFNonPre[i].startTime}</span><span class="gantt-box-right">${ganttLJFNonPre[i].endTime}<span></div>`);
     }
-    for (i in ganttLJFPre)
-    {
-        let diff=ganttLJFPre[i].endTime-ganttLJFPre[i].startTime+80;
-        if(ganttLJFPre[i].processId!=null)
-        $("#gantt_LJFPre").append(`<div class="gantt-box" style="width:${diff}px"><span class="gantt-box-left">${ganttLJFPre[i].startTime}</span>P${ganttLJFPre[i].processId}<span class="gantt-box-right">${ganttLJFPre[i].endTime}<span></div>`);
+    for (i in ganttLJFPre) {
+        let diff = ganttLJFPre[i].endTime - ganttLJFPre[i].startTime + 80;
+        if (ganttLJFPre[i].processId != null)
+            $("#gantt_LJFPre").append(`<div class="gantt-box" style="width:${diff}px"><span class="gantt-box-left">${ganttLJFPre[i].startTime}</span>P${ganttLJFPre[i].processId}<span class="gantt-box-right">${ganttLJFPre[i].endTime}<span></div>`);
         else
-        $("#gantt_LJFPre").append(`<div class="gantt-box" style="background-color: #58D68D; width: ${diff}px"><span class="gantt-box-left">${ganttLJFPre[i].startTime}</span><span class="gantt-box-right">${ganttLJFPre[i].endTime}<span></div>`);
+            $("#gantt_LJFPre").append(`<div class="gantt-box" style="background-color: #58D68D; width: ${diff}px"><span class="gantt-box-left">${ganttLJFPre[i].startTime}</span><span class="gantt-box-right">${ganttLJFPre[i].endTime}<span></div>`);
     }
-    for (i in ganttPriorityNonPre)
-    {
-        let diff=ganttPriorityNonPre[i].endTime-ganttPriorityNonPre[i].startTime+80;
-        if(ganttPriorityNonPre[i].processId!=null)
-        $("#gantt_PriorityNonPre").append(`<div class="gantt-box" style="width:${diff}px"><span class="gantt-box-left">${ganttPriorityNonPre[i].startTime}</span>P${ganttPriorityNonPre[i].processId}<span class="gantt-box-right">${ganttPriorityNonPre[i].endTime}<span></div>`);
+    for (i in ganttPriorityNonPre) {
+        let diff = ganttPriorityNonPre[i].endTime - ganttPriorityNonPre[i].startTime + 80;
+        if (ganttPriorityNonPre[i].processId != null)
+            $("#gantt_PriorityNonPre").append(`<div class="gantt-box" style="width:${diff}px"><span class="gantt-box-left">${ganttPriorityNonPre[i].startTime}</span>P${ganttPriorityNonPre[i].processId}<span class="gantt-box-right">${ganttPriorityNonPre[i].endTime}<span></div>`);
         else
-        $("#gantt_PriorityNonPre").append(`<div class="gantt-box" style="background-color: #58D68D; width: ${diff}px"><span class="gantt-box-left">${ganttPriorityNonPre[i].startTime}</span><span class="gantt-box-right">${ganttPriorityNonPre[i].endTime}<span></div>`);
+            $("#gantt_PriorityNonPre").append(`<div class="gantt-box" style="background-color: #58D68D; width: ${diff}px"><span class="gantt-box-left">${ganttPriorityNonPre[i].startTime}</span><span class="gantt-box-right">${ganttPriorityNonPre[i].endTime}<span></div>`);
     }
-    for (i in ganttPriorityPre)
-    {
-        let diff=ganttPriorityPre[i].endTime-ganttPriorityPre[i].startTime+80;
-        if(ganttPriorityPre[i].processId!=null)
-        $("#gantt_PriorityPre").append(`<div class="gantt-box" style="width:${diff}px"><span class="gantt-box-left">${ganttPriorityPre[i].startTime}</span>P${ganttPriorityPre[i].processId}<span class="gantt-box-right">${ganttPriorityPre[i].endTime}<span></div>`);
+    for (i in ganttPriorityPre) {
+        let diff = ganttPriorityPre[i].endTime - ganttPriorityPre[i].startTime + 80;
+        if (ganttPriorityPre[i].processId != null)
+            $("#gantt_PriorityPre").append(`<div class="gantt-box" style="width:${diff}px"><span class="gantt-box-left">${ganttPriorityPre[i].startTime}</span>P${ganttPriorityPre[i].processId}<span class="gantt-box-right">${ganttPriorityPre[i].endTime}<span></div>`);
         else
-        $("#gantt_PriorityPre").append(`<div class="gantt-box" style="background-color: #58D68D; width: ${diff}px"><span class="gantt-box-left">${ganttPriorityPre[i].startTime}</span><span class="gantt-box-right">${ganttPriorityPre[i].endTime}<span></div>`);
+            $("#gantt_PriorityPre").append(`<div class="gantt-box" style="background-color: #58D68D; width: ${diff}px"><span class="gantt-box-left">${ganttPriorityPre[i].startTime}</span><span class="gantt-box-right">${ganttPriorityPre[i].endTime}<span></div>`);
     }
-    for (i in ganttRoundRobin)
-    {
-        let diff=ganttRoundRobin[i].endTime-ganttRoundRobin[i].startTime+80;
-        if(ganttRoundRobin[i].processId!=null)
-        $("#gantt_RoundRobin").append(`<div class="gantt-box" style="width:${diff}px"><span class="gantt-box-left">${ganttRoundRobin[i].startTime}</span>P${ganttRoundRobin[i].processId}<span class="gantt-box-right">${ganttRoundRobin[i].endTime}<span></div>`);
+    for (i in ganttRoundRobin) {
+        let diff = ganttRoundRobin[i].endTime - ganttRoundRobin[i].startTime + 80;
+        if (ganttRoundRobin[i].processId != null)
+            $("#gantt_RoundRobin").append(`<div class="gantt-box" style="width:${diff}px"><span class="gantt-box-left">${ganttRoundRobin[i].startTime}</span>P${ganttRoundRobin[i].processId}<span class="gantt-box-right">${ganttRoundRobin[i].endTime}<span></div>`);
         else
-        $("#gantt_RoundRobin").append(`<div class="gantt-box" style="background-color: #58D68D; width: ${diff}px"><span class="gantt-box-left">${ganttRoundRobin[i].startTime}</span><span class="gantt-box-right">${ganttRoundRobin[i].endTime}<span></div>`);
+            $("#gantt_RoundRobin").append(`<div class="gantt-box" style="background-color: #58D68D; width: ${diff}px"><span class="gantt-box-left">${ganttRoundRobin[i].startTime}</span><span class="gantt-box-right">${ganttRoundRobin[i].endTime}<span></div>`);
     }
-    for (i in ganttProposed)
-    {
-        let diff=ganttProposed[i].endTime-ganttProposed[i].startTime+80;
-        if(ganttProposed[i].processId!=null)
-        $("#gantt_Proposed").append(`<div class="gantt-box" style="width:${diff}px"><span class="gantt-box-left">${ganttProposed[i].startTime.toFixed(1)}</span>P${ganttProposed[i].processId}<span class="gantt-box-right">${ganttProposed[i].endTime.toFixed(1)}<span></div>`);
+    for (i in ganttProposed) {
+        let diff = ganttProposed[i].endTime - ganttProposed[i].startTime + 80;
+        if (ganttProposed[i].processId != null)
+            $("#gantt_Proposed").append(`<div class="gantt-box" style="width:${diff}px"><span class="gantt-box-left">${ganttProposed[i].startTime.toFixed(1)}</span>P${ganttProposed[i].processId}<span class="gantt-box-right">${ganttProposed[i].endTime.toFixed(1)}<span></div>`);
     }
 }
 let bestAlgo = [];
@@ -1388,19 +1319,18 @@ function findBest(checked) {
 
     let minRank = Number.MAX_VALUE;
     for (a in algorithms) {
-        if(checked[a])
-        {
+        if (checked[a]) {
             rank[a] = (wtRank[a] + tatRank[a] + cpuUtilRank[a] + throughputRank[a] + rtRank[a]) / 5;
             if (rank[a] < minRank)
                 minRank = rank[a];
         }
     }
     for (a in algorithms) {
-        if (checked[a]&&rank[a] === minRank) {
+        if (checked[a] && rank[a] === minRank) {
             bestAlgo.push({
                 algorithm: algorithms[a],
-                cpu_util: (cpuUtil[a] * 100).toFixed(2)+" %",
-                throughput: (throughput[a]* 100).toFixed(2) +" % (Process per unit time)",
+                cpu_util: (cpuUtil[a] * 100).toFixed(2) + " %",
+                throughput: (throughput[a] * 100).toFixed(2) + " % (Process per unit time)",
                 tat: tat[a].toFixed(2),
                 wt: wt[a].toFixed(2),
                 rt: rt[a].toFixed(2)

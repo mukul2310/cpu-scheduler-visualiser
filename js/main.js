@@ -62,25 +62,21 @@ var processes = [{
 
 let headers = ['Process Id', 'Burst Time', 'Arrival Time', 'Priority'];
 
-function createTable() 
-{
-    let table=$("#table");
-    let head="";
-    for(h in headers)
-    {
-        head+="<th>"+headers[h]+"</th>";
+function createTable() {
+    let table = $("#table");
+    let head = "";
+    for (h in headers) {
+        head += "<th>" + headers[h] + "</th>";
     }
     table.append(`<thead><tr>${head}</tr></thead>`);
 
-    data="";
-    for(p in processes)
-    {
-        let row="";
-        for(obj in processes[p])
-        {
-            row+="<td>"+processes[p][obj]+"</td>";
+    data = "";
+    for (p in processes) {
+        let row = "";
+        for (obj in processes[p]) {
+            row += "<td>" + processes[p][obj] + "</td>";
         }
-        data+="<tr>"+row+"</tr>";
+        data += "<tr>" + row + "</tr>";
     }
     table.append(`<tbody>${data}</tbody>`);
 }
@@ -99,7 +95,7 @@ function orderProcess() {
 }
 
 function openAddModal() {
-    
+
     $('#modal_process_id').val(processes.length + 1);
     $('#modal_burst_time').val(Math.floor(Math.random() * 100));
     $('#modal_arrival_time').val(Math.floor(Math.random() * 100));
@@ -259,80 +255,68 @@ function start() {
     $("#gantt").removeAttr("hidden");
     $("#result").removeAttr("hidden");
     $('[data-toggle="tooltip"]').tooltip();
-    let checked=[false,false,false,false,false,false,false,false,false]
-    if ($("#fcfs_switch").prop('checked') === true)
-    {
+    let checked = [false, false, false, false, false, false, false, false, false]
+    if ($("#fcfs_switch").prop('checked') === true) {
         FCFS(false);
-        checked[0]=true;
+        checked[0] = true;
     }
-    if ($("#sjf_switch").prop('checked') === true)
-    {
+    if ($("#sjf_switch").prop('checked') === true) {
         SJFNonPre(false);
-        checked[1]=true;
+        checked[1] = true;
     }
-    if ($("#srtf_switch").prop('checked') === true)
-    {
+    if ($("#srtf_switch").prop('checked') === true) {
         SJFPre(false);
-        checked[2]=true;
+        checked[2] = true;
     }
-    if ($("#ljf_switch").prop('checked') === true)
-    {
+    if ($("#ljf_switch").prop('checked') === true) {
         LJFNonPre(false);
-        checked[3]=true;
+        checked[3] = true;
     }
-    if ($("#lrtf_switch").prop('checked') === true)
-    {
+    if ($("#lrtf_switch").prop('checked') === true) {
         LJFPre(false);
-        checked[4]=true;
+        checked[4] = true;
     }
-    if ($("#priority_switch").prop('checked') === true)
-    {
+    if ($("#priority_switch").prop('checked') === true) {
         priorityNonPre(false);
-        checked[5]=true;
+        checked[5] = true;
     }
-    if ($("#priority_pre_switch").prop('checked') === true)
-    {
+    if ($("#priority_pre_switch").prop('checked') === true) {
         priorityPre(false);
-        checked[6]=true;
+        checked[6] = true;
     }
-    if ($("#roundrobin_switch").prop('checked') === true)
-    {
+    if ($("#roundrobin_switch").prop('checked') === true) {
         roundRobin(false);
-        checked[7]=true;
+        checked[7] = true;
     }
-    if ($("#proposed_switch").prop('checked') === true)
-    {
+    if ($("#proposed_switch").prop('checked') === true) {
         newProposed(false);
-        checked[8]=true;
+        checked[8] = true;
     }
-    
+
     displayGanttChart();
     displayResultTable();
     findBest(checked);
 
-    for(b in bestAlgo)
-    {
-        let row="";
-        row+="<span>"+"Algorithm" +" : "+bestAlgo[b].algorithm+"<br></span>";
-        row+="<span>"+"CPU Utilization" +" : "+bestAlgo[b].cpu_util+"<br></span>";
-        row+="<span>"+"Throughput" +" : "+bestAlgo[b].throughput+"<br></span>";
-        row+="<span>"+"TurnAround Time" +" : "+bestAlgo[b].tat+"<br></span>";
-        row+="<span>"+"Waiting Time" +" : "+bestAlgo[b].wt+"<br></span>";
-        row+="<span>"+"Response Time" +" : "+bestAlgo[b].rt+"<br></span>";
+    for (b in bestAlgo) {
+        let row = "";
+        row += "<span>" + "Algorithm" + " : " + bestAlgo[b].algorithm + "<br></span>";
+        row += "<span>" + "CPU Utilization" + " : " + bestAlgo[b].cpu_util + "<br></span>";
+        row += "<span>" + "Throughput" + " : " + bestAlgo[b].throughput + "<br></span>";
+        row += "<span>" + "TurnAround Time" + " : " + bestAlgo[b].tat + "<br></span>";
+        row += "<span>" + "Waiting Time" + " : " + bestAlgo[b].wt + "<br></span>";
+        row += "<span>" + "Response Time" + " : " + bestAlgo[b].rt + "<br></span>";
         $("#final_result").append(`<li>${row}<br></li>`);
     }
-    $('html, body').animate(
-    {
+    $('html, body').animate({
         scrollTop: $("#result_div").offset().top
     }, 0);
 }
 
-function openGantt(id)
-{
-    if($(id).attr("hidden"))
+function openGantt(id) {
+    if ($(id).attr("hidden"))
         $(id).removeAttr("hidden");
     else
-        $(id).attr("hidden",true);
+        $(id).attr("hidden", true);
 }
 $("#roundrobin_switch").on('change', () => {
     if ($("#roundrobin_switch").prop('checked') === false) {
@@ -342,7 +326,6 @@ $("#roundrobin_switch").on('change', () => {
         $('#show_time_quanta').show();
     }
 })
-$("#vis_stop").on('click',()=>
-{
-    stop_flag=true;
+$("#vis_stop").on('click', () => {
+    stop_flag = true;
 })
