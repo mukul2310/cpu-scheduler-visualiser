@@ -37,7 +37,7 @@ body {
 }
 
 #start_btn {
-	background-color: hsl(125, 62%, 50%);
+	background-color: hsl(125, 100%, 37%);
 	transition: opacity 0.15s ease-in-out, color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 	color: aliceblue;
 }
